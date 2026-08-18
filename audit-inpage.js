@@ -77,7 +77,19 @@ function runAudit(brandList) {
       if (hit.w < 44 || hit.h < 44) {
         touch.push({ tag: el.tagName.toLowerCase(), w: Math.round(hit.w), h: Math.round(hit.h), cls: (el.className.baseVal ?? el.className ?? '').toString().slice(0,52), text: (el.innerText || '').trim().slice(0, 26) });
       }
-      const label = (el.getAttribute('aria-label') || el.getAttribute('title') || el.innerText || el.getAttribute('alt') || '').trim();
+      /* الاسم المتاح كما تحسبه المتصفحات فعلًا:
+         aria-label · aria-labelledby · <label for> · <label> محيط · title · النص.
+         كان الفحص يتجاهل `<label for>` وهو **الطريقة الصحيحة** لتسمية حقل
+         إدخال، فكان يدفع نحو `aria-label` في كل مكان — وهو أسوأ لأنه لا ينشئ
+         منطقة نقر مرتبطة بالحقل. */
+      let label = (el.getAttribute('aria-label') || el.getAttribute('title') || el.innerText || el.getAttribute('alt') || '').trim();
+      if (!label && el.id) {
+        const forEl = document.querySelector('label[for="' + CSS.escape(el.id) + '"]');
+        if (forEl && (forEl.textContent || '').trim()) label = forEl.textContent.trim();
+      }
+      if (!label && el.closest('label') && (el.closest('label').textContent || '').trim()) {
+        label = el.closest('label').textContent.trim();
+      }
       if (!label && !el.getAttribute('aria-labelledby')) {
         name.push({ tag: el.tagName.toLowerCase(), cls: (el.className.baseVal ?? el.className ?? '').toString().slice(0, 60) });
       }

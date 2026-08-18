@@ -1,7 +1,22 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ChevronLeft } from 'lucide-react'
+import {
+  ChevronLeft,
+  Target,
+  BookOpen,
+  Wallet,
+  Handshake,
+  Flame,
+  Crown,
+  Star,
+  Gift,
+  Package,
+  Award,
+  Medal,
+  Trophy,
+  Lock,
+} from 'lucide-react'
 
 interface AchievementsScreenProps {
   onNavigate?: (screen: string) => void
@@ -27,7 +42,7 @@ const cardHover = {
 const achievements = [
   {
     id: 'a1',
-    icon: '🎯',
+    icon: Target,
     title: 'أول طلب',
     description: 'أكمل أول طلب بنجاح',
     unlocked: true,
@@ -36,7 +51,7 @@ const achievements = [
   },
   {
     id: 'a2',
-    icon: '📚',
+    icon: BookOpen,
     title: 'جامعي',
     description: 'اطلب 5 محاضرات مختلفة',
     unlocked: true,
@@ -45,7 +60,7 @@ const achievements = [
   },
   {
     id: 'a3',
-    icon: '💰',
+    icon: Wallet,
     title: 'مُوفر',
     description: 'استخدم كود خصم لأول مرة',
     unlocked: true,
@@ -54,7 +69,7 @@ const achievements = [
   },
   {
     id: 'a4',
-    icon: '🤝',
+    icon: Handshake,
     title: 'سفير',
     description: 'انضم لبرنامج السفراء',
     unlocked: true,
@@ -63,7 +78,7 @@ const achievements = [
   },
   {
     id: 'a5',
-    icon: '🔥',
+    icon: Flame,
     title: 'مُلتزم',
     description: 'اطلب 7 أيام متتالية',
     unlocked: false,
@@ -72,7 +87,7 @@ const achievements = [
   },
   {
     id: 'a6',
-    icon: '👑',
+    icon: Crown,
     title: 'VIP',
     description: 'أنفق أكثر من 500 ج.م',
     unlocked: false,
@@ -81,16 +96,16 @@ const achievements = [
   },
   {
     id: 'a7',
-    icon: '⭐',
-    title: 'مُقيّم',
-    description: 'قيم 10 منتجات',
+    icon: Star,
+    title: 'مُنتظم',
+    description: 'اطلب في 3 أسابيع مختلفة',
     unlocked: false,
     current: 3,
     target: 10,
   },
   {
     id: 'a8',
-    icon: '🎁',
+    icon: Gift,
     title: 'هدايا',
     description: 'أرسل 3 هدايا لأصدقائك',
     unlocked: false,
@@ -100,16 +115,16 @@ const achievements = [
 ]
 
 const stats = [
-  { icon: '📦', value: '12', label: 'إجمالي الطلبات', color: 'text-sky-500' },
-  { icon: '⭐', value: '4.8', label: 'متوسط التقييم', color: 'text-amber-500' },
-  { icon: '🏅', value: '8', label: 'إنجاز مُفتّح', color: 'text-success' },
-  { icon: '🔥', value: '7 أيام', label: 'أيام متتالية', color: 'text-orange-500' },
+  { icon: Package, value: '12', label: 'إجمالي الطلبات', color: 'text-sky-500' },
+  { icon: Wallet, value: '160 ج.م', label: 'رصيد المحفظة', color: 'text-navy-800' },
+  { icon: Award, value: '8', label: 'إنجاز مُفتّح', color: 'text-success' },
+  { icon: Flame, value: '7 أيام', label: 'أيام متتالية', color: 'text-amber-600' },
 ]
 
 const leaderboard = [
-  { name: 'أحمد رضا', points: '3,450', medal: '🥇' },
-  { name: 'سارة محمد', points: '2,890', medal: '🥈' },
-  { name: 'محمد حسن', points: '2,340', medal: '🥉' },
+  { name: 'أحمد رضا', points: '3,450', medal: Medal },
+  { name: 'سارة محمد', points: '2,890', medal: Medal },
+  { name: 'محمد حسن', points: '2,340', medal: Medal },
 ]
 
 /* ── Progress Ring Component ── */
@@ -174,7 +189,7 @@ function XPBar() {
       <div className="w-full h-3 bg-white/15 rounded-full overflow-hidden relative">
         {/* Animated fill */}
         <motion.div
-          className="absolute top-0 right-0 h-full rounded-full bg-gradient-to-l from-sky-300 to-white/90"
+          className="absolute top-0 start-0 h-full rounded-full bg-gradient-to-l from-sky-300 to-white/90"
           initial={{ width: '0%' }}
           animate={{ width: `${percentage}%` }}
           transition={{ duration: 1.2, ease: 'easeOut', delay: 0.6 }}
@@ -198,13 +213,13 @@ export default function AchievementsScreen({ onNavigate }: AchievementsScreenPro
       {/* ── Gradient Header ── */}
       <div className="relative bg-gradient-to-l from-navy-800 via-navy-800 to-sky-900 px-4 pt-3 pb-6 overflow-hidden">
         {/* Decorative circles */}
-        <div className="pointer-events-none absolute -left-10 -top-10 h-32 w-32 rounded-full bg-white/5" />
-        <div className="pointer-events-none absolute -right-6 bottom-2 h-24 w-24 rounded-full bg-sky-500/10" />
+        <div className="pointer-events-none absolute -end-10 -top-10 h-32 w-32 rounded-full bg-white/5" />
+        <div className="pointer-events-none absolute -start-6 bottom-2 h-24 w-24 rounded-full bg-sky-500/10" />
 
         {/* Header bar */}
         <div className="relative z-10 flex items-center justify-between mb-5">
           <div className="w-8" />
-          <h1 className="text-[15px] font-bold text-white">إنجازاتي 🏆</h1>
+          <h1 className="text-[15px] font-bold text-white">إنجازاتي</h1>
           <button data-tap="44" aria-label="رجوع"
             onClick={() => onNavigate?.('profile')}
             className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors tap-44"
@@ -219,9 +234,9 @@ export default function AchievementsScreen({ onNavigate }: AchievementsScreenPro
           <motion.span
             animate={{ y: [-3, 3, -3] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            className="text-2xl"
+            className="inline-flex"
           >
-            🏆
+            <Trophy className="w-6 h-6 text-white" aria-hidden />
           </motion.span>
           <p className="text-[13px] text-white/90 font-semibold">مستوى الطالب المتفوق</p>
         </div>
@@ -259,10 +274,10 @@ export default function AchievementsScreen({ onNavigate }: AchievementsScreenPro
 
                 {/* Next level locked badge */}
                 <div className="flex items-center gap-2 bg-brand-grey-50 rounded-xl px-3 py-2">
-                  <span className="text-sm grayscale opacity-50">👑</span>
+                  <Crown className="w-3.5 h-3.5 text-brand-grey-400" aria-hidden />
                   <div className="flex-1">
                     <p className="text-[12px] font-semibold text-brand-grey-400">الطالب المثالي</p>
-                    <p className="text-[11px] text-brand-grey-400">🔒 مقفل</p>
+                    <p className="text-[11px] text-brand-grey-400">مقفل</p>
                   </div>
                   <span className="text-[12px] text-brand-grey-400 sl-num">Lv.4</span>
                 </div>
@@ -287,7 +302,7 @@ export default function AchievementsScreen({ onNavigate }: AchievementsScreenPro
                 whileHover="hover"
                 className="bg-white rounded-2xl p-3.5 shadow-sm border border-brand-grey-200/50 text-center hover:shadow-md transition-shadow cursor-default"
               >
-                <span className="text-xl block mb-1">{stat.icon}</span>
+                <stat.icon className={`w-5 h-5 mx-auto mb-1 ${stat.color}`} aria-hidden />
                 <span className={`block text-[20px] font-bold sl-num leading-tight ${stat.color}`}>
                   {stat.value}
                 </span>
@@ -326,7 +341,7 @@ export default function AchievementsScreen({ onNavigate }: AchievementsScreenPro
                 >
                   {/* Checkmark badge for unlocked */}
                   {achievement.unlocked && (
-                    <div className="absolute top-2 left-2 w-5 h-5 rounded-full bg-success flex items-center justify-center">
+                    <div className="absolute top-2 end-2 w-5 h-5 rounded-full bg-success flex items-center justify-center">
                       <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
@@ -335,14 +350,14 @@ export default function AchievementsScreen({ onNavigate }: AchievementsScreenPro
 
                   {/* Lock badge for locked */}
                   {!achievement.unlocked && (
-                    <div className="absolute top-2 left-2 text-[12px]">
-                      🔒
+                    <div className="absolute top-2 end-2">
+                      <Lock className="w-3 h-3 text-brand-grey-400" aria-hidden />
                     </div>
                   )}
 
                   {/* Icon */}
-                  <div className={`text-2xl mb-2 ${!achievement.unlocked ? 'grayscale opacity-40' : ''}`}>
-                    {achievement.icon}
+                  <div className={`mb-2 ${!achievement.unlocked ? 'opacity-40' : ''}`}>
+                    <achievement.icon className="w-6 h-6 text-navy-800" aria-hidden />
                   </div>
 
                   {/* Title */}
@@ -363,7 +378,7 @@ export default function AchievementsScreen({ onNavigate }: AchievementsScreenPro
                       ? 'bg-success/10 text-success'
                       : 'bg-brand-grey-100 text-brand-grey-400'
                   }`}>
-                    {achievement.unlocked ? '✅ مُفتّح' : 'مقفل'}
+                    {achievement.unlocked ? 'مُفتّح' : 'مقفل'}
                   </span>
 
                   {/* Progress bar for locked achievements with partial progress */}
@@ -415,7 +430,12 @@ export default function AchievementsScreen({ onNavigate }: AchievementsScreenPro
                   }`}
                 >
                   {/* Medal */}
-                  <span className="text-[18px] flex-shrink-0">{entry.medal}</span>
+                  <entry.medal
+                    className={`w-[18px] h-[18px] flex-shrink-0 ${
+                      idx === 0 ? 'text-amber-600' : idx === 1 ? 'text-brand-grey-500' : 'text-amber-700'
+                    }`}
+                    aria-hidden
+                  />
 
                   {/* Avatar placeholder */}
                   <div className={`w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 text-[14px] font-bold text-white ${
@@ -444,8 +464,8 @@ export default function AchievementsScreen({ onNavigate }: AchievementsScreenPro
         <motion.div variants={staggerItem}>
           <div className="relative overflow-hidden rounded-2xl bg-gradient-to-l from-sky-500 via-sky-500 to-sky-600 p-5 shadow-lg shadow-sky-500/20">
             {/* Decorative elements */}
-            <div className="pointer-events-none absolute -left-8 -top-8 h-28 w-28 rounded-full bg-white/10" />
-            <div className="pointer-events-none absolute -right-4 -bottom-4 h-20 w-20 rounded-full bg-white/5" />
+            <div className="pointer-events-none absolute -end-8 -top-8 h-28 w-28 rounded-full bg-white/10" />
+            <div className="pointer-events-none absolute -start-4 -bottom-4 h-20 w-20 rounded-full bg-white/5" />
 
             {/* Shimmer sweep */}
             <motion.div
@@ -456,7 +476,7 @@ export default function AchievementsScreen({ onNavigate }: AchievementsScreenPro
 
             <div className="relative z-10">
               <p className="text-[15px] font-bold text-white mb-1">
-                🎁 كسبت 50 نقطة هذا الأسبوع!
+                كسبت 50 نقطة هذا الأسبوع
               </p>
               <p className="text-[12px] text-white/80 mb-4">
                 استبدلها بخصم 10 ج.م في المحفظة

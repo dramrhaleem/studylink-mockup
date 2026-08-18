@@ -20,6 +20,11 @@ import {
   ShoppingBag,
   ArrowRightLeft,
   Store,
+  Home,
+  School,
+  Smartphone,
+  Landmark,
+  type LucideIcon,
 } from 'lucide-react'
 import {
   Drawer,
@@ -50,7 +55,7 @@ type AddressSheetPhase = 'list' | 'form'
 interface SavedAddress {
   id: string
   label: string
-  icon: string
+  icon: LucideIcon
   district: string
   street: string
 }
@@ -63,8 +68,8 @@ const PROMO_CODES: Record<string, { percent: number; label: string }> = {
 }
 
 const savedAddresses: SavedAddress[] = [
-  { id: '1', label: 'البيت', icon: '🏠', district: 'شارع الجامعة', street: 'المدينة' },
-  { id: '2', label: 'السكن الجامعي', icon: '🏫', district: 'مدينة الطلاب', street: 'بلوك 4' },
+  { id: '1', label: 'البيت', icon: Home, district: 'شارع الجامعة', street: 'المدينة' },
+  { id: '2', label: 'السكن الجامعي', icon: School, district: 'مدينة الطلاب', street: 'بلوك 4' },
 ]
 
 // ── Animation variants ──────────────────────────────────────
@@ -146,27 +151,27 @@ export default function CheckoutScreen({ onNavigate }: CheckoutScreenProps) {
   const canPlaceOrder = cart.length > 0
 
   // ── Payment method config ─────────────────────────────────
-  const getPaymentMethods = useCallback((): { id: PaymentId; label: string; emoji: string; desc: string; needsUpload: boolean }[] => {
+  const getPaymentMethods = useCallback((): { id: PaymentId; label: string; icon: LucideIcon; desc: string; needsUpload: boolean }[] => {
     const isDelivery = deliveryOption === 'delivery'
     return [
       {
         id: 'instapay',
         label: 'إنستاباي',
-        emoji: '📱',
+        icon: Smartphone,
         desc: isDelivery ? 'ادفع الوقتي أو لما مندوبنا يوصلك' : 'ادفع دلوقتي أو لما تستلم أوردرك!',
         needsUpload: true,
       },
       {
         id: 'vodafone',
         label: 'فودافون كاش',
-        emoji: '🏦',
+        icon: Landmark,
         desc: isDelivery ? 'ادفع الوقتي أو لما مندوبنا يوصلك' : 'ادفع دلوقتي أو لما تستلم أوردرك!',
         needsUpload: true,
       },
       {
         id: 'automation',
         label: 'أوتوميشن SMS/OCP',
-        emoji: '⚡',
+        icon: Zap,
         desc: 'ادفع دلوقتي أو لما تستلم أوردرك!',
         needsUpload: false,
       },
@@ -404,7 +409,7 @@ export default function CheckoutScreen({ onNavigate }: CheckoutScreenProps) {
               <button
                 type="button"
                 onClick={handleOpenAddressSheet}
-                className={`w-full h-12 rounded-xl px-3 text-right transition-all flex items-center gap-2 ${
+                className={`w-full h-12 rounded-xl px-3 text-start transition-all flex items-center gap-2 ${
                   addressSaved
                     ? 'border-2 border-success ring-1 ring-success/30'
                     : address
@@ -421,7 +426,7 @@ export default function CheckoutScreen({ onNavigate }: CheckoutScreenProps) {
                     اختر عنوان الاستلام...
                   </span>
                 )}
-                <ArrowRightLeft className="w-4 h-4 text-brand-grey-400 flex-shrink-0 mr-auto" />
+                <ArrowRightLeft className="w-4 h-4 text-brand-grey-400 flex-shrink-0 ms-auto" />
               </button>
               {/* Green confirmation flash */}
               <AnimatePresence>
@@ -432,7 +437,7 @@ export default function CheckoutScreen({ onNavigate }: CheckoutScreenProps) {
                     exit={{ opacity: 0, y: -4 }}
                     className="text-[12px] text-success font-medium mt-1.5 flex items-center gap-1"
                   >
-                    <span>✔️</span>
+                    <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
                     <span>تم حفظ العنوان</span>
                   </motion.p>
                 )}
@@ -444,6 +449,7 @@ export default function CheckoutScreen({ onNavigate }: CheckoutScreenProps) {
               <div>
                 <label className={labelClass}>ملاحظات للمندوب (اختياري)</label>
                 <input
+                  aria-label="ملاحظات للمندوب"
                   type="text"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
@@ -460,10 +466,13 @@ export default function CheckoutScreen({ onNavigate }: CheckoutScreenProps) {
             </div>
           </div>
 
-          {/* Social Proof */}
+          {/* حقيقة قابلة للتحقق بدل عدد توصيلات مُختلَق.
+              كان: «تم التوصيل لـ 1,250 طالب هذا الشهر» — رقم لا يولّده النظام،
+              وبوابة الادعاءات في core/07 §4 تمنعه. */}
           <div className="mt-3 pt-3 border-t border-brand-grey-100">
-            <span className="text-[12px] text-success font-medium flex items-center gap-1">
-              ✓ تم التوصيل لـ 1,250 طالب في المدينة هذا الشهر
+            <span className="text-[12px] text-brand-grey-500 font-medium flex items-center gap-1.5">
+              <Check className="w-3 h-3 flex-shrink-0 text-success" aria-hidden="true" />
+              كل بند في الحساب معروض قبل التأكيد — بلا رسوم مخفية
             </span>
           </div>
         </motion.div>
@@ -482,7 +491,7 @@ export default function CheckoutScreen({ onNavigate }: CheckoutScreenProps) {
                 <button data-tap="44" aria-label="تأكيد"
                   key={method.id}
                   onClick={() => setSelectedPayment(method.id)}
-                  className={`w-full flex items-start gap-2.5 p-3 rounded-xl transition-all border text-right ${
+                  className={`w-full flex items-start gap-2.5 p-3 rounded-xl transition-all border text-start ${
                     isSelected
                       ? 'bg-sky-50 border-sky-200'
                       : 'bg-white border-brand-grey-200/50 hover:border-brand-grey-300'
@@ -499,14 +508,14 @@ export default function CheckoutScreen({ onNavigate }: CheckoutScreenProps) {
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-[13px]">{method.emoji}</span>
+                      <method.icon className="w-4 h-4 text-brand-grey-500" aria-hidden="true" />
                       <span
                         className={`text-[13px] font-medium ${isSelected ? 'text-navy-800' : 'text-brand-grey-700'}`}
                       >
                         {method.label}
                       </span>
                     </div>
-                    <p className="text-[12px] text-brand-grey-500 mt-1 mr-6 leading-relaxed">
+                    <p className="text-[12px] text-brand-grey-500 mt-1 ms-6 leading-relaxed">
                       {method.desc}
                     </p>
                   </div>
@@ -554,6 +563,7 @@ export default function CheckoutScreen({ onNavigate }: CheckoutScreenProps) {
                       </span>
                       <span className="text-[12px] text-brand-grey-400">JPG, PNG</span>
                       <input
+                        aria-label="رفع صورة إيصال التحويل"
                         ref={fileInputRef}
                         type="file"
                         accept="image/*"
@@ -610,14 +620,15 @@ export default function CheckoutScreen({ onNavigate }: CheckoutScreenProps) {
                     <div>
                       <div className="flex gap-2">
                         <input
+                          aria-label="كود الخصم المُطبَّق"
                           type="text"
                           value={appliedCodeName}
                           readOnly
-                          className="flex-1 h-10 bg-green-50 border-2 border-success rounded-xl px-3 text-[13px] text-green-800 sl-num font-semibold outline-none cursor-default"
+                          className="flex-1 h-10 bg-teal-50 border-2 border-success rounded-xl px-3 text-[13px] text-teal-800 sl-num font-semibold outline-none cursor-default"
                         />
                         <button data-tap="44"
                           onClick={handleRemoveDiscount}
-                          className="h-10 px-3 bg-red-50 text-red-500 border border-red-200 text-[13px] font-semibold rounded-xl transition-colors hover:bg-red-100 flex items-center gap-1.5 tap-44"
+                          className="h-10 px-3 bg-error-bg text-error border border-error/30 text-[13px] font-semibold rounded-xl transition-colors hover:bg-error-bg flex items-center gap-1.5 tap-44"
                         >
                           <X className="w-3.5 h-3.5" />
                           <span>إزالة</span>
@@ -634,6 +645,7 @@ export default function CheckoutScreen({ onNavigate }: CheckoutScreenProps) {
                       <div className="flex gap-2">
                         <input
                           type="text"
+                          aria-label="كود الخصم"
                           value={discountCode}
                           onChange={(e) => { setDiscountCode(e.target.value); setPromoError('') }}
                           placeholder="أدخل كود الخصم"
@@ -824,13 +836,13 @@ export default function CheckoutScreen({ onNavigate }: CheckoutScreenProps) {
                     <button data-tap="44" aria-label="تأكيد"
                       key={addr.id}
                       onClick={() => handleSelectAddress(addr)}
-                      className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all text-right ${
+                      className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all text-start ${
                         address === `${addr.district}، المدينة`
                           ? 'bg-sky-50 border-sky-300 ring-1 ring-sky-500/20'
                           : 'bg-white border-brand-grey-200/50 hover:border-brand-grey-300'
                       }`}
                     >
-                      <span className="text-[20px] flex-shrink-0">{addr.icon}</span>
+                      <addr.icon className="w-5 h-5 text-brand-grey-500 flex-shrink-0" aria-hidden="true" />
                       <div className="flex-1 min-w-0">
                         <span className="text-[13px] font-semibold text-navy-800 block">
                           {addr.label}
@@ -882,6 +894,7 @@ export default function CheckoutScreen({ onNavigate }: CheckoutScreenProps) {
                   <div>
                     <label className={labelClass}>تسمية العنوان (اختياري)</label>
                     <input
+                      aria-label="اسم العنوان"
                       type="text"
                       value={newLabel}
                       onChange={(e) => setNewLabel(e.target.value)}
@@ -895,13 +908,14 @@ export default function CheckoutScreen({ onNavigate }: CheckoutScreenProps) {
                     <label className={labelClass}>المدينة</label>
                     <div className="relative">
                       <input
+                        aria-label="المدينة"
                         type="text"
                         value="المدينة"
                         disabled
                         readOnly
-                        className="w-full bg-brand-grey-100 border border-brand-grey-200 rounded-xl px-3 h-12 text-[13px] text-brand-grey-500 outline-none cursor-not-allowed pl-9"
+                        className="w-full bg-brand-grey-100 border border-brand-grey-200 rounded-xl px-3 h-12 text-[13px] text-brand-grey-500 outline-none cursor-not-allowed pe-9"
                       />
-                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-grey-400" />
+                      <Lock className="absolute end-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-grey-400" />
                     </div>
                     <p className="text-[12px] text-brand-grey-400 mt-1">المدينة محددة تلقائياً — المدينة</p>
                   </div>
@@ -910,6 +924,7 @@ export default function CheckoutScreen({ onNavigate }: CheckoutScreenProps) {
                   <div>
                     <label className={labelClass}>الحي</label>
                     <input
+                      aria-label="الحي"
                       type="text"
                       value={newDistrict}
                       onChange={(e) => setNewDistrict(e.target.value)}
@@ -922,6 +937,7 @@ export default function CheckoutScreen({ onNavigate }: CheckoutScreenProps) {
                   <div>
                     <label className={labelClass}>الشارع / تفاصيل إضافية</label>
                     <input
+                      aria-label="الشارع"
                       type="text"
                       value={newStreet}
                       onChange={(e) => setNewStreet(e.target.value)}
@@ -934,6 +950,7 @@ export default function CheckoutScreen({ onNavigate }: CheckoutScreenProps) {
                   <div>
                     <label className={labelClass}>رقم العمارة (اختياري)</label>
                     <input
+                      aria-label="رقم العمارة"
                       type="text"
                       inputMode="numeric"
                       pattern="[0-9]*"

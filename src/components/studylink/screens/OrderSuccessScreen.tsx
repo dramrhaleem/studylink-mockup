@@ -20,6 +20,8 @@ import {
   Wallet,
   Home,
   RotateCcw,
+  BookOpen,
+  BookMarked,
 } from 'lucide-react'
 
 /* ──────────────────────────── types ──────────────────────────── */
@@ -210,6 +212,8 @@ export default function OrderSuccessScreen({ onNavigate }: OrderSuccessScreenPro
   /* --- Determine if any library has moved past accepted --- */
   useEffect(() => {
     const hasMoved = LIBRARIES.some((l) => getStageIndex(l.stage) >= 1)
+    /* قفل الإلغاء يُحسم مرة واحدة بعد التركيب حسب حالة المكتبات. */
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (hasMoved) setCanCancel(false)
   }, [])
 
@@ -231,9 +235,9 @@ export default function OrderSuccessScreen({ onNavigate }: OrderSuccessScreenPro
         </div>
 
         <div className="flex items-center justify-between relative">
-          <div className="absolute top-[11px] left-5 right-5 h-[3px] bg-white/10 rounded-full" />
+          <div className="absolute top-[11px] end-5 start-5 h-[3px] bg-white/10 rounded-full" />
           <motion.div
-            className="absolute top-[11px] left-5 h-[3px] bg-success rounded-full"
+            className="absolute top-[11px] end-5 h-[3px] bg-success rounded-full"
             initial={{ width: 0 }}
             animate={{ width: `${(currentIdx / (stages.length - 1)) * 90}%` }}
             transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
@@ -370,7 +374,7 @@ export default function OrderSuccessScreen({ onNavigate }: OrderSuccessScreenPro
                   </span>
                   <span className="text-brand-grey-400">|</span>
                   <span className="text-[12px] text-brand-grey-500">
-                    {ORDER_TYPE === 'delivery' ? '🚚 توصيل' : '📦 استلام'}
+                    {ORDER_TYPE === 'delivery' ? 'توصيل' : 'استلام'}
                   </span>
                 </div>
               </div>
@@ -438,8 +442,8 @@ export default function OrderSuccessScreen({ onNavigate }: OrderSuccessScreenPro
                           transition={{ delay: 0.05 * idx }}
                           className="flex items-center gap-2.5"
                         >
-                          <div className="w-11 h-11 rounded-xl bg-brand-grey-100 flex-shrink-0 flex items-center justify-center text-lg">
-                            {item.library === 'هارفرد' ? '📚' : '📖'}
+                          <div className="w-11 h-11 rounded-xl bg-brand-grey-100 flex-shrink-0 flex items-center justify-center">
+                            {item.library === 'هارفرد' ? <BookOpen className="w-5 h-5 text-navy-800" aria-hidden /> : <BookMarked className="w-5 h-5 text-navy-800" aria-hidden />}
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-[12px] font-semibold text-navy-900 truncate">
@@ -509,12 +513,12 @@ export default function OrderSuccessScreen({ onNavigate }: OrderSuccessScreenPro
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 50, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-            className="absolute bottom-0 left-0 right-0 z-50"
+            className="absolute bottom-0 end-0 start-0 z-50"
           >
             {/* Red progress track */}
-            <div className="h-1 bg-red-200 w-full">
+            <div className="h-1 bg-error/30 w-full">
               <motion.div
-                className="h-full bg-red-500"
+                className="h-full bg-error"
                 initial={{ width: '100%' }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.1, ease: 'linear' }}
@@ -522,14 +526,14 @@ export default function OrderSuccessScreen({ onNavigate }: OrderSuccessScreenPro
             </div>
 
             {/* Undo content */}
-            <div className="bg-red-500 px-4 py-3">
+            <div className="bg-error px-4 py-3">
               <div className="flex items-center justify-between">
                 <button data-tap="44"
                   onClick={handleCancel}
                   disabled={!canCancel}
                   className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[13px] font-bold transition-all ${
                     canCancel
-                      ? 'bg-white text-red-600 active:scale-95'
+                      ? 'bg-white text-error active:scale-95'
                       : 'bg-white/20 text-white/40 cursor-not-allowed'
                   }`}
                 >

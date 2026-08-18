@@ -1,6 +1,6 @@
 'use client'
 
-import { X, ShoppingBag, ChevronDown } from 'lucide-react'
+import { X, ShoppingBag, ChevronDown, Moon } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface LibraryClosedSheetProps {
@@ -45,7 +45,7 @@ export default function LibraryClosedSheet({
         {/* Illustration */}
         <div className="flex justify-center mb-4">
           <div className="w-16 h-16 rounded-2xl bg-sky-50 flex items-center justify-center">
-            <span className="text-3xl">🌙</span>
+            <Moon className="w-8 h-8 text-sky-500" aria-hidden />
           </div>
         </div>
 

@@ -2,7 +2,7 @@
 
 import { useRef, useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Sparkles } from 'lucide-react'
+import { X, Sparkles, GraduationCap, BookOpen, Stethoscope, FileText, Smartphone, Scissors, Send, Star } from 'lucide-react'
 
 interface OnboardingScreenProps {
   onNavigate?: (screen: string) => void
@@ -11,8 +11,8 @@ interface OnboardingScreenProps {
 const slides = [
   {
     id: 1,
-    emoji: '🎓',
-    secondaryEmojis: ['📚', '🩺'],
+    emoji: GraduationCap,
+    secondaryEmojis: [BookOpen, Stethoscope],
     title: 'مرحباً بك في StudyLink',
     subtitle: 'سوقك الأكاديمي الأول',
     description: 'منصة متكاملة لطلاب الطب تجمع بين المحاضرات والأدوات الطبية وكل ما تحتاجه لرحلتك الأكاديمية.',
@@ -22,8 +22,8 @@ const slides = [
   },
   {
     id: 2,
-    emoji: '📝',
-    secondaryEmojis: ['📱'],
+    emoji: FileText,
+    secondaryEmojis: [Smartphone],
     title: 'اطلب محاضراتك بضغطة زر',
     subtitle: 'محاضرات من أفضل الدكاترة',
     description: 'مذكرات وملخصات من المكتبات الشريكة، توصلك لحد باب البيت أو تستلمها من المكتبة.',
@@ -33,9 +33,9 @@ const slides = [
   },
   {
     id: 3,
-    emoji: '🩺',
-    secondaryEmojis: ['✂️'],
-    title: 'أدوات طبية أصلية',
+    emoji: Stethoscope,
+    secondaryEmojis: [Scissors],
+    title: 'أدوات طبية ومكتبية',
     subtitle: 'كل ما تحتاجه في مكان واحد',
     description: 'سماعات ومعاطف وأدوات مكتبية — بسعر المكتبة الرسمي، ومصدر كل منتج مكتوب قدامك.',
     gradientBg: 'from-teal-50 via-white to-sky-50',
@@ -44,11 +44,11 @@ const slides = [
   },
   {
     id: 4,
-    emoji: '🚀',
-    secondaryEmojis: ['⭐', '✨'],
+    emoji: Send,
+    secondaryEmojis: [Star],
     title: 'ابدأ رحلتك الآن',
-    subtitle: 'انضم لأكبر مجتمع طلاب طب',
-    description: '+500 طالب يثقون بنا. كن جزءاً من مجتمع طبي متعاون ونمو معاً.',
+    subtitle: 'اختار فرقتك وابدأ',
+    description: 'حدّد فرقتك مرة واحدة، وهنعرض لك مذكرات وأدوات موادك أنت بس.',
     gradientBg: 'from-navy-50 via-sky-50 to-white',
     gradientCircle: 'from-navy-100 to-sky-100',
     accentColor: 'bg-sky-500',
@@ -116,7 +116,7 @@ export default function OnboardingScreen({ onNavigate }: OnboardingScreenProps) 
   return (
     <div className="screen-enter min-h-full bg-white flex flex-col relative overflow-hidden" dir="rtl">
       {/* Animated gradient progress bar at top */}
-      <div className="absolute top-0 left-0 right-0 z-30 h-1 bg-brand-grey-100">
+      <div className="absolute top-0 end-0 start-0 z-30 h-1 bg-brand-grey-100">
         <motion.div
           className="h-full rounded-full bg-gradient-to-l from-sky-500 via-navy-800 to-sky-500"
           style={{ width: `${progress}%` }}
@@ -132,7 +132,7 @@ export default function OnboardingScreen({ onNavigate }: OnboardingScreenProps) 
       </div>
 
       {/* Skip button - top right */}
-      <div className="absolute top-4 left-4 z-20">
+      <div className="absolute top-4 end-4 z-20">
         <motion.button data-tap="44"
           onClick={handleSkip}
           whileHover={{ scale: 1.05 }}
@@ -183,7 +183,7 @@ export default function OnboardingScreen({ onNavigate }: OnboardingScreenProps) 
                     <div
                       className={`absolute inset-[-8px] rounded-full bg-gradient-to-br ${s.gradientBg} opacity-40`}
                     />
-                    {/* Main emoji — floating/bobbing animation */}
+                    {/* Main icon — floating/bobbing animation */}
                     <motion.div
                       initial={{ scale: 0, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1, y: [0, -8, 0] }}
@@ -192,12 +192,12 @@ export default function OnboardingScreen({ onNavigate }: OnboardingScreenProps) 
                         opacity: { duration: 0.3 },
                         y: { duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 0.6 },
                       }}
-                      className="relative z-10 text-[64px] leading-none flex items-center justify-center"
+                      className="relative z-10 flex items-center justify-center"
                     >
-                      {s.emoji}
+                      <s.emoji className="w-16 h-16 text-navy-800" aria-hidden />
                     </motion.div>
-                    {/* Secondary emojis floating around with bobbing */}
-                    {s.secondaryEmojis.map((emoji, ei) => (
+                    {/* Secondary icons floating around with bobbing */}
+                    {s.secondaryEmojis.map((Icon, ei) => (
                       <motion.span
                         key={ei}
                         initial={{ opacity: 0, scale: 0 }}
@@ -211,7 +211,7 @@ export default function OnboardingScreen({ onNavigate }: OnboardingScreenProps) 
                           scale: { delay: 0.35 + ei * 0.12, duration: 0.4, type: 'spring' },
                           y: { duration: 3.5 + ei * 0.5, repeat: Infinity, ease: 'easeInOut', delay: ei * 0.3 },
                         }}
-                        className="absolute z-10 text-[28px]"
+                        className="absolute z-10"
                         style={{
                           top: ei === 0 ? 8 : 'auto',
                           bottom: ei === 0 ? 'auto' : 12,
@@ -219,7 +219,7 @@ export default function OnboardingScreen({ onNavigate }: OnboardingScreenProps) 
                           left: ei === 0 ? 'auto' : 4,
                         }}
                       >
-                        {emoji}
+                        <Icon className="w-7 h-7 text-navy-800" aria-hidden />
                       </motion.span>
                     ))}
                     {/* Slide 2 specific: phone mockup CSS art */}
@@ -235,7 +235,9 @@ export default function OnboardingScreen({ onNavigate }: OnboardingScreenProps) 
                         className="absolute z-10 top-[-12px] left-[-10px]"
                       >
                         <div className="w-12 h-20 rounded-xl bg-white/90 shadow-md border border-brand-grey-200/50 flex flex-col items-center pt-1.5 gap-1">
-                          <div className="w-5 h-5 rounded-md bg-sky-100 flex items-center justify-center text-[12px]">📝</div>
+                          <div className="w-5 h-5 rounded-md bg-sky-100 flex items-center justify-center">
+                            <FileText className="w-3 h-3 text-sky-600" aria-hidden />
+                          </div>
                           <div className="w-8 h-1 rounded-full bg-brand-grey-200" />
                           <div className="w-6 h-1 rounded-full bg-brand-grey-100" />
                           <div className="w-8 h-1 rounded-full bg-brand-grey-200" />
@@ -255,39 +257,25 @@ export default function OnboardingScreen({ onNavigate }: OnboardingScreenProps) 
                         className="absolute z-10 bottom-[-8px] right-[-8px]"
                       >
                         <div className="w-14 h-8 rounded-lg bg-navy-800 shadow-lg flex items-center justify-center gap-1 px-1.5">
-                          <span className="text-[13px]">✂️</span>
-                          <span className="text-[13px]">🩺</span>
+                          <Scissors className="w-3 h-3 text-white" aria-hidden />
+                          <Stethoscope className="w-3 h-3 text-white" aria-hidden />
                         </div>
                       </motion.div>
                     )}
-                    {/* Slide 4 specific: sparkles */}
+                    {/* Slide 4 specific: star accent */}
                     {index === 3 && (
-                      <>
-                        <motion.span
-                          initial={{ opacity: 0, scale: 0, rotate: -30 }}
-                          animate={{ opacity: 1, scale: 1, rotate: [0, 15, -15, 0] }}
-                          transition={{ 
-                            opacity: { delay: 0.45, duration: 0.5 },
-                            scale: { delay: 0.45, duration: 0.5, type: 'spring' },
-                            rotate: { duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 1 },
-                          }}
-                          className="absolute z-10 top-[-4px] left-[30%] text-[20px]"
-                        >
-                          ⭐
-                        </motion.span>
-                        <motion.span
-                          initial={{ opacity: 0, scale: 0, rotate: 30 }}
-                          animate={{ opacity: 1, scale: 1, rotate: [0, -10, 10, 0] }}
-                          transition={{ 
-                            opacity: { delay: 0.6, duration: 0.5 },
-                            scale: { delay: 0.6, duration: 0.5, type: 'spring' },
-                            rotate: { duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 1.2 },
-                          }}
-                          className="absolute z-10 top-[15%] right-[-6px] text-[16px]"
-                        >
-                          ✨
-                        </motion.span>
-                      </>
+                      <motion.span
+                        initial={{ opacity: 0, scale: 0, rotate: -30 }}
+                        animate={{ opacity: 1, scale: 1, rotate: [0, 15, -15, 0] }}
+                        transition={{
+                          opacity: { delay: 0.45, duration: 0.5 },
+                          scale: { delay: 0.45, duration: 0.5, type: 'spring' },
+                          rotate: { duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 1 },
+                        }}
+                        className="absolute z-10 top-[-4px] end-[30%]"
+                      >
+                        <Star className="w-5 h-5 text-amber-400 fill-amber-400" aria-hidden />
+                      </motion.span>
                     )}
                   </div>
 

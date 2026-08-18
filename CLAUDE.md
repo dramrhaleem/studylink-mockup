@@ -64,8 +64,10 @@ deliveryFee = 25 · pickupFee = 0
 - **كل رقم معروض يُلفّ في `.sl-num`:**
   `<span className="sl-num">{price}</span> ج.م`
   بدونها تقلب الخوارزمية ثنائية الاتجاه ترتيب الرقم والعملة.
-- **لا تضع `.sl-num` على حقل نص عربي حر** — خط الأرقام لاتيني أحادي المسافة ولا
-  يشكّل العربية، فتظهر الحروف منفصلة.
+- **`.sl-num` تحوي رقمًا ووحدة، لا جملة عربية.** خط الأرقام لاتيني أحادي
+  المسافة. `--font-mono` يُسقِط العربية على `--font-studylink-arabic` عمدًا
+  (راجع التعليق في `@theme`) فلا تنفصل الحروف، لكن الوحدة تظل بلا تشكيل
+  جدولي — فاكتب `<span className="sl-num">5</span> إحالة` لا العكس.
 - **خصائص منطقية:** `ms-* me-* ps-* pe-* start-* end-*` — لا `ml-* mr-* left-* right-*`.
 - **`translateX` فيزيائية لا منطقية.** في RTL الحركة للأمام **سالبة**:
   `animate={{ x: on ? -20 : 0 }}`. (كان مفتاح التبديل يختفي بسبب هذا في ٣ مواضع.)
@@ -95,6 +97,20 @@ deliveryFee = 25 · pickupFee = 0
 أُعيد تعريفها لتشير إلى ألوان البراند. لو احتجت لونًا جديدًا، أضفه في `@theme` أولًا.
 
 `npm run audit:ui` يفشل الرقم `off-brand colours` لو خرج شيء عن اللوحة.
+
+**لكن الإغلاق التقني لا يكفي.** كانت الواجهة تستعمل ست عائلات لونية في شاشة
+واحدة من داخل اللوحة، فبدت «كمدينة ملاهٍ». القانون الدلالي ملزم بنفس القدر —
+تفصيله في **`DESIGN-SYSTEM-COLOR.md`**، وخلاصته:
+
+1. `navy-*` و`brand-grey-*` يحملان الواجهة. لو أزلت باقي الألوان يجب أن تظل مفهومة.
+2. **`sky-*` هو اللهجة التفاعلية الوحيدة.** لا لون آخر يعني «اضغط».
+3. `success` · `warning` · `error` **للحالة فقط**. «جديد» معلومة لا نجاح → سماوي.
+4. `amber-*` لشيئين: مكافأة السفير · شارة «أدوات مكتبية». لا ثالث.
+5. **لون التصنيف من `src/lib/category.ts` وحده** — ثلاثة أزواج AAA ولا رابع.
+6. **ممنوع اللون العشوائي.** كان لون البطاقة `gradients[charCode(id) % 5]`.
+7. التدرّج داخل العائلة الواحدة فقط (`navy→sky`)، أو فوق صورة لقراءة النص.
+8. **لا إيموجي في الواجهة** — لون خارج اللوحة يختلف بين أندرويد وiOS.
+   استخدم `lucide-react`. (أُزيل 261 إيموجي.)
 
 ### هـ. التخطيط
 
@@ -129,6 +145,9 @@ deliveryFee = 25 · pickupFee = 0
 | تريد تغيير | اذهب إلى |
 |---|---|
 | لون · خط · زاوية · ظل · وضع داكن | `src/app/globals.css` (`@theme`) |
+| **لون/أيقونة تصنيف منتج** | `src/lib/category.ts` |
+| **محتوى بطاقة «العملي في الجيب»** | `src/lib/season.ts` (`ACTIVE_SEASON`) |
+| **مواصفة شاشة للمطوّر** | `src/lib/spec.ts` |
 | سعر · رسم · عرض تشغيلي | `src/lib/pricing.ts` |
 | منتج · مكتبة · بيانات | `src/lib/studylink-data.ts` |
 | شاشة | `src/components/studylink/screens/<Name>Screen.tsx` |
@@ -139,6 +158,30 @@ deliveryFee = 25 · pickupFee = 0
 | صور المنتجات والبانرات | `scripts/gen-*-art.mjs` (متولّدة من كود، لا مرفوعة) |
 
 **لا يوجد `tailwind.config.ts`** — Tailwind v4 يقرأ الإعداد من CSS. راجع `TAILWIND-NOTE.md`.
+
+---
+
+## طبقة المطوّر داخل الموك اب
+
+الموك اب يُسلَّم لمطوّر لا يعرف قرارات المنتج، فكان يعود بأسئلة إلى المؤسس عن
+كل تفصيلة. الإجابة صارت **داخل الموك اب نفسه**:
+
+زر **«مواصفات للمطوّر»** أسفل إطار الهاتف يفتح لوحة تعرض، للشاشة المعروضة:
+
+| القسم | ماذا يجيب |
+|---|---|
+| الغرض | لماذا توجد هذه الشاشة |
+| مصدر البيانات | من أي ملف تأتي الآن، وما يقابله في المنتج |
+| قواعد ملزمة | ما لا يجوز كسره عند البناء |
+| حالات يجب بناؤها | فارغ · تحميل · خطأ · صلاحيات |
+| **مؤجَّل — لا يُبنى الآن** | ما هو معروض لكنه خارج هذه الجولة |
+| معايير القبول | متى تُعتبر الشاشة «تمّت» |
+
+المحتوى كله نص في **`src/lib/spec.ts`** ولا يؤثر على سلوك التطبيق، وهو خارج
+إطار الهاتف فلا يراه المستخدم النهائي.
+
+**⚠️ حين تضيف شاشة، أضف مواصفتها في `spec.ts`.** شاشة بلا مواصفة = سؤال جديد
+للمؤسس، وهو بالضبط ما بُنيت هذه الطبقة لمنعه.
 
 ---
 
@@ -161,16 +204,19 @@ prerender الصفحة `/_global-error`.
 
 ```bash
 npm run typecheck                  # لا يُقبل أي خطأ (لا تستخدم npx tsc — يجلب حزمة خاطئة)
+npm run lint                       # صفر أخطاء — أي تعطيل موضعي مكتوب بسببه
+npm run test:pricing               # قواعد المال مقابل الإفادة المسجّلة (D-032 · D-035)
 npm run audit:ui                   # يحتاج dev شغّالًا
+npm run audit:overlap              # نص يمرّ تحت زر مطلق — لا ينتج خطأً ولا يظهر في أي فحص آخر
 STATIC_EXPORT=1 npm run build      # نفس بناء GitHub بالضبط
 ```
 
 القيم المرجعية لـ`audit:ui` — **أي ارتفاع = انحدار في تعديلك**:
 
 ```
-contrast failures : 6     ← إيجابيات كاذبة (نص فوق تدرّج) وعناصر معطّلة
-touch < 44px      : 7     ← نقاط الكاروسيل، لها توسيع خاص
-unnamed controls  : 18    ← حقول إدخال تحتاج <label>
+contrast failures : 3     ← إيجابيات كاذبة: نص أبيض فوق تدرّج، وزر معطّل
+touch < 44px      : 5     ← 3 نقاط كاروسيل لها توسيع خاص + حقلا إدخال داخل حاوية 44px
+unnamed controls  : 0     ← يجب أن يبقى صفرًا
 horizontal overflow: 0    ← يجب أن يبقى صفرًا
 off-brand colours : 0     ← يجب أن يبقى صفرًا
 ```
@@ -212,6 +258,7 @@ git add -A && git commit -m "…" && git push
 | الملف | المحتوى |
 |---|---|
 | `UPGRADE-REPORT.md` | **اقرأه قبل أي تعديل أساسي** — كل باج أُصلح ولماذا |
+| `DESIGN-SYSTEM-COLOR.md` | **قانون اللون** — متى يُستخدم اللون، لا أيّه موجود |
 | `DEV.md` | دليل التعديل للبشر |
 | `DESIGN-SYSTEM.md` | نظام التصميم بالتفصيل |
 | `README.md` | نظرة عامة |
@@ -219,3 +266,13 @@ git add -A && git commit -m "…" && git push
 مصدر الهوية: `deliverables/brand/studylink-identity-v1` في قاعدة معرفة المشروع
 (خارج هذا المستودع). القرارات المعتمدة: `D-032` رسوم الخدمة · `D-033` الهوية ·
 `D-035` نطاق الاحتساب.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

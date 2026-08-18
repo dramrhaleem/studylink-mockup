@@ -56,6 +56,7 @@ import LibraryScreen from '@/components/studylink/screens/LibraryScreen'
 import LibraryCategoryScreen from '@/components/studylink/screens/LibraryCategoryScreen'
 import MoreScreen from '@/components/studylink/screens/MoreScreen'
 import GiftScreen from '@/components/studylink/screens/GiftScreen'
+import SpecPanel from '@/components/studylink/SpecPanel'
 import SplashScreen from '@/components/studylink/SplashScreen'
 import DesignSystemShowcase from '@/components/studylink/DesignSystemShowcase'
 
@@ -100,6 +101,8 @@ export default function StudyLinkDesignPage() {
      ويصنع اختلاف ترطيب. نُقل بالكامل إلى ما بعد التركيب. */
   useEffect(() => {
     hydrateStudylinkStore()
+    /* قراءة `window.location` و`localStorage` ممنوعة أثناء الرسم (اختلاف ترطيب). حارس التركيب هو النمط الصحيح هنا. */
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true)
 
     const screen = new URLSearchParams(window.location.search).get('screen')
@@ -290,7 +293,7 @@ export default function StudyLinkDesignPage() {
             {/* ── Reset Button + Auth Status ── */}
             <div className="flex items-center justify-center gap-2 mt-2 mb-5">
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/[0.08] backdrop-blur-sm">
-                <div className={`w-2 h-2 rounded-full ${user ? 'bg-emerald-400' : 'bg-white/30'}`} />
+                <div className={`w-2 h-2 rounded-full ${user ? 'bg-teal-400' : 'bg-white/30'}`} />
                 <span className="text-[12px] text-white/75">
                   {user ? user.name : 'زائر'}
                 </span>
@@ -311,11 +314,18 @@ export default function StudyLinkDesignPage() {
                 type="button"
                 onClick={handleReset}
                 aria-label="إعادة ضبط بيانات المعاينة"
-                className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/[0.06] border border-white/[0.08] text-[12px] text-white/70 hover:text-rose-300 hover:border-rose-300/40 transition-all duration-200 backdrop-blur-sm"
+                className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/[0.06] border border-white/[0.08] text-[12px] text-white/70 hover:text-white hover:border-white/25 transition-all duration-200 backdrop-blur-sm"
               >
                 <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>ريسيت</span>
               </button>
+            </div>
+
+            {/* ── طبقة المطوّر: مواصفة الشاشة المعروضة ──────────────────────
+                خارج إطار الهاتف عمدًا — هذه ليست جزءًا من التطبيق، بل من
+                تسليمه. المحتوى في `src/lib/spec.ts`. */}
+            <div className="flex flex-col items-center w-full px-4 mb-6">
+              <SpecPanel screen={activeScreen} />
             </div>
           </motion.section>
 
@@ -379,21 +389,21 @@ export default function StudyLinkDesignPage() {
             <div className="text-center mb-8">
               <p className="text-[12px] font-bold text-sky-500 uppercase mb-1.5">لماذا StudyLink؟</p>
               <h2 className="text-xl sm:text-2xl font-bold text-navy-900">تجربة أكاديمية متكاملة</h2>
-              <p className="text-[13px] text-brand-grey-500 mt-2 max-w-md mx-auto leading-relaxed">من المحاضرات للأدوات الطبية — كل ما تحتاجيه في مكان واحد مع توصيل سريع</p>
+              <p className="text-[13px] text-brand-grey-500 mt-2 max-w-md mx-auto leading-relaxed">من المحاضرات للأدوات الطبية والمكتبية — بتوصيل أو استلام من المكتبة</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
                 {
                   icon: <Sparkles className="w-5 h-5 text-sky-500" />,
-                  title: '240+ مذكرة',
-                  desc: 'محاضرات مسجلة ومراجعات شاملة لكل فرق كلية الطب',
+                  title: 'مذكرات كل الفرق',
+                  desc: 'شرح نظري وورق عملي وبنوك أسئلة — مفلترة حسب فرقتك',
                   color: 'bg-sky-50 border-sky-100',
                 },
                 {
-                  icon: <ShieldCheck className="w-5 h-5 text-emerald-500" />,
+                  icon: <ShieldCheck className="w-5 h-5 text-teal-500" />,
                   title: 'مكتبات معتمدة',
-                  desc: 'هارفرد وبرلين — شركاء أكاديميون موثوقين منذ 2018',
-                  color: 'bg-emerald-50 border-emerald-100',
+                  desc: 'هارفرد وبرلين — الطلب بيتجمّع من المكتبة نفسها',
+                  color: 'bg-teal-50 border-teal-100',
                 },
                 {
                   icon: <Smartphone className="w-5 h-5 text-amber-500" />,
@@ -402,10 +412,10 @@ export default function StudyLinkDesignPage() {
                   color: 'bg-amber-50 border-amber-100',
                 },
                 {
-                  icon: <Layers className="w-5 h-5 text-violet-500" />,
+                  icon: <Layers className="w-5 h-5 text-brand-grey-500" />,
                   title: 'محفظة ذكية',
                   desc: 'ادفع وأكسب عمولة وشارك مع زمايلك بسهولة وسرية',
-                  color: 'bg-violet-50 border-violet-100',
+                  color: 'bg-brand-grey-50 border-brand-grey-100',
                 },
               ].map((feature, i) => (
                 <motion.div

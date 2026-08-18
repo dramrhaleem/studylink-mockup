@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, Heart, ShoppingCart, SlidersHorizontal, X, Check, Trash2 } from 'lucide-react'
+import { ChevronLeft, Heart, ShoppingCart, SlidersHorizontal, X, Check, Trash2, BookMarked, Stethoscope, ClipboardList, Shirt, type LucideIcon } from 'lucide-react'
 import { useStudylinkStore } from '@/lib/use-studylink-store'
 
 interface WishlistScreenProps {
@@ -16,7 +16,7 @@ interface WishlistItem {
   store: string
   price: number
   originalPrice: number | null
-  emoji: string
+  emoji: LucideIcon
   gradient: string
   storeColor: string
   removed?: boolean
@@ -30,7 +30,7 @@ const wishlistData: WishlistItem[] = [
     store: 'هارفرد',
     price: 40,
     originalPrice: 55,
-    emoji: '📖',
+    emoji: BookMarked,
     gradient: 'from-sky-100 to-sky-200',
     storeColor: 'bg-sky-50 text-sky-700',
     removed: false,
@@ -42,7 +42,7 @@ const wishlistData: WishlistItem[] = [
     store: 'طبي',
     price: 850,
     originalPrice: null,
-    emoji: '🩺',
+    emoji: Stethoscope,
     gradient: 'from-teal-100 to-teal-200',
     storeColor: 'bg-teal-50 text-teal-700',
     removed: false,
@@ -54,8 +54,8 @@ const wishlistData: WishlistItem[] = [
     store: 'برلين',
     price: 35,
     originalPrice: 50,
-    emoji: '📋',
-    gradient: 'from-violet-100 to-violet-200',
+    emoji: ClipboardList,
+    gradient: 'from-brand-grey-100 to-brand-grey-200',
     storeColor: 'bg-amber-50 text-amber-700',
     removed: false,
   },
@@ -66,8 +66,8 @@ const wishlistData: WishlistItem[] = [
     store: 'طبي',
     price: 180,
     originalPrice: null,
-    emoji: '🥼',
-    gradient: 'from-blue-50 to-indigo-100',
+    emoji: Shirt,
+    gradient: 'from-sky-50 to-navy-100',
     storeColor: 'bg-teal-50 text-teal-700',
     removed: false,
   },
@@ -144,7 +144,10 @@ export default function WishlistScreen({ onNavigate }: WishlistScreenProps) {
     setTimeout(() => setMovedToCart(null), 1200)
   }
 
-  const handleAddAllToCart = useCallback(() => {
+  /* بلا `useCallback` عمدًا: مترجم React لم يستطع الحفاظ على التذكير اليدوي
+     هنا (المصفوفة تُحوَّر لاحقًا)، فتخطّى تحسين المكوّن كله. تركُها للمترجم
+     يعطي تذكيرًا صحيحًا تلقائيًا. */
+  const handleAddAllToCart = (() => {
     activeItems.forEach(item => {
       addToCartStore({
         id: `wishlist-${item.id}`,
@@ -168,7 +171,7 @@ export default function WishlistScreen({ onNavigate }: WishlistScreenProps) {
       navigator.vibrate(30)
     }
     onNavigate?.('cart')
-  }, [activeItems, addToCartStore, onNavigate])
+  })
 
   return (
     <div className="screen-enter min-h-full bg-brand-grey-100 flex flex-col">
@@ -230,13 +233,13 @@ export default function WishlistScreen({ onNavigate }: WishlistScreenProps) {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -6, scale: 0.95 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute top-full mt-1.5 right-0 z-50 bg-white rounded-xl shadow-lg border border-brand-grey-200/60 py-1.5 min-w-[160px] overflow-hidden"
+                    className="absolute top-full mt-1.5 start-0 z-50 bg-white rounded-xl shadow-lg border border-brand-grey-200/60 py-1.5 min-w-[160px] overflow-hidden"
                   >
                     {sortOptions.map(option => (
                       <button data-tap="44"
                         key={option}
                         onClick={() => handleSortChange(option)}
-                        className={`w-full text-right px-4 py-2.5 text-[13px] font-medium transition-colors ${
+                        className={`w-full text-start px-4 py-2.5 text-[13px] font-medium transition-colors ${
                           selectedSort === option
                             ? 'text-sky-500 bg-sky-50/70'
                             : 'text-navy-800 hover:bg-brand-grey-50'
@@ -290,7 +293,7 @@ export default function WishlistScreen({ onNavigate }: WishlistScreenProps) {
                 <div className="flex gap-3">
                   {/* ── Left: Product Image Placeholder ── */}
                   <div className={`w-[72px] h-[72px] rounded-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center flex-shrink-0 relative`}>
-                    <span className="text-[30px]">{item.emoji}</span>
+                    <item.emoji className="w-8 h-8 text-navy-800" aria-hidden />
                     {/* Moved to cart success animation */}
                     <AnimatePresence>
                       {movedToCart === item.id && (
@@ -453,7 +456,7 @@ export default function WishlistScreen({ onNavigate }: WishlistScreenProps) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
             transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-            className="absolute bottom-28 left-4 right-4 z-50"
+            className="absolute bottom-28 end-4 start-4 z-50"
           >
             <div className="bg-navy-800 text-white rounded-2xl px-4 py-3 flex items-center gap-2.5 shadow-xl shadow-navy-800/30">
               <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
@@ -469,7 +472,7 @@ export default function WishlistScreen({ onNavigate }: WishlistScreenProps) {
       {activeItems.length > 0 && (
         <div className="sticky bottom-0 z-30 relative">
           {/* Animated shimmer gradient border at top */}
-          <div className="absolute top-0 left-0 right-0 h-[2px] overflow-hidden">
+          <div className="absolute top-0 end-0 start-0 h-[2px] overflow-hidden">
             <motion.div
               animate={{ x: ['-100%', '200%'] }}
               transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}

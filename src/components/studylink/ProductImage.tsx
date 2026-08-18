@@ -4,7 +4,7 @@ import { asset } from '@/lib/asset'
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { BookOpen, Stethoscope, PenLine, Package } from 'lucide-react'
+import { categoryStyle } from '@/lib/category'
 
 interface ProductImageProps {
   category: string
@@ -36,11 +36,6 @@ const subjectImages: Record<string, string> = {
   'نسا': asset('/products/obstetrics-gynecology.png'),
 }
 
-const categoryFallback: Record<string, { bg: string; fg: string; Icon: typeof BookOpen }> = {
-  'محاضرات':       { bg: 'bg-navy-50', fg: 'text-navy-800', Icon: BookOpen },
-  'أدوات طبية':    { bg: 'bg-teal-50', fg: 'text-teal-800', Icon: Stethoscope },
-  'أدوات مكتبية':  { bg: 'bg-amber-50', fg: 'text-amber-600', Icon: PenLine },
-}
 
 const sizeMap = {
   sm: { container: 'h-[52px]', image: 44, icon: 'w-6 h-6' },
@@ -67,7 +62,7 @@ export default function ProductImage({
   }
   if (!src) src = categoryImages[category] ?? null
 
-  const fb = categoryFallback[category] ?? { bg: 'bg-brand-grey-50', fg: 'text-brand-grey-400', Icon: Package }
+  const fb = categoryStyle(category)
   const FallbackIcon = fb.Icon
 
   /* الاحتياطي أصبح أيقونة براند بدل إيموجي: الإيموجي يُرسم بخط النظام فيختلف
@@ -75,11 +70,11 @@ export default function ProductImage({
   if (!src || failed) {
     return (
       <div
-        className={`relative ${config.container} ${fb.bg} flex items-center justify-center overflow-hidden ${className}`}
+        className={`relative ${config.container} ${fb.iconBg} flex items-center justify-center overflow-hidden ${className}`}
         role={decorative ? 'presentation' : 'img'}
         aria-label={decorative ? undefined : `${category}${title ? ` — ${title}` : ''}`}
       >
-        <FallbackIcon className={`${config.icon} ${fb.fg} opacity-45`} strokeWidth={1.6} aria-hidden="true" />
+        <FallbackIcon className={`${config.icon} ${fb.iconInk} opacity-45`} strokeWidth={1.6} aria-hidden="true" />
       </div>
     )
   }

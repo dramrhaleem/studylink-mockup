@@ -33,7 +33,7 @@ export function SkeletonCard({ className, count = 1 }: SkeletonCardProps) {
           <div className="flex items-center gap-1.5 mt-3 pt-2 border-t border-brand-grey-200/50">
             <div className="w-4 h-4 rounded-full bg-brand-grey-200 animate-pulse flex-shrink-0" />
             <div className="h-2.5 rounded bg-brand-grey-200 animate-pulse w-[30%]" />
-            <div className="h-2.5 rounded bg-brand-grey-200 animate-pulse w-[20%] ml-auto" />
+            <div className="h-2.5 rounded bg-brand-grey-200 animate-pulse w-[20%] me-auto" />
           </div>
         </div>
       ))}

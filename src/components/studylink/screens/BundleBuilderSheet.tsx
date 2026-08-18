@@ -83,6 +83,8 @@ export default function BundleBuilderSheet({ isOpen, onClose, store, grade }: Bu
       const saved = localStorage.getItem('studylink-bundle-filters')
       if (saved) {
         const parsed = JSON.parse(saved) as ContentType[]
+        /* قراءة `localStorage` لا تجوز أثناء الرسم — لا وجود لها على الخادم. */
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         if (Array.isArray(parsed) && parsed.length > 0) setFilters(parsed)
       }
     } catch { /* ignore */ }
@@ -278,7 +280,7 @@ export default function BundleBuilderSheet({ isOpen, onClose, store, grade }: Bu
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 350 }}
-            className="absolute bottom-0 left-0 right-0 z-50 bg-white rounded-t-3xl flex flex-col"
+            className="absolute bottom-0 end-0 start-0 z-50 bg-white rounded-t-3xl flex flex-col"
             style={{ maxHeight: '96%', height: '96%' }}
           >
             {/* Handle */}
@@ -340,7 +342,7 @@ export default function BundleBuilderSheet({ isOpen, onClose, store, grade }: Bu
                         : 'bg-white text-brand-grey-600 border-brand-grey-200 active:bg-brand-grey-50'
                     }`}
                   >
-                    <span className="text-[13px] leading-none">{CONTENT_TYPE_ICONS[ct]}</span>
+                    {(() => { const CtIcon = CONTENT_TYPE_ICONS[ct]; return <CtIcon className="w-3.5 h-3.5" aria-hidden /> })()}
                     <span>{ct}</span>
                     {isActive && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
                   </button>
@@ -440,7 +442,7 @@ export default function BundleBuilderSheet({ isOpen, onClose, store, grade }: Bu
 
                           <button data-tap="44" aria-label="حذف"
                             onClick={(e) => { e.stopPropagation(); removeSubject(group.subject) }}
-                            className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-rose-50 transition-colors tap-44"
+                            className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-error-bg transition-colors tap-44"
                           >
                             <Trash2 className="w-3.5 h-3.5 text-brand-grey-400" />
                           </button>
@@ -495,7 +497,7 @@ export default function BundleBuilderSheet({ isOpen, onClose, store, grade }: Bu
                                           className="mx-3 my-1.5 flex items-center justify-between py-2 px-3 rounded-xl bg-brand-grey-50 border border-dashed border-brand-grey-200"
                                         >
                                           <div className="flex items-center gap-2">
-                                            <span className="text-[13px] leading-none">{CONTENT_TYPE_ICONS[cg.type]}</span>
+                                            {(() => { const CtIcon = CONTENT_TYPE_ICONS[cg.type]; return <CtIcon className="w-3.5 h-3.5" aria-hidden /> })()}
                                             <span className="text-[12px] text-brand-grey-500 font-semibold">{cg.type}</span>
                                             <span className="text-[12px] text-brand-grey-400">— محذوف</span>
                                           </div>
@@ -517,7 +519,7 @@ export default function BundleBuilderSheet({ isOpen, onClose, store, grade }: Bu
                                           className="flex items-center gap-2.5 px-4 py-2.5 cursor-pointer active:bg-brand-grey-50 transition-colors"
                                           onClick={() => toggleExpandCT(ctKey)}
                                         >
-                                          <span className="text-[14px] leading-none">{CONTENT_TYPE_ICONS[cg.type]}</span>
+                                          {(() => { const CtIcon = CONTENT_TYPE_ICONS[cg.type]; return <CtIcon className="w-3.5 h-3.5" aria-hidden /> })()}
                                           <div className="flex-1 min-w-0">
                                             <div className="flex items-center gap-1.5">
                                               <span className="text-[12px] font-bold text-navy-800">
@@ -542,7 +544,7 @@ export default function BundleBuilderSheet({ isOpen, onClose, store, grade }: Bu
 
                                           <button data-tap="44" aria-label="إغلاق"
                                             onClick={(e) => { e.stopPropagation(); removeCT(group.subject, cg.type) }}
-                                            className="w-6 h-6 rounded-lg flex items-center justify-center hover:bg-rose-50 transition-colors tap-44"
+                                            className="w-6 h-6 rounded-lg flex items-center justify-center hover:bg-error-bg transition-colors tap-44"
                                           >
                                             <X className="w-3 h-3 text-brand-grey-400" />
                                           </button>
@@ -622,7 +624,7 @@ export default function BundleBuilderSheet({ isOpen, onClose, store, grade }: Bu
                                                         )}
                                                         <button data-tap="44" aria-label="إغلاق"
                                                           onClick={() => removeItem(item.product.id)}
-                                                          className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-rose-50 transition-colors tap-44"
+                                                          className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-error-bg transition-colors tap-44"
                                                         >
                                                           <X className="w-3.5 h-3.5 text-brand-grey-400" />
                                                         </button>
@@ -650,7 +652,7 @@ export default function BundleBuilderSheet({ isOpen, onClose, store, grade }: Bu
             </div>
 
             {/* Sticky CTA */}
-            <div className="absolute bottom-0 left-0 right-0 z-10">
+            <div className="absolute bottom-0 end-0 start-0 z-10">
               <div className="bg-gradient-to-t from-white via-white to-white/90 pt-4 pb-5 px-5">
                 <button
                   onClick={handleAddToCart}

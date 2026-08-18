@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, Phone, Info, MapPin, Clock, Truck, MessageCircle, ChevronLeft, Share2 } from 'lucide-react'
+import { Check, Phone, Info, MapPin, Clock, Truck, MessageCircle, ChevronLeft, Share2, BookOpen, BookMarked } from 'lucide-react'
 import { sampleOrder, sampleTrackingSteps, type StoreType } from '@/lib/studylink-data'
 
 interface TrackingScreenProps {
@@ -61,9 +61,9 @@ function GradientTimelineLine({ completedCount, totalSteps, direction = 'rtl' }:
   const progress = completedCount / (totalSteps - 1)
 
   return (
-    <div className="absolute top-[9px] bottom-[9px] w-0 right-[9px] z-0">
+    <div className="absolute top-[9px] bottom-[9px] w-0 start-[9px] z-0">
       {/* Background line (dashed) */}
-      <div className="w-full h-full border-r-[2px] border-dashed border-brand-grey-200" />
+      <div className="w-full h-full border-s-[2px] border-dashed border-brand-grey-200" />
       {/* Gradient fill line */}
       <motion.div
         className="absolute top-0 w-full bg-gradient-to-b from-success via-sky-400 to-sky-500 rounded-full"
@@ -81,14 +81,17 @@ function GradientTimelineLine({ completedCount, totalSteps, direction = 'rtl' }:
 }
 
 /* ---------- Shimmer Button for Actions ---------- */
-function ActionButton({ children, className, onClick, shimmer = true }: {
+function ActionButton({ children, className, onClick, shimmer = true, label }: {
   children: React.ReactNode
   className?: string
   onClick?: () => void
   shimmer?: boolean
+  /** إلزامي حين يكون الزر أيقونة بلا نص — بدونه لا اسم للزر لدى قارئ الشاشة */
+  label?: string
 }) {
   return (
     <motion.button data-tap="44"
+      aria-label={label}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.96 }}
       onClick={onClick}
@@ -147,12 +150,12 @@ export default function TrackingScreen({ onNavigate }: TrackingScreenProps) {
       <div className="sticky top-0 z-30 bg-gradient-to-b from-navy-800 to-sky-900 px-4 pt-3 pb-5 relative overflow-hidden">
         {/* Decorative blur circles */}
         <motion.div
-          className="absolute -left-12 -top-12 w-36 h-36 rounded-full bg-sky-500/8 pointer-events-none blur-xl"
+          className="absolute -end-12 -top-12 w-36 h-36 rounded-full bg-sky-500/8 pointer-events-none blur-xl"
           animate={{ x: [0, 8, 0], y: [0, 5, 0] }}
           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div
-          className="absolute -right-10 -bottom-10 w-32 h-32 rounded-full bg-white/5 pointer-events-none blur-lg"
+          className="absolute -start-10 -bottom-10 w-32 h-32 rounded-full bg-white/5 pointer-events-none blur-lg"
           animate={{ x: [0, -6, 0], y: [0, -4, 0] }}
           transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
         />
@@ -239,9 +242,9 @@ export default function TrackingScreen({ onNavigate }: TrackingScreenProps) {
         {/* Step dots with checkmark for completed, pulsing for current */}
         <div className="flex justify-between mt-3 px-1 relative">
           {/* Animated gradient connecting line */}
-          <div className="absolute top-[6px] left-[6px] right-[6px] h-[2px] bg-brand-grey-200 rounded-full">
+          <div className="absolute top-[6px] end-[6px] start-[6px] h-[2px] bg-brand-grey-200 rounded-full">
             <motion.div
-              className="h-full bg-gradient-to-l from-success to-sky-400 rounded-full"
+              className="h-full bg-success rounded-full"
               initial={{ width: '0%', originX: 0 }}
               animate={{ width: `${(completedSteps / (allSteps.length - 1)) * 100}%`, originX: 0 }}
               transition={{ delay: 0.4, duration: 1.2, ease: 'easeOut' }}
@@ -341,12 +344,12 @@ export default function TrackingScreen({ onNavigate }: TrackingScreenProps) {
             <div className="absolute top-1/4 left-0 right-0 h-px bg-navy-800/5" />
             <div className="absolute top-3/4 left-0 right-0 h-px bg-navy-800/5" />
             {/* Diagonal road */}
-            <div className="absolute top-[20%] left-[10%] w-[50%] h-px bg-navy-800/8 rotate-[25deg] origin-right" />
+            <div className="absolute top-[20%] end-[10%] w-[50%] h-px bg-navy-800/8 rotate-[25deg] origin-right" />
           </motion.div>
 
           {/* Building silhouettes */}
           <motion.div
-            className="absolute bottom-[30%] left-[5%] flex items-end gap-1"
+            className="absolute bottom-[30%] end-[5%] flex items-end gap-1"
             animate={{ y: [0, -1, 0] }}
             transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
           >
@@ -356,7 +359,7 @@ export default function TrackingScreen({ onNavigate }: TrackingScreenProps) {
             <div className="w-3 h-4 bg-navy-800/5 rounded-t-sm" />
           </motion.div>
           <motion.div
-            className="absolute bottom-[25%] right-[10%] flex items-end gap-1"
+            className="absolute bottom-[25%] start-[10%] flex items-end gap-1"
             animate={{ y: [0, 1, 0] }}
             transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
           >
@@ -366,33 +369,33 @@ export default function TrackingScreen({ onNavigate }: TrackingScreenProps) {
           </motion.div>
 
           {/* Road names in Arabic */}
-          <div className="absolute top-[18%] left-[15%]">
+          <div className="absolute top-[18%] end-[15%]">
             <span className="text-[11px] text-navy-800/25 font-medium">شارع الجامعة</span>
           </div>
-          <div className="absolute top-[52%] right-[12%]">
+          <div className="absolute top-[52%] start-[12%]">
             <span className="text-[11px] text-navy-800/25 font-medium">عبد الرحمن</span>
           </div>
-          <div className="absolute bottom-[18%] left-[40%]">
+          <div className="absolute bottom-[18%] end-[40%]">
             <span className="text-[11px] text-navy-800/20 font-medium">شارع النيل</span>
           </div>
 
           {/* Location markers */}
           <motion.div
-            className="absolute top-[30%] left-[22%]"
+            className="absolute top-[30%] end-[22%]"
             animate={{ y: [0, -2, 0] }}
             transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
           >
             <div className="w-6 h-6 rounded-full bg-sky-500 flex items-center justify-center shadow-lg shadow-sky-500/30">
-              <span className="text-[12px]">📚</span>
+              <BookOpen className="w-3 h-3 text-white" aria-hidden />
             </div>
           </motion.div>
           <motion.div
-            className="absolute top-[50%] left-[58%]"
+            className="absolute top-[50%] end-[58%]"
             animate={{ y: [0, 2, 0] }}
             transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
           >
             <div className="w-6 h-6 rounded-full bg-sky-500 flex items-center justify-center shadow-lg shadow-sky-500/30">
-              <span className="text-[12px]">📖</span>
+              <BookMarked className="w-3 h-3 text-white" aria-hidden />
             </div>
           </motion.div>
 
@@ -400,13 +403,13 @@ export default function TrackingScreen({ onNavigate }: TrackingScreenProps) {
           <motion.div
             animate={{ x: [0, 8, 0], y: [0, -4, 0] }}
             transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
-            className="absolute top-[42%] left-[40%]"
+            className="absolute top-[42%] end-[40%]"
           >
             <div className="w-8 h-8 rounded-full bg-success flex items-center justify-center shadow-lg shadow-success/30">
               <Truck className="w-4 h-4 text-white" />
             </div>
             <motion.div
-              className="w-10 h-10 rounded-full bg-success/20 absolute -top-1 -left-1"
+              className="w-10 h-10 rounded-full bg-success/20 absolute -top-1 -end-1"
               animate={{ scale: [1, 1.6, 1], opacity: [0.4, 0, 0.4] }}
               transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
             />
@@ -414,7 +417,7 @@ export default function TrackingScreen({ onNavigate }: TrackingScreenProps) {
 
           {/* Destination with glow */}
           <motion.div
-            className="absolute bottom-4 right-4"
+            className="absolute bottom-4 start-4"
             animate={{ scale: [1, 1.05, 1] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
           >
@@ -424,7 +427,7 @@ export default function TrackingScreen({ onNavigate }: TrackingScreenProps) {
           </motion.div>
 
           {/* Overlay text */}
-          <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2.5 py-1.5 shadow-sm">
+          <div className="absolute bottom-3 end-3 bg-white/90 backdrop-blur-sm rounded-lg px-2.5 py-1.5 shadow-sm">
             <p className="text-[12px] text-brand-grey-600 flex items-center gap-1">
               <motion.span
                 className="w-1.5 h-1.5 rounded-full bg-success"
@@ -466,6 +469,7 @@ export default function TrackingScreen({ onNavigate }: TrackingScreenProps) {
         <ActionButton
           className="w-12 flex items-center justify-center bg-white text-navy-800 rounded-2xl p-3 shadow-sm border border-brand-grey-200/50 flex-shrink-0"
           shimmer={false}
+          label="مشاركة تفاصيل الطلب"
         >
           <motion.div
             animate={{ y: [0, -2, 0] }}
@@ -493,19 +497,19 @@ export default function TrackingScreen({ onNavigate }: TrackingScreenProps) {
             >
               <div className="flex items-center gap-2 mb-4">
                 <motion.span
-                  className="text-lg"
+                  className="inline-flex"
                   animate={{ rotate: [0, -5, 5, 0] }}
                   transition={{ duration: 3, repeat: Infinity, repeatDelay: 5 }}
                 >
-                  {store === 'هارفرد' ? '📚' : '📖'}
+                  {store === 'هارفرد' ? <BookOpen className="w-4 h-4 text-navy-800" aria-hidden /> : <BookMarked className="w-4 h-4 text-navy-800" aria-hidden />}
                 </motion.span>
                 <h3 className="text-[13px] font-bold text-navy-800">مكتبة {store}</h3>
-                <span className="mr-auto text-[12px] text-brand-grey-400 bg-brand-grey-100 px-2 py-0.5 rounded-full">
+                <span className="ms-auto text-[12px] text-brand-grey-400 bg-brand-grey-100 px-2 py-0.5 rounded-full">
                   {store === 'هارفرد' ? '2 مذكرات' : '1 مذكرة'}
                 </span>
               </div>
 
-              <div className="relative pr-6">
+              <div className="relative ps-6">
                 {/* Animated gradient connecting line */}
                 <GradientTimelineLine
                   completedCount={storeCompleted}
@@ -598,9 +602,9 @@ export default function TrackingScreen({ onNavigate }: TrackingScreenProps) {
           className="bg-white rounded-2xl p-4 shadow-sm border border-brand-grey-200/50"
         >
           <h3 className="text-[13px] font-bold text-navy-800 mb-3">حالة التوصيل</h3>
-          <div className="relative pr-6">
-            <div className="absolute right-[9px] top-1 bottom-1 w-0">
-              <div className="w-full h-full border-r-[2px] border-dashed border-brand-grey-200" />
+          <div className="relative ps-6">
+            <div className="absolute start-[9px] top-1 bottom-1 w-0">
+              <div className="w-full h-full border-s-[2px] border-dashed border-brand-grey-200" />
             </div>
             {getGlobalSteps().map((step, idx) => {
               const isCompleted = step.completed
@@ -719,7 +723,7 @@ export default function TrackingScreen({ onNavigate }: TrackingScreenProps) {
               />
             </div>
             <div className="flex-1">
-              <p className="text-[13px] font-semibold text-navy-800">الوصول المتوقع</p>
+              <p className="text-[13px] font-semibold text-navy-800">الوصول المتوقع (تقديري)</p>
               <p className="text-[13px] text-sky-600 font-medium">{order.eta || 'الوقت المتوقع بيتحدّث مع حالة الطلب'}</p>
             </div>
             {/* Flip digit for minutes */}

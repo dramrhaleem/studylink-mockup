@@ -73,11 +73,11 @@ const initialNotifications: Notification[] = [
   {
     id: 'n2',
     title: 'في الطريق',
-    description: 'مذكرتك جاهزة للاستلام! مندوبنا في الطريق إليك الآن، وهيكون عندك خلال 45 دقيقة',
+    description: 'مذكرتك جاهزة والمندوب في الطريق إليك. الوقت التقديري للوصول في صفحة التتبع.',
     time: '25 دقيقة',
     timestamp: NOW - 25 * MINUTE,
-    iconBg: 'bg-violet-50',
-    iconColor: 'text-violet-500',
+    iconBg: 'bg-brand-grey-50',
+    iconColor: 'text-brand-grey-500',
     unread: true,
     group: 'today',
     type: 'order',
@@ -102,8 +102,8 @@ const initialNotifications: Notification[] = [
     description: 'تم تسليم طلبك #1085 بنجاح! نأمل إن المذكرات كانت مفيدة',
     time: 'أمس 3:15 م',
     timestamp: NOW - 1 * DAY - 2 * HOUR,
-    iconBg: 'bg-emerald-50',
-    iconColor: 'text-emerald-500',
+    iconBg: 'bg-teal-50',
+    iconColor: 'text-teal-500',
     group: 'yesterday',
     type: 'order',
     subType: 'delivered',
@@ -114,16 +114,16 @@ const initialNotifications: Notification[] = [
     description: 'وفرت 5 جنيه في التوصيل! سعر التوصيل مع StudyLink 25 ج.م بدل 30 ج.م',
     time: 'أمس 9:00 ص',
     timestamp: NOW - 1 * DAY - 6 * HOUR,
-    iconBg: 'bg-emerald-50',
-    iconColor: 'text-emerald-500',
+    iconBg: 'bg-teal-50',
+    iconColor: 'text-teal-500',
     group: 'yesterday',
     type: 'system',
     subType: undefined,
   },
   {
     id: 'n6',
-    title: 'تقييم الطلب',
-    description: 'قيّم طلبك #1085 وساعد زملائك يعرفوا جودة المذكرات',
+    title: 'رأيك في التجربة',
+    description: 'قول لنا رأيك في تجربة الطلب — دقيقة واحدة بس',
     time: 'الاثنين',
     timestamp: NOW - 3 * DAY,
     iconBg: 'bg-amber-50',
@@ -209,28 +209,28 @@ function getTypeBgColor(type: 'order' | 'offer' | 'system', subType?: string): s
   if (type === 'order') {
     switch (subType) {
       case 'confirmed': return 'bg-sky-50'
-      case 'shipped': return 'bg-violet-50'
-      case 'delivered': return 'bg-emerald-50'
+      case 'shipped': return 'bg-brand-grey-50'
+      case 'delivered': return 'bg-teal-50'
       case 'rate': return 'bg-amber-50'
       default: return 'bg-sky-50'
     }
   }
   if (type === 'offer') return 'bg-amber-50'
-  return 'bg-emerald-50'
+  return 'bg-teal-50'
 }
 
 function getTypeTextColor(type: 'order' | 'offer' | 'system', subType?: string): string {
   if (type === 'order') {
     switch (subType) {
       case 'confirmed': return 'text-sky-500'
-      case 'shipped': return 'text-violet-500'
-      case 'delivered': return 'text-emerald-500'
+      case 'shipped': return 'text-brand-grey-500'
+      case 'delivered': return 'text-teal-500'
       case 'rate': return 'text-amber-500'
       default: return 'text-sky-500'
     }
   }
   if (type === 'offer') return 'text-amber-500'
-  return 'text-emerald-500'
+  return 'text-teal-500'
 }
 
 function formatTimeAgo(timestamp: number): string {
@@ -277,8 +277,8 @@ export default function NotificationsScreen({ onNavigate }: NotificationsScreenP
       {/* Gradient Header */}
       <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-b from-navy-800 via-navy-800/95 to-navy-800/80 pointer-events-none z-0" />
-        <div className="absolute -top-16 -left-16 w-40 h-40 rounded-full bg-sky-500/10 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-8 -right-8 w-32 h-32 rounded-full bg-sky-400/8 blur-2xl pointer-events-none" />
+        <div className="absolute -top-16 -end-16 w-40 h-40 rounded-full bg-sky-500/10 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-8 -start-8 w-32 h-32 rounded-full bg-sky-400/8 blur-2xl pointer-events-none" />
 
         <div className="relative z-10 px-4 pt-3 pb-4">
           <div className="flex items-center justify-between mb-1">
@@ -362,7 +362,7 @@ export default function NotificationsScreen({ onNavigate }: NotificationsScreenP
                 {activeTab === tab.id && (
                   <motion.div
                     layoutId="tab-underline"
-                    className="absolute bottom-0 left-2 right-2 h-[2.5px] bg-gradient-to-r from-sky-500 to-sky-400 rounded-full"
+                    className="absolute bottom-0 end-2 start-2 h-[2.5px] bg-gradient-to-r from-sky-500 to-sky-400 rounded-full"
                     transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                   />
                 )}
@@ -431,7 +431,7 @@ export default function NotificationsScreen({ onNavigate }: NotificationsScreenP
                                   initial={{ scaleY: 0 }}
                                   animate={{ scaleY: 1 }}
                                   transition={{ delay: 0.1, duration: 0.3 }}
-                                  className="absolute top-0 right-0 bottom-0 w-[3px] bg-sky-500 rounded-l-full origin-top"
+                                  className="absolute top-0 start-0 bottom-0 w-[3px] bg-sky-500 rounded-s-full origin-top"
                                 />
                               )}
 
@@ -466,7 +466,7 @@ export default function NotificationsScreen({ onNavigate }: NotificationsScreenP
                                         ? 'bg-sky-50 text-sky-600'
                                         : notification.type === 'offer'
                                           ? 'bg-amber-50 text-amber-600'
-                                          : 'bg-emerald-50 text-emerald-600'
+                                          : 'bg-teal-50 text-teal-600'
                                     }`}>
                                       {notification.type === 'order'
                                         ? 'طلب'
@@ -486,7 +486,7 @@ export default function NotificationsScreen({ onNavigate }: NotificationsScreenP
                                 whileHover={{ scale: 1.1, backgroundColor: 'rgba(239,68,68,0.1)' }}
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() => handleDismiss(notification.id)}
-                                className="absolute top-2 left-2 w-6 h-6 rounded-full bg-brand-grey-100 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10 tap-44"
+                                className="absolute top-2 end-2 w-6 h-6 rounded-full bg-brand-grey-100 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10 tap-44"
                               >
                                 <X className="w-3 h-3 text-brand-grey-400" />
                               </motion.button>
@@ -512,7 +512,7 @@ export default function NotificationsScreen({ onNavigate }: NotificationsScreenP
                   whileHover={{ y: -1, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => onNavigate?.('tracking')}
-                  className="w-full bg-white rounded-2xl p-4 shadow-sm border border-sky-200/50 text-right"
+                  className="w-full bg-white rounded-2xl p-4 shadow-sm border border-sky-200/50 text-start"
                 >
                   {/* Status header */}
                   <div className="flex items-center justify-between mb-3">
@@ -533,7 +533,7 @@ export default function NotificationsScreen({ onNavigate }: NotificationsScreenP
                   <div className="space-y-1.5 mb-3">
                     {order.storeItems.map((si, i) => (
                       <div key={i} className="flex items-center justify-between text-[12px]">
-                        <span className="text-brand-grey-600">📚 مكتبة {si.store}: {si.items}</span>
+                        <span className="text-brand-grey-600">مكتبة {si.store}: {si.items}</span>
                       </div>
                     ))}
                   </div>
@@ -568,7 +568,7 @@ export default function NotificationsScreen({ onNavigate }: NotificationsScreenP
                   whileHover={{ y: -1 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => onNavigate?.('tracking')}
-                  className="w-full bg-white rounded-2xl p-4 shadow-sm border border-brand-grey-200/50 text-right opacity-80"
+                  className="w-full bg-white rounded-2xl p-4 shadow-sm border border-brand-grey-200/50 text-start opacity-80"
                 >
                   <div className="flex items-center justify-between mb-2">
                     <div className="text-[12px] font-semibold px-2.5 py-1 rounded-full bg-brand-grey-100 text-brand-grey-500">

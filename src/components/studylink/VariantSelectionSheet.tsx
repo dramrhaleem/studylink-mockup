@@ -138,7 +138,7 @@ export default function VariantSelectionSheet({
         animate={{ y: 0 }}
         exit={{ y: '100%' }}
         transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-        className="absolute bottom-0 left-0 right-0 z-[60] bg-white rounded-t-3xl overflow-hidden"
+        className="absolute bottom-0 end-0 start-0 z-[60] bg-white rounded-t-3xl overflow-hidden"
         style={{ boxShadow: '0 -4px 30px rgba(0,0,0,0.15)' }}
       >
         {/* Drag Handle */}
@@ -150,7 +150,7 @@ export default function VariantSelectionSheet({
           {/* Close button */}
           <button data-tap="44" aria-label="إغلاق"
             onClick={onClose}
-            className="absolute top-4 left-4 w-8 h-8 rounded-full bg-brand-grey-100 flex items-center justify-center active:scale-90 transition-transform z-10 tap-44"
+            className="absolute top-4 end-4 w-8 h-8 rounded-full bg-brand-grey-100 flex items-center justify-center active:scale-90 transition-transform z-10 tap-44"
           >
             <X className="w-4 h-4 text-brand-grey-600" />
           </button>

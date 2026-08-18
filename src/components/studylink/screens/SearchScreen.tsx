@@ -1,11 +1,12 @@
 'use client'
 
 import { asset } from '@/lib/asset'
+import { CATEGORY, type CategoryKey } from '@/lib/category'
 
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, X, TrendingUp, Clock, Plus, Check, Mic, Tag, BookOpen, Stethoscope, PenTool, Sparkles, Eye, Trash2 } from 'lucide-react'
+import { Search, X, TrendingUp, Clock, Plus, Check, Mic, Tag, BookOpen, BookMarked, ClipboardList, Stethoscope, PenTool, Sparkles, Eye, Trash2 } from 'lucide-react'
 import { products, type Product, isProductForGrade } from '@/lib/studylink-data'
 import { useStudylinkStore } from '@/lib/use-studylink-store'
 
@@ -20,15 +21,20 @@ const categoryBadgeColors: Record<string, string> = {
 }
 
 const storeColors: Record<string, string> = {
-  'هارفرد': 'bg-red-50 text-red-600',
-  'برلين': 'bg-blue-50 text-blue-600',
+  /* المكتبة ليست حالة نظام — لا تأخذ لون خطأ ولا نجاح.
+     الفرق بينهما درجة داخل الحبر، لا لونان مختلفان. */
+  'هارفرد': 'bg-navy-50 text-navy-800',
+  'برلين': 'bg-brand-grey-100 text-brand-grey-700',
 }
 
-const trendingCategories = [
-  { label: 'محاضرات جراحة', icon: '📖', count: '24', color: 'from-sky-100 to-sky-200' },
-  { label: 'أدوات تشريح', icon: '🩺', count: '18', color: 'from-teal-100 to-teal-200' },
-  { label: 'ملخصات باطنة', icon: '📋', count: '31', color: 'from-violet-100 to-violet-200' },
-  { label: 'أدوات مكتبية', icon: '✏️', count: '12', color: 'from-amber-100 to-amber-200' },
+/* اللون يتبع **تصنيف** المدخل لا ترتيبه في المصفوفة: «محاضرات جراحة»
+   و«ملخصات باطنة» كلاهما محاضرات، فيأخذان نفس اللون. كان الأول سماويًا
+   والثاني رماديًا بلا سبب. */
+const trendingCategories: { label: string; category: CategoryKey; count: string }[] = [
+  { label: 'محاضرات جراحة', category: 'محاضرات', count: '24' },
+  { label: 'أدوات تشريح', category: 'أدوات طبية', count: '18' },
+  { label: 'ملخصات باطنة', category: 'محاضرات', count: '31' },
+  { label: 'أدوات مكتبية', category: 'أدوات مكتبية', count: '12' },
 ]
 
 const staggerContainer = {
@@ -41,12 +47,14 @@ const staggerItem = {
   show: { opacity: 1, y: 0, transition: { duration: 0.25 } },
 }
 
-const trendingRankGradients = [
-  'from-sky-500 to-sky-400',
-  'from-violet-500 to-violet-400',
-  'from-amber-500 to-amber-400',
-  'from-teal-500 to-teal-400',
-  'from-brand-grey-400 to-brand-grey-300',
+/* كانت خمسة تدرّجات لخمس مراتب: خمسة ألوان بلا معنى في قائمة واحدة.
+   المرتبة ليست تصنيفًا — هي ترتيب. الأول يأخذ اللهجة، والباقي يتدرّج حياديًا. */
+const trendingRankTint = [
+  'bg-sky-500',
+  'bg-navy-700',
+  'bg-brand-grey-600',
+  'bg-brand-grey-500',
+  'bg-brand-grey-500',
 ]
 
 export default function SearchScreen({ onNavigate }: SearchScreenProps) {
@@ -154,7 +162,7 @@ export default function SearchScreen({ onNavigate }: SearchScreenProps) {
       {/* Gradient Header */}
       <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-b from-navy-800/95 via-navy-800/60 to-transparent pointer-events-none z-0" />
-        <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-sky-500/10 blur-3xl pointer-events-none" />
+        <div className="absolute -top-12 -start-12 w-32 h-32 rounded-full bg-sky-500/10 blur-3xl pointer-events-none" />
 
         <div className="relative z-10 bg-navy-800/40 backdrop-blur-sm px-4 pt-3 pb-3">
           {/* Search Bar */}
@@ -190,10 +198,11 @@ export default function SearchScreen({ onNavigate }: SearchScreenProps) {
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
               placeholder="ابحث عن مذكرة، أداة، أو دكتور..."
-              className="flex-1 bg-transparent text-[13px] text-navy-800 placeholder:text-brand-grey-400 outline-none relative z-10"
+              aria-label="ابحث عن مذكرة أو أداة" className="flex-1 bg-transparent text-[13px] text-navy-800 placeholder:text-brand-grey-400 outline-none relative z-10"
             />
             {/* Voice search button */}
             <motion.button data-tap="44"
+              aria-label="البحث الصوتي"
               whileTap={{ scale: 0.9 }}
               onClick={handleVoiceSearch}
               className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-colors relative z-10 ${
@@ -265,7 +274,9 @@ export default function SearchScreen({ onNavigate }: SearchScreenProps) {
                 <h3 className="text-[13px] font-bold text-navy-800">تصفح حسب القسم</h3>
               </div>
               <div className="grid grid-cols-2 gap-2.5">
-                {trendingCategories.map((cat, idx) => (
+                {trendingCategories.map((cat, idx) => {
+                  const cs = CATEGORY[cat.category]
+                  return (
                   <motion.button data-tap="44"
                     key={cat.label}
                     whileHover={{ y: -2, boxShadow: '0 8px 24px rgba(0,0,0,0.08)' }}
@@ -274,23 +285,24 @@ export default function SearchScreen({ onNavigate }: SearchScreenProps) {
                     initial={{ opacity: 0, y: 12, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     transition={{ delay: 0.1 + idx * 0.07, duration: 0.3, ease: 'easeOut' }}
-                    className="bg-white rounded-2xl p-3.5 border border-brand-grey-200/50 text-right hover:shadow-md transition-shadow"
+                    className="bg-white rounded-2xl p-3.5 border border-brand-grey-200/50 text-start hover:shadow-md transition-shadow"
                   >
                     <div className="flex items-center gap-2.5">
                       <motion.div
                         whileHover={{ rotate: [0, -5, 5, 0] }}
                         transition={{ duration: 0.4 }}
-                        className={`w-10 h-10 rounded-xl bg-gradient-to-br ${cat.color} flex items-center justify-center`}
+                        className={`w-10 h-10 rounded-xl ${cs.iconBg} border ${cs.border} flex items-center justify-center`}
                       >
-                        <span className="text-lg">{cat.icon}</span>
+                        <cs.Icon className={`w-5 h-5 ${cs.iconInk}`} aria-hidden />
                       </motion.div>
                       <div>
                         <p className="text-[13px] font-bold text-navy-800 leading-tight">{cat.label}</p>
-                        <p className="text-[12px] text-brand-grey-400 sl-num mt-0.5">{cat.count} منتج</p>
+                        <p className="text-[12px] text-brand-grey-400 mt-0.5"><span className="sl-num">{cat.count}</span> منتج</p>
                       </div>
                     </div>
                   </motion.button>
-                ))}
+                  )
+                })}
               </div>
             </motion.section>
 
@@ -334,9 +346,9 @@ export default function SearchScreen({ onNavigate }: SearchScreenProps) {
                       <motion.span
                         whileHover={{ scale: 1.1 }}
                         onClick={(e) => { e.stopPropagation(); handleRemoveRecent(search) }}
-                        className="w-4 h-4 rounded-full bg-brand-grey-200 group-hover:bg-red-100 flex items-center justify-center transition-colors cursor-pointer"
+                        className="w-4 h-4 rounded-full bg-brand-grey-200 group-hover:bg-error-bg flex items-center justify-center transition-colors cursor-pointer"
                       >
-                        <X className="w-2.5 h-2.5 text-brand-grey-400 group-hover:text-red-400" />
+                        <X className="w-2.5 h-2.5 text-brand-grey-400 group-hover:text-error" />
                       </motion.span>
                     </motion.button>
                   ))}
@@ -371,7 +383,7 @@ export default function SearchScreen({ onNavigate }: SearchScreenProps) {
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9 }}
                         whileTap={{ scale: 0.97 }}
-                        className="flex-shrink-0 w-[100px] bg-white rounded-xl border border-brand-grey-200/50 shadow-[0_1px_4px_rgba(0,0,0,0.04)] overflow-hidden text-right"
+                        className="flex-shrink-0 w-[100px] bg-white rounded-xl border border-brand-grey-200/50 shadow-[0_1px_4px_rgba(0,0,0,0.04)] overflow-hidden text-start"
                       >
                         <div className="relative w-full aspect-square overflow-hidden bg-brand-grey-50">
                           <Image
@@ -413,13 +425,13 @@ export default function SearchScreen({ onNavigate }: SearchScreenProps) {
                     initial={{ opacity: 0, x: -8 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.15 + idx * 0.05, duration: 0.25 }}
-                    className="w-full flex items-center gap-3 bg-white rounded-xl px-3.5 py-2.5 border border-brand-grey-200/40 hover:border-sky-500/20 transition-all text-right"
+                    className="w-full flex items-center gap-3 bg-white rounded-xl px-3.5 py-2.5 border border-brand-grey-200/40 hover:border-sky-500/20 transition-all text-start"
                   >
                     <motion.span
                       initial={{ scale: 0, rotate: -180 }}
                       animate={{ scale: 1, rotate: 0 }}
                       transition={{ delay: 0.2 + idx * 0.05, type: 'spring', stiffness: 200, damping: 15 }}
-                      className={`w-6 h-6 rounded-lg bg-gradient-to-br ${trendingRankGradients[idx] || trendingRankGradients[4]} text-white flex items-center justify-center text-[12px] font-bold sl-num shadow-sm`}
+                      className={`w-6 h-6 rounded-lg ${trendingRankTint[idx] || trendingRankTint[4]} text-white flex items-center justify-center text-[12px] font-bold sl-num shadow-sm`}
                     >
                       {idx + 1}
                     </motion.span>
@@ -531,9 +543,13 @@ function ResultCard({ product, isInCart, index }: { product: Product; isInCart: 
     >
       {/* Thumbnail */}
       <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-sky-50 to-sky-100 shrink-0 flex items-center justify-center">
-        <span className="text-2xl">
-          {product.category === 'محاضرات' ? '📚' : product.category === 'أدوات طبية' ? '🏥' : '✏️'}
-        </span>
+        {product.category === 'محاضرات' ? (
+          <BookOpen className="w-6 h-6 text-sky-600" aria-hidden />
+        ) : product.category === 'أدوات طبية' ? (
+          <Stethoscope className="w-6 h-6 text-sky-600" aria-hidden />
+        ) : (
+          <PenTool className="w-6 h-6 text-sky-600" aria-hidden />
+        )}
       </div>
 
       {/* Content */}
@@ -564,7 +580,7 @@ function ResultCard({ product, isInCart, index }: { product: Product; isInCart: 
             <span className="text-[14px] font-bold text-navy-800 sl-num">{product.price}</span>
             <span className="text-[12px] text-brand-grey-400">ج.م</span>
             {product.originalPrice && (
-              <span className="text-[12px] text-brand-grey-400 sl-num line-through mr-1">{product.originalPrice}</span>
+              <span className="text-[12px] text-brand-grey-400 sl-num line-through ms-1">{product.originalPrice}</span>
             )}
           </div>
           <motion.button aria-label="أضف للسلة" data-tap="44"

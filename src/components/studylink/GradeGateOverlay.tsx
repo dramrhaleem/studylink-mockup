@@ -32,12 +32,12 @@ export default function GradeGateOverlay({ onSelectGrade, subtitle }: GradeGateO
 
       {/* Floating decorative shapes for depth */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        <div className="float-shape-1 absolute top-[12%] right-[15%] w-14 h-14 rounded-full bg-sky-300/20 blur-sm" />
-        <div className="float-shape-2 absolute top-[28%] left-[10%] w-10 h-10 rounded-full bg-violet-300/20 blur-sm" />
-        <div className="float-shape-3 absolute bottom-[30%] right-[8%] w-12 h-12 rounded-full bg-amber-300/20 blur-sm" />
-        <div className="float-shape-4 absolute top-[55%] left-[20%] w-8 h-8 rounded-full bg-sky-300/15 blur-sm" />
-        <div className="float-shape-5 absolute bottom-[18%] right-[35%] w-16 h-16 rounded-full bg-violet-300/10 blur-md" />
-        <div className="float-shape-6 absolute top-[8%] left-[45%] w-6 h-6 rounded-full bg-amber-300/15 blur-sm" />
+        <div className="float-shape-1 absolute top-[12%] start-[15%] w-14 h-14 rounded-full bg-sky-300/20 blur-sm" />
+        <div className="float-shape-2 absolute top-[28%] end-[10%] w-10 h-10 rounded-full bg-brand-grey-300/20 blur-sm" />
+        <div className="float-shape-3 absolute bottom-[30%] start-[8%] w-12 h-12 rounded-full bg-amber-300/20 blur-sm" />
+        <div className="float-shape-4 absolute top-[55%] end-[20%] w-8 h-8 rounded-full bg-sky-300/15 blur-sm" />
+        <div className="float-shape-5 absolute bottom-[18%] start-[35%] w-16 h-16 rounded-full bg-brand-grey-300/10 blur-md" />
+        <div className="float-shape-6 absolute top-[8%] end-[45%] w-6 h-6 rounded-full bg-amber-300/15 blur-sm" />
       </div>
 
       {/* Main content */}
@@ -53,7 +53,7 @@ export default function GradeGateOverlay({ onSelectGrade, subtitle }: GradeGateO
         </div>
 
         {/* Text card — right border accent (RTL), better shadow, more padding */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl px-6 py-5 mb-5 w-full max-w-[280px] shadow-xl shadow-black/5 border border-brand-grey-200/40 border-r-4 border-r-sky-400">
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl px-6 py-5 mb-5 w-full max-w-[280px] shadow-xl shadow-black/5 border border-brand-grey-200/40 border-s-4 border-s-sky-400">
           <p className="text-[13px] font-bold text-navy-900 mb-1.5 leading-relaxed">
             قولنا على دفعتك عشان نقدر نقدملك تجربة أفضل!
           </p>

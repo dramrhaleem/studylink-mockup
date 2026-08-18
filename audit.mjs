@@ -38,7 +38,6 @@ for (const s of SCREENS) {
   await page.goto(`http://localhost:3000/?screen=${s}`, { waitUntil: 'networkidle', timeout: 45000 });
   await page.waitForTimeout(1400);
   out[s] = await page.evaluate(({ src, brandList }) => {
-    // eslint-disable-next-line no-new-func
     const fn = new Function(src + '\nreturn runAudit;')();
     return fn(brandList);
   }, { src: AUDIT, brandList: [...BRAND] });

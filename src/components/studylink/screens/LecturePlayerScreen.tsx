@@ -80,7 +80,7 @@ export default function LecturePlayerScreen({ onNavigate }: LecturePlayerScreenP
             <div className="absolute bottom-4 right-1/3 w-20 h-20 rounded-full bg-sky-400/5" />
 
             {/* Top gradient overlay with controls */}
-            <div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-black/60 to-transparent z-10 px-3 pt-3 pb-6 flex items-center justify-between">
+            <div className="absolute top-0 end-0 start-0 bg-gradient-to-b from-black/60 to-transparent z-10 px-3 pt-3 pb-6 flex items-center justify-between">
               <motion.button data-tap="44" aria-label="رجوع"
                 whileTap={{ scale: 0.9 }}
                 onClick={() => onNavigate('lectures')}
@@ -120,7 +120,7 @@ export default function LecturePlayerScreen({ onNavigate }: LecturePlayerScreenP
             </div>
 
             {/* Bottom gradient overlay with progress */}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent z-10 px-3 pb-3 pt-8">
+            <div className="absolute bottom-0 end-0 start-0 bg-gradient-to-t from-black/70 to-transparent z-10 px-3 pb-3 pt-8">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-[12px] text-white/80 sl-num tabular-nums">12:35</span>
                 <div className="flex-1 h-[5px] rounded-full bg-white/20 overflow-hidden relative">
@@ -152,7 +152,7 @@ export default function LecturePlayerScreen({ onNavigate }: LecturePlayerScreenP
             </div>
 
             {/* Speed Controls + Subtitle Toggle Row */}
-            <div className="absolute -bottom-7 left-0 right-0 z-20 flex items-center justify-center gap-2 px-4">
+            <div className="absolute -bottom-7 end-0 start-0 z-20 flex items-center justify-center gap-2 px-4">
               {speeds.map(speed => (
                 <motion.button data-tap="44"
                   key={speed}
@@ -211,13 +211,13 @@ export default function LecturePlayerScreen({ onNavigate }: LecturePlayerScreenP
               <div className="flex items-center gap-0.5">
                 <Eye className="w-3 h-3" />
                 <span className="sl-num">1.2K</span>
-                <span className="mr-0.5">مشاهدة</span>
+                <span className="ms-0.5">مشاهدة</span>
               </div>
               <span className="text-brand-grey-400">·</span>
               <div className="flex items-center gap-0.5">
                 <FileText className="w-3 h-3" />
                 <span className="sl-num">48</span>
-                <span className="mr-0.5">صفحة</span>
+                <span className="ms-0.5">صفحة</span>
               </div>
               <span className="text-brand-grey-400">·</span>
               <div className="flex items-center gap-0.5">
@@ -242,7 +242,7 @@ export default function LecturePlayerScreen({ onNavigate }: LecturePlayerScreenP
                   custom={index}
                   className={`relative flex items-center gap-3 p-3 rounded-xl transition-colors ${
                     chapter.status === 'current'
-                      ? 'bg-sky-50 border-r-[3px] border-r-sky-500'
+                      ? 'bg-sky-50 border-s-[3px] border-s-sky-500'
                       : chapter.status === 'completed'
                         ? 'bg-white/60'
                         : 'bg-white/40'
@@ -335,7 +335,7 @@ export default function LecturePlayerScreen({ onNavigate }: LecturePlayerScreenP
       </div>
 
       {/* ========== 4. STICKY BOTTOM ACTIONS BAR ========== */}
-      <div className="absolute bottom-0 left-0 right-0 z-30 bg-white/90 backdrop-blur-md border-t border-brand-grey-200/50 px-4 py-3">
+      <div className="absolute bottom-0 end-0 start-0 z-30 bg-white/90 backdrop-blur-md border-t border-brand-grey-200/50 px-4 py-3">
         <div className="flex items-center gap-2.5">
           <motion.button data-tap="44"
             whileTap={{ scale: 0.95 }}
@@ -349,12 +349,12 @@ export default function LecturePlayerScreen({ onNavigate }: LecturePlayerScreenP
             onClick={() => setSaved(s => !s)}
             className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl border transition-colors ${
               saved
-                ? 'bg-red-50 border-red-200 text-red-500'
+                ? 'bg-error-bg border-error/30 text-error'
                 : 'bg-white border-brand-grey-200/60 text-navy-800'
             }`}
           >
             <Heart
-              className={`w-4 h-4 transition-all ${saved ? 'fill-red-500 text-red-500' : ''}`}
+              className={`w-4 h-4 transition-all ${saved ? 'fill-error text-error' : ''}`}
             />
             <span className="text-[13px] font-semibold">
               {saved ? 'محفوظ' : 'حفظ في المفضلة'}

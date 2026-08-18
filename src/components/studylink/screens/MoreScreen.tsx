@@ -15,6 +15,13 @@ import {
   LogOut,
   Trash2,
   X,
+  Package,
+  MapPin,
+  Heart,
+  History,
+  Star,
+  Trophy,
+  Globe,
 } from 'lucide-react'
 import BottomNavBar from '@/components/studylink/BottomNavBar'
 import ToggleSwitch from '@/components/studylink/ToggleSwitch'
@@ -23,6 +30,27 @@ import { useStudylinkStore } from '@/lib/use-studylink-store'
 interface MoreScreenProps {
   onNavigate?: (screen: string) => void
 }
+
+/* «خدمات أخرى» و«الإعدادات السريعة» كانتا في شاشة «حسابي».
+   نُقلتا هنا بقرار المؤسس: «حسابي» صارت للهوية والبيانات الأكاديمية فقط،
+   و«المزيد» هي مركز كل ما هو إعدادات وخدمات ودعم.
+   البنود المكرّرة (الأسئلة الشائعة · عن StudyLink · الشروط) لم تُنقل — هي
+   موجودة أصلًا في البطاقات أدناه، ونسخها مرتين يربك المستخدم والمطوّر معًا. */
+const OTHER_SERVICES: {
+  icon: typeof Package
+  label: string
+  screen: string
+  /** ميزة متفق على تأجيلها — تُعرض معطّلة كي لا يبنيها المطوّر في هذه الجولة */
+  deferred?: boolean
+}[] = [
+  { icon: Package, label: 'طلباتي', screen: 'my-orders' },
+  { icon: MapPin, label: 'تتبع الطلب', screen: 'tracking' },
+  { icon: Heart, label: 'المفضلة', screen: 'wishlist' },
+  { icon: Bell, label: 'الإشعارات', screen: 'notifications' },
+  { icon: History, label: 'سجل المشتريات', screen: 'purchase-history' },
+  { icon: Star, label: 'تقييم التطبيق', screen: 'rate' },
+  { icon: Trophy, label: 'إنجازاتي', screen: 'achievements', deferred: true },
+]
 
 export default function MoreScreen({ onNavigate }: MoreScreenProps) {
   const user = useStudylinkStore(s => s.user)
@@ -102,8 +130,8 @@ export default function MoreScreen({ onNavigate }: MoreScreenProps) {
               className="w-full flex items-center gap-3 px-4 active:bg-brand-grey-50 transition-colors text-start"
               style={{ minHeight: 56 }}
             >
-              <div className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center flex-shrink-0">
-                <MessageCircle className="w-[18px] h-[18px] text-emerald-500" />
+              <div className="w-9 h-9 rounded-xl bg-sky-50 flex items-center justify-center flex-shrink-0">
+                <MessageCircle className="w-[18px] h-[18px] text-sky-500" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-[13px] font-semibold text-navy-900">تواصل مع الدعم (WhatsApp)</p>
@@ -113,8 +141,11 @@ export default function MoreScreen({ onNavigate }: MoreScreenProps) {
             </button>
           </div>
 
-          {/* Card 2: Settings */}
+          {/* Card 2: Quick settings — منقولة من «حسابي» */}
           <div className="mx-4 rounded-2xl bg-white shadow-sm border border-brand-grey-200/50 overflow-hidden">
+            <div className="px-4 pt-3.5 pb-1">
+              <h2 className="text-[13px] font-bold text-navy-800">الإعدادات السريعة</h2>
+            </div>
             <div
               className="flex items-center gap-3 px-4"
               style={{ minHeight: 56 }}
@@ -124,6 +155,7 @@ export default function MoreScreen({ onNavigate }: MoreScreenProps) {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-[13px] font-semibold text-navy-900">الإشعارات</p>
+                <p className="text-[12px] text-brand-grey-400 mt-0.5">تنبيهات الطلبات والعروض</p>
               </div>
               <ToggleSwitch
                 enabled={notifications}
@@ -131,6 +163,60 @@ export default function MoreScreen({ onNavigate }: MoreScreenProps) {
                 label="إشعارات الطلبات والعروض"
               />
             </div>
+            <div className="h-px bg-brand-grey-100 mx-4" />
+            <div
+              className="flex items-center gap-3 px-4"
+              style={{ minHeight: 56 }}
+            >
+              <div className="w-9 h-9 rounded-xl bg-brand-grey-100 flex items-center justify-center flex-shrink-0">
+                <Globe className="w-[18px] h-[18px] text-navy-800" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[13px] font-semibold text-navy-900">اللغة</p>
+                <p className="text-[12px] text-brand-grey-400 mt-0.5">العربية — لغة واحدة في الإصدار الأول</p>
+              </div>
+              <span className="text-[12px] font-semibold text-brand-grey-500 bg-brand-grey-100 px-2 py-0.5 rounded-full whitespace-nowrap">
+                ثابتة
+              </span>
+            </div>
+          </div>
+
+          {/* Card 2b: Other services — منقولة من «حسابي» */}
+          <div className="mx-4 rounded-2xl bg-white shadow-sm border border-brand-grey-200/50 overflow-hidden">
+            <div className="px-4 pt-3.5 pb-1">
+              <h2 className="text-[13px] font-bold text-navy-800">خدمات أخرى</h2>
+            </div>
+            {OTHER_SERVICES.map((item, idx) => (
+              <div key={item.screen}>
+                {idx > 0 && <div className="h-px bg-brand-grey-100 mx-4" />}
+                <button
+                  data-tap="44"
+                  onClick={() => onNavigate?.(item.screen)}
+                  className="w-full flex items-center gap-3 px-4 active:bg-brand-grey-50 transition-colors text-start"
+                  style={{ minHeight: 56 }}
+                >
+                  <div className="w-9 h-9 rounded-xl bg-brand-grey-100 flex items-center justify-center flex-shrink-0">
+                    <item.icon
+                      className={`w-[18px] h-[18px] ${item.deferred ? 'text-brand-grey-400' : 'text-navy-800'}`}
+                      aria-hidden
+                    />
+                  </div>
+                  <p
+                    className={`flex-1 text-[13px] font-semibold text-start ${
+                      item.deferred ? 'text-brand-grey-500' : 'text-navy-900'
+                    }`}
+                  >
+                    {item.label}
+                  </p>
+                  {item.deferred && (
+                    <span className="text-[12px] font-semibold text-brand-grey-500 bg-brand-grey-200/70 border border-brand-grey-300/60 px-2 py-0.5 rounded-full whitespace-nowrap">
+                      ميزة مؤجلة
+                    </span>
+                  )}
+                  <ChevronLeft className="w-4 h-4 text-brand-grey-400 flex-shrink-0" />
+                </button>
+              </div>
+            ))}
           </div>
 
           {/* Card 3: Legal */}
@@ -219,7 +305,7 @@ export default function MoreScreen({ onNavigate }: MoreScreenProps) {
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              className="fixed bottom-0 left-0 right-0 z-[60] bg-white rounded-t-3xl"
+              className="fixed bottom-0 end-0 start-0 z-[60] bg-white rounded-t-3xl"
               style={{ boxShadow: '0 -4px 30px rgba(0,0,0,0.15)', maxHeight: '75vh' }}
             >
               <div className="flex justify-center pt-2.5 pb-1">
@@ -242,11 +328,11 @@ export default function MoreScreen({ onNavigate }: MoreScreenProps) {
                 </div>
                 <div className="py-3.5 border-b border-brand-grey-100">
                   <p className="text-[13px] font-semibold text-navy-900">التوصيل بياخد قد إيه؟</p>
-                  <p className="text-[13px] text-brand-grey-600 mt-1.5 leading-relaxed">من 30 لـ 45 دقيقة. التوصيل بـ 25 ج.م للطلبات تحت 200 ج.م، ومجاني فوق كده.</p>
+                  <p className="text-[13px] text-brand-grey-600 mt-1.5 leading-relaxed">التوصيل 25 ج.م لكل طلب، والاستلام من المكتبة بدون رسوم. الوقت يختلف حسب المكتبة والزحمة، وبيظهر تقديريًا في صفحة التتبع بعد تأكيد الطلب.</p>
                 </div>
                 <div className="py-3.5 border-b border-brand-grey-100">
                   <p className="text-[13px] font-semibold text-navy-900">لو العميل ده مع المندوب أقدر ألغي الأوردر؟</p>
-                  <p className="text-[13px] text-brand-grey-600 mt-1.5 leading-relaxed">لو الأوردر اتحول لحالة &quot;مع المندوب&quot;، مش هينفع نلغيه عشان المندوب بيكون اتحرك فعلاً. طلباتكم أمانة فخلينا نقدر وقت بعض ❤️</p>
+                  <p className="text-[13px] text-brand-grey-600 mt-1.5 leading-relaxed">لو الأوردر اتحول لحالة &quot;مع المندوب&quot;، مش هينفع نلغيه عشان المندوب بيكون اتحرك فعلاً. طلباتكم أمانة فخلينا نقدر وقت بعض</p>
                 </div>
                 <div className="py-3.5">
                   <p className="text-[13px] font-semibold text-navy-900">إزاي أتأكد إن الأوردر وصل؟</p>
@@ -274,7 +360,7 @@ export default function MoreScreen({ onNavigate }: MoreScreenProps) {
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              className="fixed bottom-0 left-0 right-0 z-[60] bg-white rounded-t-3xl"
+              className="fixed bottom-0 end-0 start-0 z-[60] bg-white rounded-t-3xl"
               style={{ boxShadow: '0 -4px 30px rgba(0,0,0,0.15)', maxHeight: '75vh' }}
             >
               <div className="flex justify-center pt-2.5 pb-1">
@@ -301,7 +387,7 @@ export default function MoreScreen({ onNavigate }: MoreScreenProps) {
                 </div>
                 <div className="rounded-xl bg-amber-50 p-3.5 border border-amber-200/40">
                   <p className="text-[13px] font-bold text-amber-800 mb-1">إلغاء بعد تحرك المندوب</p>
-                  <p className="text-[12px] text-amber-700 leading-relaxed">لو تم الإلغاء والمندوب في الطريق، سنتحمل نحن تكلفة مشواره، لذا نرجو التأكد من الطلب قبل تأكيده تقديراً لوقتنا ووقتك ❤️</p>
+                  <p className="text-[12px] text-amber-700 leading-relaxed">لو تم الإلغاء والمندوب في الطريق، سنتحمل نحن تكلفة مشواره، لذا نرجو التأكد من الطلب قبل تأكيده تقديراً لوقتنا ووقتك</p>
                 </div>
               </div>
             </motion.div>
@@ -317,7 +403,7 @@ export default function MoreScreen({ onNavigate }: MoreScreenProps) {
               initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              className="fixed bottom-0 left-0 right-0 z-[60] bg-white rounded-t-3xl"
+              className="fixed bottom-0 end-0 start-0 z-[60] bg-white rounded-t-3xl"
               style={{ boxShadow: '0 -4px 30px rgba(0,0,0,0.15)', maxHeight: '75vh' }}
             >
               {/* Handle */}
@@ -353,7 +439,7 @@ export default function MoreScreen({ onNavigate }: MoreScreenProps) {
               initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              className="fixed bottom-0 left-0 right-0 z-[60] bg-white rounded-t-3xl"
+              className="fixed bottom-0 end-0 start-0 z-[60] bg-white rounded-t-3xl"
               style={{ boxShadow: '0 -4px 30px rgba(0,0,0,0.15)', maxHeight: '75vh' }}
             >
               <div className="flex justify-center pt-2.5 pb-1"><div className="w-10 h-1 rounded-full bg-brand-grey-200" /></div>
@@ -398,7 +484,7 @@ export default function MoreScreen({ onNavigate }: MoreScreenProps) {
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-            className="fixed bottom-0 left-0 right-0 z-[80] px-4"
+            className="fixed bottom-0 end-0 start-0 z-[80] px-4"
             style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom, 8px))' }}
           >
             <div className="rounded-2xl bg-white overflow-hidden shadow-xl">
@@ -414,7 +500,7 @@ export default function MoreScreen({ onNavigate }: MoreScreenProps) {
               </button>
               <button
                 onClick={handleLogout}
-                className="w-full h-12 bg-red-500 text-[14px] font-bold text-white active:opacity-80 transition-opacity"
+                className="w-full h-12 bg-error text-[14px] font-bold text-white active:opacity-80 transition-opacity"
               >
                 تسجيل الخروج
               </button>

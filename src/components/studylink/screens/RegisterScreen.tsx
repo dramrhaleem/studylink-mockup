@@ -45,7 +45,7 @@ export default function RegisterScreen({ onNavigate }: RegisterScreenProps) {
       college: selectedCollege,
     })
     if (selectedGrade) setStoreGrade(selectedGrade)
-    toast.success('تم إنشاء حسابك بنجاح! 🎉', {
+    toast.success('تم إنشاء حسابك بنجاح!', {
       style: { direction: 'rtl', fontSize: '12px' },
       duration: 2500,
     })
@@ -87,31 +87,33 @@ export default function RegisterScreen({ onNavigate }: RegisterScreenProps) {
           >
             {/* Name */}
             <div>
-              <label className="text-[13px] font-semibold text-navy-800 mb-1.5 block">اسمك الكامل</label>
+              <label htmlFor="reg-name" className="text-[13px] font-semibold text-navy-800 mb-1.5 block">اسمك الكامل</label>
               <div className="relative">
-                <User className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-grey-400" />
+                <User className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-grey-400" />
                 <input
+                  id="reg-name"
                   type="text"
                   value={name}
                   onChange={e => setName(e.target.value)}
                   placeholder="أحمد محمد"
-                  className="w-full bg-brand-grey-50 border border-brand-grey-200/60 rounded-xl pr-10 pl-4 py-3 text-[13px] text-navy-900 placeholder:text-brand-grey-400 focus:outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100 transition-all"
+                  className="w-full bg-brand-grey-50 border border-brand-grey-200/60 rounded-xl ps-10 pe-4 py-3 text-[13px] text-navy-900 placeholder:text-brand-grey-400 focus:outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100 transition-all"
                 />
               </div>
             </div>
 
             {/* Phone */}
             <div>
-              <label className="text-[13px] font-semibold text-navy-800 mb-1.5 block">رقم الموبايل</label>
+              <label htmlFor="reg-phone" className="text-[13px] font-semibold text-navy-800 mb-1.5 block">رقم الموبايل</label>
               <div className="relative">
-                <Phone className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-grey-400" />
+                <Phone className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-grey-400" />
                 <input
+                  id="reg-phone"
                   type="tel"
                   value={phone}
                   onChange={e => setPhone(e.target.value.replace(/[^0-9]/g, ''))}
                   placeholder="01012345678"
                   maxLength={11}
-                  className="w-full bg-brand-grey-50 border border-brand-grey-200/60 rounded-xl pr-10 pl-4 py-3 text-[13px] text-navy-900 placeholder:text-brand-grey-400 focus:outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100 transition-all sl-num"
+                  className="w-full bg-brand-grey-50 border border-brand-grey-200/60 rounded-xl ps-10 pe-4 py-3 text-[13px] text-navy-900 placeholder:text-brand-grey-400 focus:outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100 transition-all sl-num"
                   dir="ltr"
                 />
               </div>
@@ -153,7 +155,7 @@ export default function RegisterScreen({ onNavigate }: RegisterScreenProps) {
                       <button data-tap="44"
                         key={c}
                         onClick={() => { setSelectedCollege(c); setShowCollegeSheet(false) }}
-                        className={`w-full text-right px-4 py-3 rounded-xl text-[13px] font-medium transition-all ${
+                        className={`w-full text-start px-4 py-3 rounded-xl text-[13px] font-medium transition-all ${
                           selectedCollege === c
                             ? 'bg-sky-50 text-sky-600 border border-sky-200'
                             : 'text-navy-800 active:bg-brand-grey-50'
@@ -187,7 +189,7 @@ export default function RegisterScreen({ onNavigate }: RegisterScreenProps) {
             className="px-4 pt-4 space-y-4"
           >
             <p className="text-[13px] text-brand-grey-600 leading-relaxed">
-              اختار فرقتك وهنعدللك تجربة التطبيق حسب موادك 📚
+              اختار فرقتك وهنعدللك تجربة التطبيق حسب موادك
             </p>
 
             <div className="grid grid-cols-2 gap-2.5">

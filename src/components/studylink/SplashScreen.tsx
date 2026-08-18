@@ -21,6 +21,8 @@ export default function SplashScreen({ active = true, onComplete }: SplashScreen
   /* كانت الشاشة تعمل مؤقّتها دائمًا حتى مع الروابط المباشرة، فتغطّي محتوى
      ظاهرًا بالفعل لثانيتين. صارت تحترم `active`. */
   useEffect(() => {
+    /* الشاشة تحترم `active`: عند الروابط المباشرة تُنهي نفسها فورًا بدل تغطية محتوى ظاهر. */
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (!active) { setPhase('done'); return }
     const t1 = setTimeout(() => setPhase('text'), 800)
     const t2 = setTimeout(() => { setPhase('done'); onCompleteRef.current() }, 1800)

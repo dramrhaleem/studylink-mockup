@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronDown, Search, X, MessageCircle, HelpCircle } from 'lucide-react'
+import { ChevronLeft, ChevronDown, Search, X, MessageCircle, HelpCircle, ThumbsUp, ThumbsDown } from 'lucide-react'
 
 interface FAQScreenProps {
   onNavigate: (screen: string) => void
@@ -56,7 +56,7 @@ const faqData: FAQItem[] = [
     question: 'كم مدة التوصيل؟',
     answer: 'مدة التوصيل بتختلف حسب نوع الطلب:',
     bullets: [
-      'المحاضرات الرقمية: فوري بعد الدفع ✨',
+      'المحاضرات الرقمية: فوري بعد الدفع',
       'المذكرات المطبوعة: الوقت المتوقع بيظهر مع الطلب وبيتحدّث مع حالته',
       'الأدوات الطبية: 1-2 يوم عمل',
       'الشحن للمدن التانية: 2-4 أيام عمل',
@@ -107,7 +107,7 @@ const faqData: FAQItem[] = [
       'قدم طلب الانضمام من صفحة السفراء',
       'اربح عمولة من كل طلب عن طريق رابطك',
       'وصول مبكر للعروض والمحتوى الجديد',
-      'نقاط إضافية ومكافآت شهرية 🎁',
+      'نقاط إضافية ومكافآت شهرية',
     ],
     category: 'account',
   },
@@ -140,7 +140,7 @@ const faqData: FAQItem[] = [
     question: 'كيف أتواصل مع الدعم؟',
     answer: 'فريق الدعم متاح ليك 24/7 عشان نساعدك:',
     bullets: [
-      'دردشة مباشرة من داخل التطبيق 💬',
+      'دردشة مباشرة من داخل التطبيق',
       'واتساب: متاح على مدار الساعة',
       'إيميل: support@studylink.com',
       'الرد بيكون خلال دقائق معدودة',
@@ -193,13 +193,13 @@ export default function FAQScreen({ onNavigate }: FAQScreenProps) {
       <div className="sticky top-0 z-30 bg-navy-800 px-4 pt-3 pb-5 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-navy-800 via-navy-800/95 to-sky-900/40 pointer-events-none" />
         {/* Decorative blur circles */}
-        <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full bg-sky-500/10 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-16 -left-16 w-40 h-40 rounded-full bg-sky-400/8 blur-3xl pointer-events-none" />
+        <div className="absolute -top-20 -start-20 w-48 h-48 rounded-full bg-sky-500/10 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-16 -end-16 w-40 h-40 rounded-full bg-sky-400/8 blur-3xl pointer-events-none" />
 
         <div className="relative z-10">
           <div className="flex items-center justify-between mb-1">
             <div className="w-8" />
-            <h1 className="text-[15px] font-bold text-white">الأسئلة الشائعة ❓</h1>
+            <h1 className="text-[15px] font-bold text-white">الأسئلة الشائعة</h1>
             <button data-tap="44" aria-label="رجوع"
               onClick={() => onNavigate('profile')}
               className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors tap-44"
@@ -237,7 +237,7 @@ export default function FAQScreen({ onNavigate }: FAQScreenProps) {
                 />
               </motion.div>
             )}
-            <Search className="w-4 h-4 text-brand-grey-400 mr-3 ml-2 flex-shrink-0" />
+            <Search className="w-4 h-4 text-brand-grey-400 ms-3 me-2 flex-shrink-0" />
             <input
               type="text"
               value={searchQuery}
@@ -245,7 +245,7 @@ export default function FAQScreen({ onNavigate }: FAQScreenProps) {
               onFocus={() => setSearchFocused(true)}
               onBlur={() => setSearchFocused(false)}
               placeholder="ابحث في الأسئلة..."
-              className="flex-1 py-2.5 text-[13px] text-navy-800 placeholder:text-brand-grey-400 bg-transparent outline-none text-right"
+              aria-label="ابحث في الأسئلة الشائعة" className="flex-1 min-h-11 py-2.5 text-[13px] text-navy-800 placeholder:text-brand-grey-400 bg-transparent outline-none text-start"
               dir="rtl"
             />
             <AnimatePresence>
@@ -255,7 +255,7 @@ export default function FAQScreen({ onNavigate }: FAQScreenProps) {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   onClick={() => setSearchQuery('')}
-                  className="w-6 h-6 flex items-center justify-center rounded-full bg-brand-grey-200/60 ml-2 mr-2 flex-shrink-0 tap-44"
+                  className="w-6 h-6 flex items-center justify-center rounded-full bg-brand-grey-200/60 me-2 ms-2 flex-shrink-0 tap-44"
                 >
                   <X className="w-3 h-3 text-brand-grey-500" />
                 </motion.button>
@@ -292,7 +292,7 @@ export default function FAQScreen({ onNavigate }: FAQScreenProps) {
                 {activeCategory === cat.id && (
                   <motion.div
                     layoutId="category-indicator"
-                    className="absolute bottom-0 left-2 right-2 h-[3px] rounded-full bg-sky-500"
+                    className="absolute bottom-0 end-2 start-2 h-[3px] rounded-full bg-sky-500"
                     transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                   />
                 )}
@@ -326,7 +326,7 @@ export default function FAQScreen({ onNavigate }: FAQScreenProps) {
               {/* Question Row */}
               <button data-tap="44" aria-label="توسيع"
                 onClick={() => setOpenId(openId === item.id ? null : item.id)}
-                className="w-full flex items-center gap-3 px-4 py-3.5 text-right"
+                className="w-full flex items-center gap-3 px-4 py-3.5 text-start"
               >
                 <div className="flex-1">
                   <span className="text-[13px] font-semibold text-navy-800 leading-relaxed">
@@ -389,7 +389,7 @@ export default function FAQScreen({ onNavigate }: FAQScreenProps) {
                                 : 'bg-white text-brand-grey-400 border border-brand-grey-200/60'
                             }`}
                           >
-                            👍
+                            <ThumbsUp className="w-3.5 h-3.5" aria-hidden="true" />
                             <span className="sl-num">{helpfulFeedback[item.id] === 'up' ? '1' : ''}</span>
                           </motion.button>
                           <motion.button data-tap="44"
@@ -401,7 +401,7 @@ export default function FAQScreen({ onNavigate }: FAQScreenProps) {
                                 : 'bg-white text-brand-grey-400 border border-brand-grey-200/60'
                             }`}
                           >
-                            👎
+                            <ThumbsDown className="w-3.5 h-3.5" aria-hidden="true" />
                             <span className="sl-num">{helpfulFeedback[item.id] === 'down' ? '1' : ''}</span>
                           </motion.button>
                         </div>
@@ -451,8 +451,8 @@ export default function FAQScreen({ onNavigate }: FAQScreenProps) {
               className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white/15 to-transparent skew-x-[-20deg] pointer-events-none"
             />
             {/* Decorative circle */}
-            <div className="absolute -top-8 -left-8 w-28 h-28 rounded-full bg-white/10 pointer-events-none" />
-            <div className="absolute -bottom-6 -right-6 w-20 h-20 rounded-full bg-white/8 pointer-events-none" />
+            <div className="absolute -top-8 -end-8 w-28 h-28 rounded-full bg-white/10 pointer-events-none" />
+            <div className="absolute -bottom-6 -start-6 w-20 h-20 rounded-full bg-white/8 pointer-events-none" />
 
             <div className="relative z-10 flex flex-col items-center text-center gap-3">
               <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
@@ -481,10 +481,10 @@ export default function FAQScreen({ onNavigate }: FAQScreenProps) {
       <motion.div
         animate={{ y: [0, -12, 0], rotate: [0, 5, -5, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-        className="fixed bottom-28 left-2 text-[32px] opacity-[0.07] pointer-events-none select-none z-0"
+        className="fixed bottom-28 end-2 opacity-[0.07] pointer-events-none select-none z-0"
         style={{ position: 'absolute' }}
       >
-        ❓
+        <HelpCircle className="w-8 h-8 text-navy-800" aria-hidden="true" />
       </motion.div>
     </div>
   )

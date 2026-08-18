@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Wallet, Award, ChevronDown, ChevronLeft, Check, Camera, Phone, Building2, GraduationCap, Save, X, Package, MapPin, Heart, Bell, HelpCircle, MessageCircle, Info, Star, Trophy, LogOut, UserPlus, Sparkles, ShoppingBag, Users, Globe, Pencil, History, FileText, TrendingUp } from 'lucide-react'
+import { Hand, User, PartyPopper, Wallet, ChevronDown, ChevronLeft, Check, Phone, Building2, GraduationCap, X, Package, Heart, HelpCircle, MessageCircle, Info, Star, UserPlus, ShoppingBag, Users, Pencil } from 'lucide-react'
 import { ALL_GRADES, type GradeType } from '@/lib/studylink-data'
 import { useStudylinkStore } from '@/lib/use-studylink-store'
 import BottomNavBar from '../BottomNavBar'
@@ -58,7 +58,7 @@ export default function ProfileScreen({ onNavigate, showProfileWarning }: Profil
               animate={{ scale: 1, opacity: 1 }}
               className="w-24 h-24 rounded-3xl bg-gradient-to-br from-navy-800 to-sky-900 flex items-center justify-center mb-5 shadow-xl shadow-navy-800/20"
             >
-              <span className="text-4xl">👋</span>
+              <Hand className="w-10 h-10 text-white" aria-hidden />
             </motion.div>
 
             <h2 className="text-[17px] font-bold text-navy-900 mb-1.5">مرحباً بيك!</h2>
@@ -109,7 +109,7 @@ export default function ProfileScreen({ onNavigate, showProfileWarning }: Profil
                 <button data-tap="44" aria-label="رجوع"
                   key={item.screen}
                   onClick={() => onNavigate?.(item.screen)}
-                  className={`flex items-center justify-between py-3 active:scale-[0.98] transition-transform w-full text-right ${
+                  className={`flex items-center justify-between py-3 active:scale-[0.98] transition-transform w-full text-start ${
                     idx < arr.length - 1 ? 'border-b border-brand-grey-100' : ''
                   }`}
                 >
@@ -129,75 +129,23 @@ export default function ProfileScreen({ onNavigate, showProfileWarning }: Profil
   }
 
   // ── Logged-in State ──
-  const menuItems = [
-    { icon: Package, label: 'طلباتي', screen: 'my-orders', badge: orders.length > 0 ? `${orders.length}` : undefined },
-    { icon: MapPin, label: 'تتبع الطلب', screen: 'tracking' },
-    { icon: Heart, label: 'المفضلة', screen: 'wishlist' },
-    { icon: Bell, label: 'الإشعارات', screen: 'notifications' },
-    { icon: History, label: 'سجل المشتريات', screen: 'purchase-history' },
-    { icon: HelpCircle, label: 'الأسئلة الشائعة', screen: 'faq' },
-    { icon: MessageCircle, label: 'الدعم والمساعدة', screen: 'chat' },
-    { icon: Info, label: 'عن StudyLink', screen: 'about' },
-    { icon: Star, label: 'تقييم التطبيق', screen: 'rate' },
-    { icon: Trophy, label: 'الإنجازات', screen: 'achievements' },
-    { icon: FileText, label: 'الشروط والأحكام', screen: 'terms' },
-  ]
-
+  /* أربع بطاقات كانت بأربعة تدرّجات لونية مختلفة (سماوي/أخضر/ذهبي/بنفسجي)
+     في صفٍّ واحد — أعلى كثافة لونية في التطبيق كله بلا معنى دلالي. صارت
+     سطحًا واحدًا محايدًا، والرقم نفسه هو ما يحمل الانتباه.
+     ملاحظة للمطوّر: القيم هنا بيانات عرض ثابتة. الحقيقية تأتي من الـAPI. */
+  /* ⚠️ الرقم والوحدة منفصلان عمدًا. `.sl-num` خط لاتيني أحادي المسافة لا
+     يشكّل العربية، فلو لُفّ «5 إحالة» كاملًا ظهرت الحروف منفصلة: «إ ح ا ل ة». */
   const statsCards = [
-    {
-      label: 'طلباتي',
-      value: `${orders.length}`,
-      trend: '+2 هذا الأسبوع',
-      trendColor: 'text-emerald-600',
-      icon: Package,
-      bgFrom: 'from-sky-50',
-      bgTo: 'to-white',
-      iconBg: 'bg-sky-100',
-      iconColor: 'text-sky-600',
-      screen: 'my-orders',
-    },
-    {
-      label: 'المحفظة',
-      value: '160 ج.م',
-      trend: '+50 هذا الشهر',
-      trendColor: 'text-emerald-600',
-      icon: Wallet,
-      bgFrom: 'from-emerald-50',
-      bgTo: 'to-white',
-      iconBg: 'bg-emerald-100',
-      iconColor: 'text-emerald-600',
-      screen: 'wallet',
-    },
-    {
-      label: 'النقاط',
-      value: '340 نقطة',
-      trend: '+85 هذا الشهر',
-      trendColor: 'text-emerald-600',
-      icon: Star,
-      bgFrom: 'from-amber-50',
-      bgTo: 'to-white',
-      iconBg: 'bg-amber-100',
-      iconColor: 'text-amber-600',
-      screen: 'achievements',
-    },
-    {
-      label: 'الإحالات',
-      value: '5 إحالة',
-      trend: '↑ 12%',
-      trendColor: 'text-violet-600',
-      icon: Users,
-      bgFrom: 'from-violet-50',
-      bgTo: 'to-white',
-      iconBg: 'bg-violet-100',
-      iconColor: 'text-violet-600',
-      screen: 'ambassador',
-    },
+    { label: 'طلباتي', value: `${orders.length}`, unit: '', icon: Package, screen: 'my-orders' },
+    { label: 'المحفظة', value: '160', unit: 'ج.م', icon: Wallet, screen: 'wallet' },
+    { label: 'النقاط', value: '340', unit: 'نقطة', icon: Star, screen: 'achievements' },
+    { label: 'الإحالات', value: '5', unit: 'إحالة', icon: Users, screen: 'ambassador' },
   ]
 
   const achievements = [
-    { emoji: '🎉', label: 'أول طلب', gradient: 'from-sky-100 to-sky-50' },
-    { emoji: '⭐', label: 'عميل ذهبي', gradient: 'from-amber-100 to-amber-50' },
-    { emoji: '🌟', label: 'سفير', gradient: 'from-violet-100 to-violet-50' },
+    { Icon: PartyPopper, label: 'أول طلب' },
+    { Icon: Star, label: 'عميل ذهبي' },
+    { Icon: Users, label: 'سفير' },
   ]
 
   return (
@@ -208,8 +156,8 @@ export default function ProfileScreen({ onNavigate, showProfileWarning }: Profil
         <div className="relative">
           {/* Gradient background strip */}
           <div className="h-24 bg-gradient-to-l from-navy-800 to-sky-900 relative overflow-hidden">
-            <div className="absolute -top-10 -left-10 w-32 h-32 rounded-full bg-sky-500/10 blur-2xl pointer-events-none" />
-            <div className="absolute -bottom-8 -right-8 w-24 h-24 rounded-full bg-violet-500/10 blur-2xl pointer-events-none" />
+            <div className="absolute -top-10 -end-10 w-32 h-32 rounded-full bg-sky-500/10 blur-2xl pointer-events-none" />
+            <div className="absolute -bottom-8 -start-8 w-24 h-24 rounded-full bg-brand-grey-500/10 blur-2xl pointer-events-none" />
             {/* Header bar */}
             <div className="relative z-10 flex items-center justify-between px-4 pt-3">
               <div className="w-8" />
@@ -227,9 +175,9 @@ export default function ProfileScreen({ onNavigate, showProfileWarning }: Profil
           >
             <div className="relative mb-3">
               <div className="w-[76px] h-[76px] rounded-full bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center shadow-lg shadow-sky-500/25 overflow-hidden border-[3px] border-white">
-                <span className="text-[32px]">👨‍⚕️</span>
+                <User className="w-8 h-8 text-white" aria-hidden />
               </div>
-              <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-success flex items-center justify-center border-2 border-white">
+              <div className="absolute -bottom-1 -start-1 w-6 h-6 rounded-full bg-success flex items-center justify-center border-2 border-white">
                 <Check className="w-3 h-3 text-white" strokeWidth={3} />
               </div>
             </div>
@@ -278,67 +226,20 @@ export default function ProfileScreen({ onNavigate, showProfileWarning }: Profil
               animate="visible"
               whileTap={{ scale: 0.97 }}
               onClick={() => onNavigate?.(stat.screen)}
-              className={`relative bg-gradient-to-br ${stat.bgFrom} ${stat.bgTo} rounded-2xl p-3.5 text-right shadow-sm border border-brand-grey-200/40 overflow-hidden`}
+              className="relative bg-white rounded-2xl p-3.5 text-start shadow-sm border border-brand-grey-200/40 overflow-hidden"
             >
-              {/* Decorative circle */}
-              <div className="absolute -top-4 -left-4 w-16 h-16 rounded-full bg-white/60 blur-sm pointer-events-none" />
-
-              <div className="relative z-10">
-                <div className="flex items-center justify-between mb-2">
-                  <div className={`w-9 h-9 rounded-xl ${stat.iconBg} flex items-center justify-center`}>
-                    <stat.icon className={`w-4.5 h-4.5 ${stat.iconColor}`} />
-                  </div>
-                  <span className={`text-[12px] font-semibold ${stat.trendColor} flex items-center gap-0.5`}>
-                    <TrendingUp className="w-2.5 h-2.5" />
-                    {stat.trend}
-                  </span>
+              <div className="flex items-center gap-2.5 mb-2">
+                <div className="w-9 h-9 rounded-xl bg-brand-grey-50 flex items-center justify-center">
+                  <stat.icon className="w-4.5 h-4.5 text-navy-800" aria-hidden />
                 </div>
-                <p className="text-[17px] font-bold text-navy-800 sl-num leading-tight">{stat.value}</p>
-                <p className="text-[12px] text-brand-grey-500 mt-0.5">{stat.label}</p>
               </div>
+              <p className="text-[17px] font-bold text-navy-800 leading-tight">
+                <span className="sl-num">{stat.value}</span>
+                {stat.unit && <span className="text-[13px] font-semibold ms-1">{stat.unit}</span>}
+              </p>
+              <p className="text-[12px] text-brand-grey-500 mt-0.5">{stat.label}</p>
             </motion.button>
           ))}
-        </motion.div>
-
-        {/* ===== Quick Settings Section ===== */}
-        <motion.div
-          custom={3}
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          className="mx-4 mt-4 bg-white rounded-2xl shadow-sm border border-brand-grey-200/40 overflow-hidden"
-        >
-          <div className="px-4 pt-4 pb-1">
-            <h3 className="text-[13px] font-bold text-navy-800">الإعدادات السريعة</h3>
-          </div>
-
-          {/* Notifications Toggle */}
-          <div className="flex items-center justify-between px-4 py-3.5 border-b border-brand-grey-100">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-sky-50 flex items-center justify-center">
-                <Bell className="w-4.5 h-4.5 text-sky-600" />
-              </div>
-              <div>
-                <p className="text-[13px] text-navy-800 font-medium">الإشعارات</p>
-                <p className="text-[12px] text-brand-grey-400">تلقي تنبيهات الطلبات</p>
-              </div>
-            </div>
-            <ToggleSwitch enabled={notificationsEnabled} onToggle={() => setNotificationsEnabled(!notificationsEnabled)} label="إشعارات الطلبات والعروض" />
-          </div>
-
-          {/* Language */}
-          <div className="flex items-center justify-between px-4 py-3.5">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center">
-                <Globe className="w-4.5 h-4.5 text-emerald-600" />
-              </div>
-              <div>
-                <p className="text-[13px] text-navy-800 font-medium">اللغة</p>
-                <p className="text-[12px] text-brand-grey-400">العربية</p>
-              </div>
-            </div>
-            <ChevronLeft className="w-4 h-4 text-brand-grey-400 rotate-180" />
-          </div>
         </motion.div>
 
         {/* ===== Achievements Preview ===== */}
@@ -350,9 +251,14 @@ export default function ProfileScreen({ onNavigate, showProfileWarning }: Profil
           className="mx-4 mt-4"
         >
           <div className="flex items-center justify-between mb-2.5 px-1">
-            <h3 className="text-[13px] font-bold text-navy-800">إنجازاتي</h3>
-            <button data-tap="44" onClick={() => onNavigate?.('achievements')} className="text-[12px] text-sky-600 font-semibold">
-              عرض الكل
+            <div className="flex items-center gap-2 min-w-0">
+              <h3 className="text-[13px] font-bold text-brand-grey-500">إنجازاتي</h3>
+              <span className="text-[12px] font-semibold text-brand-grey-500 bg-brand-grey-200/70 border border-brand-grey-300/60 px-2 py-0.5 rounded-full whitespace-nowrap">
+                ميزة مؤجلة
+              </span>
+            </div>
+            <button data-tap="44" onClick={() => onNavigate?.('achievements')} className="text-[12px] text-brand-grey-500 font-semibold">
+              معاينة
             </button>
           </div>
           <div className="flex gap-3 overflow-x-auto phone-scroll pb-1">
@@ -362,9 +268,9 @@ export default function ProfileScreen({ onNavigate, showProfileWarning }: Profil
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2 + idx * 0.08 }}
-                className={`flex-shrink-0 w-[100px] bg-gradient-to-br ${badge.gradient} rounded-2xl p-3 flex flex-col items-center justify-center gap-1.5 border border-brand-grey-200/30 shadow-sm`}
+                className="flex-shrink-0 w-[100px] bg-white rounded-2xl p-3 flex flex-col items-center justify-center gap-1.5 border border-brand-grey-200/40 shadow-sm opacity-70"
               >
-                <span className="text-2xl">{badge.emoji}</span>
+                <badge.Icon className="w-6 h-6 text-brand-grey-400" aria-hidden />
                 <span className="text-[12px] font-semibold text-navy-800 text-center leading-tight">{badge.label}</span>
               </motion.div>
             ))}
@@ -429,39 +335,6 @@ export default function ProfileScreen({ onNavigate, showProfileWarning }: Profil
           </div>
         </motion.div>
 
-        {/* ===== Services Menu ===== */}
-        <motion.div
-          custom={6}
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          className="mx-4 mt-4 bg-white rounded-2xl p-4 shadow-sm border border-brand-grey-200/40"
-        >
-          <h3 className="text-[13px] font-bold text-navy-800 mb-2">خدمات أخرى</h3>
-          {menuItems.map((item, idx, arr) => (
-            <button data-tap="44" aria-label="رجوع"
-              key={item.screen}
-              onClick={() => onNavigate?.(item.screen)}
-              className={`flex items-center justify-between py-3 px-2 -mx-2 rounded-xl active:scale-[0.98] transition-all w-full text-right hover:bg-brand-grey-50 ${
-                idx < arr.length - 1 ? 'mb-0.5' : ''
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-brand-grey-50 flex items-center justify-center">
-                  <item.icon className="w-4 h-4 text-brand-grey-500" />
-                </div>
-                <span className="text-[13px] text-navy-800 font-medium">{item.label}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                {item.badge && (
-                  <span className="text-[12px] font-bold text-sky-600 bg-sky-50 px-2 py-0.5 rounded-lg">{item.badge}</span>
-                )}
-                <ChevronLeft className="w-4 h-4 text-brand-grey-400 rotate-180" />
-              </div>
-            </button>
-          ))}
-        </motion.div>
-
         <div className="h-16" />
       </div>
 
@@ -473,7 +346,7 @@ export default function ProfileScreen({ onNavigate, showProfileWarning }: Profil
             <motion.div
               initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 350 }}
-              className="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl z-50 max-h-[60vh] flex flex-col shadow-xl"
+              className="fixed bottom-0 end-0 start-0 bg-white rounded-t-2xl z-50 max-h-[60vh] flex flex-col shadow-xl"
             >
               <div className="flex items-center justify-between px-4 pt-3 pb-2 border-b border-brand-grey-100">
                 <div />
@@ -487,7 +360,7 @@ export default function ProfileScreen({ onNavigate, showProfileWarning }: Profil
                   <button data-tap="44"
                     key={college}
                     onClick={() => setShowCollegeSheet(false)}
-                    className="w-full text-right px-4 py-3 text-[13px] text-navy-800 hover:bg-brand-grey-50 border-b border-brand-grey-50"
+                    className="w-full text-start px-4 py-3 text-[13px] text-navy-800 hover:bg-brand-grey-50 border-b border-brand-grey-50"
                   >
                     {college}
                   </button>
@@ -506,7 +379,7 @@ export default function ProfileScreen({ onNavigate, showProfileWarning }: Profil
             <motion.div
               initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 350 }}
-              className="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl z-50 max-h-[60vh] flex flex-col shadow-xl"
+              className="fixed bottom-0 end-0 start-0 bg-white rounded-t-2xl z-50 max-h-[60vh] flex flex-col shadow-xl"
             >
               <div className="flex items-center justify-between px-4 pt-3 pb-2 border-b border-brand-grey-100">
                 <div />
@@ -520,11 +393,11 @@ export default function ProfileScreen({ onNavigate, showProfileWarning }: Profil
                   <button data-tap="44" aria-label="تأكيد"
                     key={grade}
                     onClick={() => { setSelectedGrade(grade); setShowGradeSheet(false) }}
-                    className={`w-full text-right px-4 py-3 text-[13px] transition-colors border-b border-brand-grey-50 ${
+                    className={`w-full text-start px-4 py-3 text-[13px] transition-colors border-b border-brand-grey-50 ${
                       selectedGrade === grade ? 'text-sky-500 bg-sky-50 font-semibold' : 'text-navy-800 hover:bg-brand-grey-50'
                     }`}
                   >
-                    {selectedGrade === grade && <Check className="w-4 h-4 text-sky-500 inline-block ml-2" />}
+                    {selectedGrade === grade && <Check className="w-4 h-4 text-sky-500 inline-block me-2" />}
                     {grade}
                   </button>
                 ))}

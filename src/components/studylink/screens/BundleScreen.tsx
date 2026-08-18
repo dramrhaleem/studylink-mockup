@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef } from 'react'
-import { X, Check, Info, Sparkles, Plus, Minus, Package } from 'lucide-react'
+import { X, Check, Info, Sparkles, Plus, Minus, Package, BookMarked, FileText, Microscope, type LucideIcon } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { toast } from 'sonner'
 import { doctors, getSubjectsForGrade } from '@/lib/studylink-data'
@@ -37,10 +37,10 @@ const subjects = [
   { name: 'فسيولوجي', doctors: ['د. خالد إبراهيم'] },
 ]
 
-const typeLabels: Record<ContentType, string> = {
-  'شرح نظري': '📖',
-  'أسئلة MCQs': '📝',
-  'ورق عملي': '🔬',
+const typeLabels: Record<ContentType, LucideIcon> = {
+  'شرح نظري': BookMarked,
+  'أسئلة MCQs': FileText,
+  'ورق عملي': Microscope,
 }
 
 const staggerContainer = {
@@ -147,6 +147,8 @@ export default function BundleScreen({ onNavigate }: BundleScreenProps) {
         size: 4 + Math.random() * 6,
         delay: Math.random() * 0.5,
       }))
+      /* جسيمات مؤقتة تُمسح بعد 2.5s — أثر عرضي محض لا حالة مشتقّة. */
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setConfettiParticles(particles)
       const timer = setTimeout(() => setConfettiParticles([]), 2500)
       return () => clearTimeout(timer)
@@ -214,16 +216,18 @@ export default function BundleScreen({ onNavigate }: BundleScreenProps) {
       {/* Header with gradient background and bundle icon */}
       <div className="sticky top-0 z-30 px-4 pt-3 pb-5 relative overflow-hidden bg-gradient-to-l from-navy-800 via-navy-800 to-sky-900">
         {/* Decorative elements */}
-        <div className="absolute -left-10 -top-10 w-32 h-32 rounded-full bg-sky-500/10 pointer-events-none" />
-        <div className="absolute -right-6 -bottom-8 w-24 h-24 rounded-full bg-white/5 pointer-events-none" />
+        <div className="absolute -end-10 -top-10 w-32 h-32 rounded-full bg-sky-500/10 pointer-events-none" />
+        <div className="absolute -start-6 -bottom-8 w-24 h-24 rounded-full bg-white/5 pointer-events-none" />
         {/* Bundle icon illustration */}
-        <div className="absolute left-4 top-2 opacity-10 pointer-events-none">
+        <div className="absolute end-4 top-2 opacity-10 pointer-events-none">
           <Package className="w-20 h-20 text-white" />
         </div>
 
         <div className="relative z-10">
           <div className="flex items-center justify-between mb-2">
-            <button data-tap="44" onClick={() => onNavigate?.('home')} className="text-white/70 text-[13px]">✕</button>
+            <button data-tap="44" aria-label="إغلاق" onClick={() => onNavigate?.('home')} className="text-white/70">
+              <X className="w-4 h-4" aria-hidden="true" />
+            </button>
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-sky-300" />
               <h1 className="text-[15px] font-bold text-white">صانع الباقات</h1>
@@ -246,6 +250,7 @@ export default function BundleScreen({ onNavigate }: BundleScreenProps) {
           <div className="flex flex-wrap gap-2">
             {(Object.keys(contentTypes) as ContentType[]).map(type => {
               const isActive = contentTypes[type]
+              const TypeIcon = typeLabels[type]
               return (
                 <button data-tap="44" aria-label="تأكيد"
                   key={type}
@@ -259,7 +264,7 @@ export default function BundleScreen({ onNavigate }: BundleScreenProps) {
                   <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[12px] transition-all ${
                     isActive ? 'bg-sky-500 text-white' : 'bg-brand-grey-300 text-white'
                   }`}>
-                    {isActive ? <Check className="w-2.5 h-2.5" /> : typeLabels[type]}
+                    {isActive ? <Check className="w-2.5 h-2.5" /> : <TypeIcon className="w-2.5 h-2.5" aria-hidden="true" />}
                   </span>
                   {type}
                 </button>
@@ -273,7 +278,7 @@ export default function BundleScreen({ onNavigate }: BundleScreenProps) {
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-[13px] font-bold text-navy-800">
               اختر المواد
-              <span className="text-[12px] text-brand-grey-400 font-normal mr-2">(اختر واحدة على الأقل)</span>
+              <span className="text-[12px] text-brand-grey-400 font-normal ms-2">(اختر واحدة على الأقل)</span>
             </h3>
           </div>
           {selectedGrade && (
@@ -324,24 +329,27 @@ export default function BundleScreen({ onNavigate }: BundleScreenProps) {
           <div className="space-y-2">
             {(Object.keys(contentTypes) as ContentType[])
               .filter(t => contentTypes[t])
-              .map(type => (
-                <button data-tap="44" aria-label="زيادة"
-                  key={type}
-                  onClick={() => {
-                    const activeSubjects = subjects.filter(s => selectedDoctors[s.name])
-                    if (activeSubjects.length > 0) {
-                      addItemToBundle(activeSubjects[0].name, selectedDoctors[activeSubjects[0].name], type)
-                    }
-                  }}
-                  className="w-full flex items-center justify-between p-3 rounded-xl bg-brand-grey-50 hover:bg-brand-grey-100 transition-colors active:scale-[0.98] border border-brand-grey-200/50"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">{typeLabels[type]}</span>
-                    <span className="text-[13px] font-semibold text-navy-800">{type}</span>
-                  </div>
-                  <Plus className="w-5 h-5 text-sky-500" />
-                </button>
-              ))}
+              .map(type => {
+                const TypeIcon = typeLabels[type]
+                return (
+                  <button data-tap="44" aria-label="زيادة"
+                    key={type}
+                    onClick={() => {
+                      const activeSubjects = subjects.filter(s => selectedDoctors[s.name])
+                      if (activeSubjects.length > 0) {
+                        addItemToBundle(activeSubjects[0].name, selectedDoctors[activeSubjects[0].name], type)
+                      }
+                    }}
+                    className="w-full flex items-center justify-between p-3 rounded-xl bg-brand-grey-50 hover:bg-brand-grey-100 transition-colors active:scale-[0.98] border border-brand-grey-200/50"
+                  >
+                    <div className="flex items-center gap-2">
+                      <TypeIcon className="w-4 h-4 text-brand-grey-500" aria-hidden="true" />
+                      <span className="text-[13px] font-semibold text-navy-800">{type}</span>
+                    </div>
+                    <Plus className="w-5 h-5 text-sky-500" />
+                  </button>
+                )
+              })}
           </div>
         </motion.div>
 
@@ -357,38 +365,41 @@ export default function BundleScreen({ onNavigate }: BundleScreenProps) {
 
             <div className="space-y-2 max-h-[240px] overflow-y-auto phone-scroll">
               <AnimatePresence mode="popLayout">
-                {bundleItems.map(item => (
-                  <motion.div
-                    key={item.id}
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex items-center justify-between py-2 border-b border-brand-grey-100 last:border-0"
-                  >
-                    <div className="flex-1 ml-3 min-w-0">
-                      <div className="flex items-center gap-1.5 mb-0.5">
-                        <span className="text-[11px] bg-sky-50 text-sky-700 px-1.5 py-0.5 rounded font-semibold">
-                          {typeLabels[item.type]}
-                        </span>
-                        <span className="text-[11px] bg-brand-grey-100 text-brand-grey-600 px-1.5 py-0.5 rounded">
-                          {item.subject}
-                        </span>
+                {bundleItems.map(item => {
+                  const TypeIcon = typeLabels[item.type]
+                  return (
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="flex items-center justify-between py-2 border-b border-brand-grey-100 last:border-0"
+                    >
+                      <div className="flex-1 me-3 min-w-0">
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <span className="inline-flex items-center justify-center w-5 h-5 bg-sky-50 text-sky-700 rounded">
+                            <TypeIcon className="w-3 h-3" aria-hidden="true" />
+                          </span>
+                          <span className="text-[11px] bg-brand-grey-100 text-brand-grey-600 px-1.5 py-0.5 rounded">
+                            {item.subject}
+                          </span>
+                        </div>
+                        <p className="text-[13px] font-medium text-brand-grey-900">{item.title}</p>
+                        <p className="text-[12px] text-brand-grey-500">{item.doctor} · {item.subject}</p>
                       </div>
-                      <p className="text-[13px] font-medium text-brand-grey-900">{item.title}</p>
-                      <p className="text-[12px] text-brand-grey-500">{item.doctor} · {item.subject}</p>
-                    </div>
-                    <div className="flex items-center gap-2 flex-shrink-0">
-                      <span className="text-[13px] font-bold text-navy-800 sl-num">{item.price} ج.م</span>
-                      <button data-tap="44" aria-label="إغلاق"
-                        onClick={() => removeItem(item.id)}
-                        className="w-6 h-6 rounded-full bg-error-bg text-error flex items-center justify-center tap-44"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </div>
-                  </motion.div>
-                ))}
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        <span className="text-[13px] font-bold text-navy-800 sl-num">{item.price} ج.م</span>
+                        <button data-tap="44" aria-label="إغلاق"
+                          onClick={() => removeItem(item.id)}
+                          className="w-6 h-6 rounded-full bg-error-bg text-error flex items-center justify-center tap-44"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                    </motion.div>
+                  )
+                })}
               </AnimatePresence>
             </div>
           </motion.div>
@@ -397,7 +408,9 @@ export default function BundleScreen({ onNavigate }: BundleScreenProps) {
         {/* Empty state */}
         {!hasItems && (
           <motion.div variants={staggerItem} className="bg-white rounded-2xl p-6 shadow-sm border border-brand-grey-200/50 text-center">
-            <span className="text-4xl mb-3">📦</span>
+            <div className="w-16 h-16 rounded-2xl bg-brand-grey-100 flex items-center justify-center mx-auto mb-3">
+              <Package className="w-7 h-7 text-brand-grey-400" aria-hidden="true" />
+            </div>
             <p className="text-[13px] font-semibold text-brand-grey-700 mb-1">لم تختر مذكرات بعد</p>
             <p className="text-[12px] text-brand-grey-400">اختر المواد والمحتوى من الأعلى</p>
           </motion.div>
@@ -435,7 +448,7 @@ export default function BundleScreen({ onNavigate }: BundleScreenProps) {
                 key={bundleItems.length}
               >
                 <span className="text-[12px] text-success font-medium">
-                  🎉 وفرت {savings} جنيه مع StudyLink! (كان {originalDelivery} ج.م)
+                  وفرت {savings} جنيه مع StudyLink! (كان {originalDelivery} ج.م)
                 </span>
               </motion.div>
 
@@ -467,7 +480,7 @@ export default function BundleScreen({ onNavigate }: BundleScreenProps) {
           <Sparkles className="w-4 h-4" />
           <span>أضف باقة الأسبوع للسلة</span>
           {hasItems && (
-            <span className="sl-num text-white/80">— {bundleItems.length} مذكرات بـ {total} جنيهاً</span>
+            <span className="text-white/80">— <span className="sl-num">{bundleItems.length}</span> مذكرات بـ <span className="sl-num">{total}</span> جنيهاً</span>
           )}
         </motion.button>
       </div>

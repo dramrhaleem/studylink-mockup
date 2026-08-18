@@ -95,6 +95,8 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api) return
+/* مكوّن shadcn/embla: المزامنة الأولى مع واجهة الكاروسيل الخارجية — نظام خارجي، وهو الاستثناء المقصود للقاعدة. */
+// eslint-disable-next-line react-hooks/set-state-in-effect
     onSelect(api)
     api.on("reInit", onSelect)
     api.on("select", onSelect)

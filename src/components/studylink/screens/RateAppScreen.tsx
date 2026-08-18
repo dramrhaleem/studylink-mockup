@@ -2,21 +2,19 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Star, X, Send, MessageSquare, ChevronLeft } from 'lucide-react'
+import { Star, X, Send, MessageSquare, ChevronLeft, Heart } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface RateAppScreenProps {
   onNavigate?: (screen: string) => void
 }
 
-const emojis = ['😢', '😕', '😐', '🙂', '😍']
-
 const ratingLabels: Record<number, string> = {
-  1: '😟 نأسف',
-  2: '😟 نأسف',
-  3: '👍 جيد',
-  4: '😊 رائع',
-  5: '😊 رائع',
+  1: 'نأسف',
+  2: 'نأسف',
+  3: 'جيد',
+  4: 'رائع',
+  5: 'رائع',
 }
 
 // Confetti particle component for thank you state
@@ -82,7 +80,6 @@ function FloatingStar({ size, className, delay, duration }: {
 export default function RateAppScreen({ onNavigate }: RateAppScreenProps) {
   const [rating, setRating] = useState(0)
   const [hoveredStar, setHoveredStar] = useState(0)
-  const [selectedEmoji, setSelectedEmoji] = useState<number | null>(null)
   const [feedback, setFeedback] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [starsReady, setStarsReady] = useState(false)
@@ -96,6 +93,8 @@ export default function RateAppScreen({ onNavigate }: RateAppScreenProps) {
   // Reset stars when switching from submitted back to form
   useEffect(() => {
     if (!submitted) {
+      /* إعادة تشغيل حركة النجوم عند العودة من شاشة الشكر — توقيت عرضي. */
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setStarsReady(false)
       const timer = setTimeout(() => setStarsReady(true), 100)
       return () => clearTimeout(timer)
@@ -113,7 +112,7 @@ export default function RateAppScreen({ onNavigate }: RateAppScreenProps) {
   const handleSubmit = () => {
     if (rating === 0) return
     setSubmitted(true)
-    toast.success('شكراً لتقييمك! 🎉')
+    toast.success('شكراً لتقييمك!')
   }
 
   const handleLater = () => {
@@ -123,24 +122,24 @@ export default function RateAppScreen({ onNavigate }: RateAppScreenProps) {
   return (
     <div className="screen-enter min-h-full bg-brand-grey-100 flex flex-col relative overflow-hidden">
       {/* Floating decorative stars with parallax drift */}
-      <FloatingStar size={16} className="top-[8%] right-[8%]" delay={0} duration={5} />
-      <FloatingStar size={12} className="top-[15%] left-[12%]" delay={0.8} duration={6} />
-      <FloatingStar size={20} className="top-[45%] right-[5%]" delay={1.5} duration={5.5} />
-      <FloatingStar size={10} className="top-[60%] left-[6%]" delay={0.3} duration={4.5} />
-      <FloatingStar size={14} className="bottom-[20%] right-[15%]" delay={2} duration={6.5} />
+      <FloatingStar size={16} className="top-[8%] start-[8%]" delay={0} duration={5} />
+      <FloatingStar size={12} className="top-[15%] end-[12%]" delay={0.8} duration={6} />
+      <FloatingStar size={20} className="top-[45%] start-[5%]" delay={1.5} duration={5.5} />
+      <FloatingStar size={10} className="top-[60%] end-[6%]" delay={0.3} duration={4.5} />
+      <FloatingStar size={14} className="bottom-[20%] start-[15%]" delay={2} duration={6.5} />
 
       {/* Header — gradient navy-800 → sky-900 with animated star decorations */}
       <div className="relative flex items-center justify-center px-4 py-3 bg-gradient-to-l from-navy-800 to-sky-900 overflow-hidden">
         {/* Decorative animated stars in header */}
         <motion.span
-          className="absolute top-1 right-8 pointer-events-none"
+          className="absolute top-1 start-8 pointer-events-none"
           animate={{ rotate: [0, 360], opacity: [0.2, 0.4, 0.2] }}
           transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
         >
           <Star size={14} className="text-white/20 fill-white/20" />
         </motion.span>
         <motion.span
-          className="absolute bottom-1 left-10 pointer-events-none"
+          className="absolute bottom-1 end-10 pointer-events-none"
           animate={{ rotate: [0, -360], opacity: [0.15, 0.35, 0.15] }}
           transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
         >
@@ -156,7 +155,7 @@ export default function RateAppScreen({ onNavigate }: RateAppScreenProps) {
 
         <button data-tap="44"
           onClick={handleLater}
-          className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-white/10 transition-colors z-10"
+          className="absolute start-4 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-white/10 transition-colors z-10"
           aria-label="إغلاق"
         >
           <X size={20} className="text-white/70" />
@@ -182,9 +181,8 @@ export default function RateAppScreen({ onNavigate }: RateAppScreenProps) {
                 transition={{ duration: 0.3 }}
                 className="p-6 flex flex-col items-center gap-5"
               >
-                {/* Animated Heart Emoji */}
+                {/* Animated Heart */}
                 <motion.div
-                  className="text-5xl"
                   animate={{
                     scale: [1, 1.18, 1],
                   }}
@@ -194,7 +192,7 @@ export default function RateAppScreen({ onNavigate }: RateAppScreenProps) {
                     ease: 'easeInOut',
                   }}
                 >
-                  ❤️
+                  <Heart className="w-12 h-12 text-error fill-error" aria-hidden="true" />
                 </motion.div>
 
                 {/* Title */}
@@ -282,59 +280,12 @@ export default function RateAppScreen({ onNavigate }: RateAppScreenProps) {
                   </AnimatePresence>
                 </div>
 
-                {/* Emoji Feedback Row — bounce animation on select */}
-                <div className="flex items-center gap-3">
-                  {emojis.map((emoji, idx) => {
-                    const numericIdx = idx + 1
-                    const isSelected = selectedEmoji === numericIdx
-                    return (
-                      <motion.button data-tap="44"
-                        key={emoji}
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{ 
-                          delay: 0.4 + idx * 0.06, 
-                          type: 'spring', 
-                          stiffness: 300, 
-                          damping: 15 
-                        }}
-                        whileTap={{ scale: 0.85 }}
-                        onClick={() => setSelectedEmoji(numericIdx)}
-                        className={`tap-44 w-10 h-10 rounded-full flex items-center justify-center text-xl transition-colors duration-200 relative ${
-                          isSelected
-                            ? 'bg-amber-50'
-                            : 'bg-brand-grey-100 hover:bg-brand-grey-200'
-                        }`}
-                        aria-label={emoji}
-                      >
-                        {isSelected && (
-                          <motion.span
-                            className="absolute inset-0 rounded-full bg-warning/20 border-2 border-warning/40"
-                            layoutId="emojiRing"
-                            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                          />
-                        )}
-                        <motion.span
-                          key={isSelected ? 'selected' : 'idle'}
-                          animate={isSelected ? { 
-                            scale: [1, 1.3, 0.9, 1.1, 1],
-                          } : { scale: 1 }}
-                          transition={isSelected ? { duration: 0.5, ease: 'easeOut' } : {}}
-                          className="relative z-10"
-                        >
-                          {emoji}
-                        </motion.span>
-                      </motion.button>
-                    )
-                  })}
-                </div>
-
                 {/* Feedback Textarea with animated character count */}
                 <div className="w-full relative">
                   <div className="relative">
                     <MessageSquare
                       size={16}
-                      className="absolute right-3 top-3 text-brand-grey-400 pointer-events-none"
+                      className="absolute start-3 top-3 text-brand-grey-400 pointer-events-none"
                     />
                     <textarea
                       value={feedback}
@@ -345,7 +296,7 @@ export default function RateAppScreen({ onNavigate }: RateAppScreenProps) {
                       }}
                       placeholder="أخبرنا المزيد..."
                       rows={3}
-                      className="w-full pr-9 pl-3 pt-2.5 pb-6 text-sm bg-brand-grey-100 rounded-xl border-0 text-navy-800 placeholder:text-brand-grey-400 resize-none focus:outline-none focus:ring-2 focus:ring-sky-500/30 transition-shadow"
+                      aria-label="رأيك في التطبيق" className="w-full ps-9 pe-3 pt-2.5 pb-6 text-sm bg-brand-grey-100 rounded-xl border-0 text-navy-800 placeholder:text-brand-grey-400 resize-none focus:outline-none focus:ring-2 focus:ring-sky-500/30 transition-shadow"
                       dir="rtl"
                     />
                   </div>
@@ -355,7 +306,7 @@ export default function RateAppScreen({ onNavigate }: RateAppScreenProps) {
                     initial={{ scale: feedback.length > 0 ? 1.1 : 1 }}
                     animate={{ scale: 1 }}
                     transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-                    className={`absolute bottom-2 left-3 text-xs sl-num flex items-center gap-0.5 ${
+                    className={`absolute bottom-2 end-3 text-xs sl-num flex items-center gap-0.5 ${
                       feedback.length >= 190
                         ? 'text-error'
                         : 'text-brand-grey-400'
@@ -368,7 +319,7 @@ export default function RateAppScreen({ onNavigate }: RateAppScreenProps) {
                       <motion.span
                         initial={{ width: 0 }}
                         animate={{ width: `${(feedback.length / 200) * 40}px` }}
-                        className="h-1 rounded-full bg-sky-400 mr-1 inline-block"
+                        className="h-1 rounded-full bg-sky-400 ms-1 inline-block"
                         transition={{ duration: 0.3 }}
                       />
                     )}
@@ -429,33 +380,6 @@ export default function RateAppScreen({ onNavigate }: RateAppScreenProps) {
                     size={4 + Math.random() * 6}
                   />
                 ))}
-
-                {/* Success Animation */}
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{
-                    type: 'spring',
-                    stiffness: 200,
-                    damping: 15,
-                    delay: 0.15,
-                  }}
-                  className="w-16 h-16 rounded-full bg-gradient-to-br from-sky-50 to-sky-100 flex items-center justify-center shadow-lg shadow-sky-200/50"
-                >
-                  <motion.span
-                    className="text-3xl"
-                    initial={{ scale: 0, rotate: -30 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{
-                      type: 'spring',
-                      stiffness: 300,
-                      damping: 12,
-                      delay: 0.35,
-                    }}
-                  >
-                    🎉
-                  </motion.span>
-                </motion.div>
 
                 <motion.h2
                   initial={{ opacity: 0, y: 8 }}

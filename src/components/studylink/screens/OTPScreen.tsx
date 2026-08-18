@@ -143,12 +143,12 @@ export default function OTPScreen({ onNavigate }: OTPScreenProps) {
             <motion.div
               animate={{ rotate: [0, 5, -5, 0] }}
               transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
-              className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-sky-300/40 blur-sm"
+              className="absolute -top-2 -start-2 w-8 h-8 rounded-full bg-sky-300/40 blur-sm"
             />
             <motion.div
               animate={{ rotate: [0, -5, 5, 0] }}
               transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut', delay: 0.5 }}
-              className="absolute -bottom-2 -left-2 w-10 h-10 rounded-full bg-sky-300/30 blur-sm"
+              className="absolute -bottom-2 -end-2 w-10 h-10 rounded-full bg-sky-300/30 blur-sm"
             />
             <Phone className="w-10 h-10 text-white" />
           </div>

@@ -69,7 +69,7 @@ function Section({ id, number, title, icon, children, description }: {
         </div>
       </div>
       {description && (
-        <p className="text-[13px] text-brand-grey-500 leading-relaxed mb-6 mr-12">{description}</p>
+        <p className="text-[13px] text-brand-grey-500 leading-relaxed mb-6 ms-12">{description}</p>
       )}
       <div className="space-y-6">
         {children}
@@ -104,7 +104,7 @@ function CodeBlock({ children }: { children: string }) {
       </pre>
       <button data-tap="44" aria-label="نسخ"
         onClick={() => navigator.clipboard.writeText(children)}
-        className="absolute top-3 left-3 w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 text-white/50 hover:text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 tap-44"
+        className="absolute top-3 end-3 w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 text-white/50 hover:text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 tap-44"
       >
         <Copy className="w-3.5 h-3.5" />
       </button>
@@ -127,7 +127,7 @@ function SubSection({ title, children }: { title: string; children: ReactNode })
 function InfoCard({ type = 'info', children }: { type?: 'info' | 'success' | 'error' | 'warning'; children: ReactNode }) {
   const styles = {
     info: { bg: 'bg-sky-50', border: 'border-sky-100', icon: <Info className="w-4 h-4 text-sky-500" />, text: 'text-sky-700' },
-    success: { bg: 'bg-emerald-50', border: 'border-emerald-100', icon: <CheckCircle2 className="w-4 h-4 text-emerald-600" />, text: 'text-emerald-700' },
+    success: { bg: 'bg-teal-50', border: 'border-teal-100', icon: <CheckCircle2 className="w-4 h-4 text-teal-600" />, text: 'text-teal-700' },
     error: { bg: 'bg-red-50', border: 'border-red-100', icon: <XCircle className="w-4 h-4 text-red-500" />, text: 'text-red-700' },
     warning: { bg: 'bg-amber-50', border: 'border-amber-100', icon: <AlertTriangle className="w-4 h-4 text-amber-600" />, text: 'text-amber-700' },
   }
@@ -330,7 +330,7 @@ export default function DesignSystemShowcase() {
                   animate={{ y: 0 }}
                   exit={{ y: '100%' }}
                   transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-                  className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl p-5 pb-8 max-h-[60vh] overflow-y-auto"
+                  className="absolute bottom-0 end-0 start-0 bg-white rounded-t-3xl p-5 pb-8 max-h-[60vh] overflow-y-auto"
                 >
                   <div className="w-10 h-1 rounded-full bg-brand-grey-300 mx-auto mb-4" />
                   <nav className="grid grid-cols-2 gap-2">
@@ -373,7 +373,7 @@ export default function DesignSystemShowcase() {
                   { name: 'Success', hex: '#007C50', usage: 'حالة النجاح' },
                   { name: 'Error', hex: '#B4122E', usage: 'الأخطاء، الخصومات' },
                   { name: 'Warning', hex: '#9C5E00', usage: 'التحذيرات' },
-                  { name: 'Amber 400', hex: '#FFE24B', usage: 'التقييمات، Achievement' },
+                  { name: 'Amber 400', hex: '#FFE24B', usage: 'مكافأة السفير · شارة أدوات مكتبية' },
                 ]} />
               </SubSection>
 
@@ -479,10 +479,10 @@ export default function DesignSystemShowcase() {
                   <span className="inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg bg-sky-50 text-sky-600">
                     <Truck className="w-3.5 h-3.5" /> تم الشحن
                   </span>
-                  <span className="inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200/60">
+                  <span className="inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg bg-teal-50 text-teal-600 border border-teal-200/60">
                     <CircleCheck className="w-3.5 h-3.5" /> تم التسليم
                   </span>
-                  <span className="inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200/60">
+                  <span className="inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg bg-teal-50 text-teal-600 border border-teal-200/60">
                     <CircleDot className="w-3.5 h-3.5" /> متاح
                   </span>
                 </PreviewBox>
@@ -753,7 +753,7 @@ shadow-lg shadow-navy-800/20`}</CodeBlock>
                 <PreviewBox label="مباشر">
                   <button data-tap="44" className="bg-success text-white font-bold text-[14px] px-8 py-3.5 rounded-xl shadow-lg shadow-success/25 active:scale-[0.98] transition-transform flex items-center gap-2">
                     <CheckCircle2 className="w-5 h-5" />
-                    تمت الإضافة ✓
+                    تمت الإضافة
                   </button>
                 </PreviewBox>
               </SubSection>
@@ -774,8 +774,8 @@ shadow-lg shadow-navy-800/20`}</CodeBlock>
                 <PreviewBox label="مباشر" className="items-start justify-start">
                   <div className="w-[155px] bg-white rounded-2xl overflow-hidden shadow-sm border border-brand-grey-200/50">
                     <div className="w-full aspect-[4/3] bg-gradient-to-br from-sky-100 to-sky-50 relative">
-                      <span className="absolute top-1.5 right-1.5 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-navy-800/80 text-white backdrop-blur-sm">تشريح</span>
-                      <span className="absolute top-1.5 left-1.5 text-[11px] font-bold sl-num bg-[#B4122E] text-white px-1.5 py-px rounded">-20%</span>
+                      <span className="absolute top-1.5 start-1.5 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-navy-800/80 text-white backdrop-blur-sm">تشريح</span>
+                      <span className="absolute top-1.5 end-1.5 text-[11px] font-bold sl-num bg-error text-white px-1.5 py-px rounded">-20%</span>
                     </div>
                     <div className="p-3">
                       <p className="text-[12px] font-bold text-navy-800 leading-tight line-clamp-2 mb-1.5">ملخص تشريح الفصل الأول — شرح مبسط</p>
@@ -805,7 +805,7 @@ shadow-sm border border-brand-grey-200/50
                       <div className="w-8 h-8 rounded-lg bg-brand-grey-200/60 flex items-center justify-center">
                         <Box className="w-4 h-4 text-brand-grey-400" />
                       </div>
-                      <span className="absolute top-1 right-1 text-[11px] font-semibold px-1.5 py-px rounded bg-teal-50 text-teal-900 border border-teal-200/60">طبي</span>
+                      <span className="absolute top-1 start-1 text-[11px] font-semibold px-1.5 py-px rounded bg-teal-50 text-teal-900 border border-teal-200/60">طبي</span>
                     </div>
                     <div className="p-2.5">
                       <p className="text-[12px] font-bold text-navy-800 leading-tight line-clamp-2 mb-1">سماعة طبية</p>
@@ -858,7 +858,7 @@ shadow-sm border border-brand-grey-200/50
                     </div>
                     {/* Discount Badge */}
                     <div className="flex items-center gap-3">
-                      <span className="text-[11px] font-bold sl-num bg-[#B4122E] text-white px-1.5 py-px rounded">-20%</span>
+                      <span className="text-[11px] font-bold sl-num bg-error text-white px-1.5 py-px rounded">-20%</span>
                       <span className="text-[12px] text-brand-grey-500">badge الخصم</span>
                     </div>
                     {/* Bundle Badge */}
@@ -871,14 +871,14 @@ shadow-sm border border-brand-grey-200/50
                     </div>
                     {/* New Badge */}
                     <div className="flex items-center gap-3">
-                      <span className="text-[11px] font-bold px-1.5 py-0.5 rounded-md bg-emerald-500 text-white">جديد</span>
+                      <span className="text-[11px] font-bold px-1.5 py-0.5 rounded-md bg-teal-500 text-white">جديد</span>
                       <span className="text-[12px] text-brand-grey-500">badge الجديد</span>
                     </div>
                     {/* Cart Badge */}
                     <div className="flex items-center gap-3">
                       <span className="relative inline-flex">
                         <ShoppingBag className="w-5 h-5 text-navy-800" />
-                        <span className="absolute -top-1.5 -right-1.5 min-w-[16px] h-4 bg-sky-500 text-white text-[12px] font-bold sl-num px-1 rounded-full shadow-sm shadow-sky-500/30 flex items-center justify-center">3</span>
+                        <span className="absolute -top-1.5 -start-1.5 min-w-[16px] h-4 bg-sky-500 text-white text-[12px] font-bold sl-num px-1 rounded-full shadow-sm shadow-sky-500/30 flex items-center justify-center">3</span>
                       </span>
                       <span className="text-[12px] text-brand-grey-500">Cart Count Badge</span>
                     </div>
@@ -985,11 +985,11 @@ shadow-sm border border-brand-grey-200/50
                   <div className="w-full max-w-xs">
                     <label className="text-[12px] font-semibold text-brand-grey-700 mb-1.5 block">حقل مع أيقونة</label>
                     <div className="relative">
-                      <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-grey-400" />
+                      <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-grey-400" />
                       <input
                         type="text"
                         placeholder="ابحث..."
-                        className="w-full bg-brand-grey-50 border border-brand-grey-200/60 rounded-xl pr-10 pl-4 py-3 text-[13px] text-navy-900 placeholder:text-brand-grey-400 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100 transition-colors"
+                        className="w-full bg-brand-grey-50 border border-brand-grey-200/60 rounded-xl ps-10 pe-4 py-3 text-[13px] text-navy-900 placeholder:text-brand-grey-400 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100 transition-colors"
                         readOnly
                       />
                     </div>
@@ -1019,11 +1019,11 @@ shadow-sm border border-brand-grey-200/50
                 <PreviewBox label="مباشر">
                   <div className="flex items-center gap-4">
                     <div className="w-11 h-6 rounded-full bg-brand-grey-300 relative cursor-pointer">
-                      <div className="w-5 h-5 rounded-full bg-white absolute top-0.5 right-0.5 shadow-sm" />
+                      <div className="w-5 h-5 rounded-full bg-white absolute top-0.5 start-0.5 shadow-sm" />
                     </div>
                     <span className="text-[13px] text-brand-grey-500">إيقاف</span>
                     <div className="w-11 h-6 rounded-full bg-sky-500 relative cursor-pointer">
-                      <div className="w-5 h-5 rounded-full bg-white absolute top-0.5 left-0.5 shadow-sm" />
+                      <div className="w-5 h-5 rounded-full bg-white absolute top-0.5 end-0.5 shadow-sm" />
                     </div>
                     <span className="text-[13px] text-brand-grey-500">تشغيل</span>
                   </div>
@@ -1053,7 +1053,7 @@ shadow-sm border border-brand-grey-200/50
                   <div className="bg-white rounded-2xl border border-brand-grey-200/60 p-5 shadow-sm">
                     <p className="text-[12px] font-bold text-brand-grey-600 mb-3">Delivery Pulse — 2s</p>
                     <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
+                      <div className="w-3 h-3 rounded-full bg-teal-500 animate-pulse" />
                       <span className="text-[13px] text-brand-grey-600">تم التسليم</span>
                     </div>
                   </div>
@@ -1085,9 +1085,9 @@ shadow-sm border border-brand-grey-200/50
                   <table className="w-full text-[13px]">
                     <thead className="bg-navy-800">
                       <tr>
-                        <th className="text-right px-4 py-3 font-semibold text-white/90 text-[12px]">Stiffness</th>
-                        <th className="text-right px-4 py-3 font-semibold text-white/90 text-[12px]">Damping</th>
-                        <th className="text-right px-4 py-3 font-semibold text-white/90 text-[12px]">الاستخدام</th>
+                        <th className="text-start px-4 py-3 font-semibold text-white/90 text-[12px]">Stiffness</th>
+                        <th className="text-start px-4 py-3 font-semibold text-white/90 text-[12px]">Damping</th>
+                        <th className="text-start px-4 py-3 font-semibold text-white/90 text-[12px]">الاستخدام</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -1215,13 +1215,13 @@ Spring: damping: 28-30, stiffness: 300`}</CodeBlock>
                     <div className="rounded-2xl rounded-bl-md bg-sky-500 text-white px-4 py-3 text-[13px] leading-relaxed">
                       عايز أسأل عن محاضرات التشريح
                     </div>
-                    <p className="text-[12px] text-brand-grey-400 mt-1 mr-1">9:30 م</p>
+                    <p className="text-[12px] text-brand-grey-400 mt-1 ms-1">9:30 م</p>
                   </div>
                   <div className="max-w-[75%] self-start">
                     <div className="rounded-2xl rounded-br-md bg-white px-4 py-3 text-[13px] leading-relaxed shadow-sm border border-brand-grey-200/50">
-                      أهلاً بيك! محاضرات التشريح متوفرة في مكتبة هارفرد وبرلين. تقدر توصل ليها من الشاشة الرئيسية 👍
+                      أهلاً بيك! محاضرات التشريح متوفرة في مكتبة هارفرد وبرلين. تقدر توصل ليها من الشاشة الرئيسية
                     </div>
-                    <p className="text-[12px] text-brand-grey-400 mt-1 ml-1">9:30 م • StudyLink Bot</p>
+                    <p className="text-[12px] text-brand-grey-400 mt-1 me-1">9:30 م • StudyLink Bot</p>
                   </div>
                   <div className="self-start flex items-center gap-1 px-4 py-2">
                     <div className="w-2 h-2 rounded-full bg-sky-400 animate-bounce" style={{ animationDelay: '0ms' }} />
@@ -1287,7 +1287,7 @@ Spring: damping: 28-30, stiffness: 300`}</CodeBlock>
               description="قواعد لازم تتبعها وممنوع تتجاوزها أبداً"
             >
               {/* Don'ts */}
-              <SubSection title="ممنوع ❌">
+              <SubSection title="ممنوع">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
                     'استخدام Indigo/Blue كألوان',
@@ -1307,7 +1307,7 @@ Spring: damping: 28-30, stiffness: 300`}</CodeBlock>
               </SubSection>
 
               {/* Musts */}
-              <SubSection title="لازم ✅">
+              <SubSection title="لازم">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
                     'كل الأرقام والأسعار بـ sl-num',
@@ -1319,9 +1319,9 @@ Spring: damping: 28-30, stiffness: 300`}</CodeBlock>
                     'الحد الأدنى للعناصر التفاعلية: 48×48px',
                     'كل الـ Backdrops لازم تستخدم bg-black/30 أو /40 أو /50',
                   ].map(rule => (
-                    <div key={rule} className="flex items-start gap-2.5 p-3 rounded-xl bg-emerald-50/60 border border-emerald-100/60">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-[13px] text-emerald-800/80 leading-relaxed">{rule}</span>
+                    <div key={rule} className="flex items-start gap-2.5 p-3 rounded-xl bg-teal-50/60 border border-teal-100/60">
+                      <CheckCircle2 className="w-4 h-4 text-teal-500 mt-0.5 flex-shrink-0" />
+                      <span className="text-[13px] text-teal-800/80 leading-relaxed">{rule}</span>
                     </div>
                   ))}
                 </div>
@@ -1412,7 +1412,7 @@ Spring: damping: 28-30, stiffness: 300`}</CodeBlock>
       {/* Scroll to top */}
       <motion.button data-tap="44" aria-label="لأعلى"
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className="fixed bottom-6 right-6 z-50 w-10 h-10 rounded-full bg-navy-800 text-white shadow-lg shadow-navy-800/20 flex items-center justify-center hover:bg-navy-900 transition-colors tap-44"
+        className="fixed bottom-6 start-6 z-50 w-10 h-10 rounded-full bg-navy-800 text-white shadow-lg shadow-navy-800/20 flex items-center justify-center hover:bg-navy-900 transition-colors tap-44"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         whileHover={{ scale: 1.1 }}

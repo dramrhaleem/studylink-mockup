@@ -4,6 +4,7 @@ import { asset } from '@/lib/asset'
 
 import { Plus } from 'lucide-react'
 import type { Product } from '@/lib/studylink-data'
+import { categoryStyle } from '@/lib/category'
 
 const subjectImageMap: Record<string, string> = {
   'جراحة عامة': asset('/products/surgery.png'),
@@ -23,25 +24,18 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, onAdd, variant = 'lecture' }: ProductCardProps) {
+  const cat = categoryStyle(product.category)
+
   if (variant === 'tool') {
     return (
       <div className={`bg-white rounded-2xl overflow-hidden shadow-sm border border-brand-grey-200/50 ${!product.available ? 'opacity-60' : ''}`}>
-        {/* Image placeholder */}
+        {/* Image placeholder — اللون والأيقونة من `lib/category.ts` لا من هنا */}
         <div className="h-20 bg-brand-grey-100 flex items-center justify-center relative">
-          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-            product.category === 'أدوات طبية' ? 'bg-teal-50' : 'bg-amber-50'
-          }`}>
-            <span className="text-lg">
-              {product.category === 'أدوات طبية' ? '🏥' : '✏️'}
-            </span>
+          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${cat.iconBg}`}>
+            <cat.Icon className={`w-5 h-5 ${cat.iconInk}`} aria-hidden />
           </div>
-          {/* Category badge */}
-          <span className={`absolute top-2 right-2 text-[12px] font-semibold px-2 py-0.5 rounded-full ${
-            product.category === 'أدوات طبية' 
-              ? 'bg-teal-50 text-teal-900' 
-              : 'bg-amber-50 text-amber-900'
-          }`}>
-            {product.category === 'أدوات طبية' ? 'طبي' : 'مكتبي'}
+          <span className={`absolute top-2 end-2 text-[12px] font-semibold px-2 py-0.5 rounded-full ${cat.bg} ${cat.ink} border ${cat.border}`}>
+            {cat.short}
           </span>
         </div>
         <div className="p-2.5">
@@ -81,7 +75,7 @@ export default function ProductCard({ product, onAdd, variant = 'lecture' }: Pro
             alt={product.subject || ''}
             className="w-full h-full object-cover"
           />
-          <span className="absolute top-2 right-2 text-[12px] font-semibold px-2 py-0.5 rounded-full bg-navy-800/80 text-white backdrop-blur-sm">
+          <span className="absolute top-2 start-2 text-[12px] font-semibold px-2 py-0.5 rounded-full bg-navy-800/80 text-white backdrop-blur-sm">
             {product.subject}
           </span>
         </div>
@@ -96,7 +90,7 @@ export default function ProductCard({ product, onAdd, variant = 'lecture' }: Pro
       <div className="p-3 flex flex-col flex-1">
         {/* Store Name */}
         <p className="text-[12px] text-brand-grey-500 font-medium mb-0.5">
-          {product.store === 'هارفرد' ? '📚 مكتبة هارفرد' : '📖 مكتبة برلين'}
+          {product.store === 'هارفرد' ? 'مكتبة هارفرد' : 'مكتبة برلين'}
         </p>
         
         {/* Doctor */}

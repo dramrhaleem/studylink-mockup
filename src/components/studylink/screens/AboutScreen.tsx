@@ -4,7 +4,7 @@ import { asset } from '@/lib/asset'
 
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { ChevronLeft, Shield, Zap, Heart, BookOpen, Truck, Clock, Target, Award, Mail, MessageCircle, Instagram, Twitter, ExternalLink, Store, Receipt, Bell } from 'lucide-react'
+import { ChevronLeft, Shield, Zap, Heart, BookOpen, Truck, Clock, Target, Award, Mail, MessageCircle, Instagram, Twitter, ExternalLink, Store, Receipt, Bell, User } from 'lucide-react'
 import Image from 'next/image'
 
 interface AboutScreenProps {
@@ -18,30 +18,30 @@ interface AboutScreenProps {
    البديل: حقائق عن كيفية عمل المنصة — صحيحة اليوم، ولا تحتاج بيانات لإثباتها.
    حين يصير للنظام أرقام حقيقية، تُوصل هذه البطاقات بمصدرها. */
 const facts = [
-  { icon: Store, title: 'مكتبتان شريكتان', desc: 'هارفرد وبرلين — الطلب بيتجمّع من المكتبة نفسها', color: 'text-sky-600', bg: 'bg-sky-50' },
-  { icon: Truck, title: 'توصيل أو استلام', desc: 'تختار اللي يناسبك، والمساران واضحان بنفس القدر', color: 'text-navy-800', bg: 'bg-navy-50' },
-  { icon: Receipt, title: 'كل بند مكتوب', desc: 'سعر المكتبة ورسوم الخدمة والتوصيل — كلٌ على حدة', color: 'text-success', bg: 'bg-success-bg' },
-  { icon: Bell, title: 'حالة الطلب لحظية', desc: 'كل تغيير في الطلب بيوصلك، وقت التأخير كمان', color: 'text-amber-600', bg: 'bg-amber-50' },
+  { icon: Store, title: 'مكتبتان شريكتان', desc: 'هارفرد وبرلين — الطلب بيتجمّع من المكتبة نفسها', color: 'text-navy-800', bg: 'bg-brand-grey-100' },
+  { icon: Truck, title: 'توصيل أو استلام', desc: 'تختار اللي يناسبك، والمساران واضحان بنفس القدر', color: 'text-navy-800', bg: 'bg-brand-grey-100' },
+  { icon: Receipt, title: 'كل بند مكتوب', desc: 'سعر المكتبة ورسوم الخدمة والتوصيل — كلٌ على حدة', color: 'text-navy-800', bg: 'bg-brand-grey-100' },
+  { icon: Bell, title: 'حالة الطلب لحظية', desc: 'كل تغيير في الطلب بيوصلك، وقت التأخير كمان', color: 'text-navy-800', bg: 'bg-brand-grey-100' },
 ]
 
 const values = [
-  { icon: Target, title: 'الوصول السريع', desc: 'طلبك يتجمّع من المكتبة ويوصلك، أو تستلمه بنفسك', color: 'from-sky-500 to-sky-400' },
-  { icon: Shield, title: 'الشفافية والجودة', desc: 'حالة المنتج ومصدره مكتوبان قبل ما تطلب', color: 'from-violet-500 to-violet-400' },
-  { icon: Zap, title: 'الأسعار الشفافة', desc: 'سعر المكتبة ورسوم المنصة والتوصيل — بنود منفصلة قبل الدفع', color: 'from-amber-500 to-amber-400' },
-  { icon: Heart, title: 'صُمم للطلاب', desc: 'تجربة مصممة خصيصاً لطلاب الطب', color: 'from-error to-red-400' },
-  { icon: Clock, title: 'التوصيل المرن', desc: 'تتبع طلبك لحظة لحظة حتى يوصلك', color: 'from-teal-500 to-teal-400' },
-  { icon: Award, title: 'سفراء الإحالة', desc: 'اكسب 20 جنيه عن كل طالب تسجل من كودك', color: 'from-navy-700 to-navy-600' },
+  { icon: Target, title: 'الوصول السريع', desc: 'طلبك يتجمّع من المكتبة ويوصلك، أو تستلمه بنفسك', color: 'from-navy-800 to-navy-700' },
+  { icon: Shield, title: 'الشفافية والجودة', desc: 'حالة المنتج ومصدره مكتوبان قبل ما تطلب', color: 'from-navy-800 to-navy-700' },
+  { icon: Zap, title: 'الأسعار الشفافة', desc: 'سعر المكتبة ورسوم المنصة والتوصيل — بنود منفصلة قبل الدفع', color: 'from-navy-800 to-navy-700' },
+  { icon: Heart, title: 'صُمم للطلاب', desc: 'تجربة مصممة خصيصاً لطلاب الطب', color: 'from-navy-800 to-navy-700' },
+  { icon: Clock, title: 'التوصيل المرن', desc: 'تتبع طلبك لحظة لحظة حتى يوصلك', color: 'from-navy-800 to-navy-700' },
+  { icon: Award, title: 'سفراء الإحالة', desc: 'اكسب 20 جنيه عن كل طالب تسجل من كودك', color: 'from-navy-800 to-navy-700' },
 ]
 
 const team = [
-  { role: 'مؤسس ورئيس تنفيذي', name: 'أحمد الشريف', emoji: '👨‍💼', gradient: 'from-sky-100 to-sky-50' },
-  { role: 'مدير العمليات', name: 'محمود عادل', emoji: '👨‍💻', gradient: 'from-violet-100 to-violet-50' },
-  { role: 'مدير التسويق', name: 'فاطمة السيد', emoji: '👩‍🎨', gradient: 'from-amber-100 to-amber-50' },
+  { role: 'مؤسس ورئيس تنفيذي', name: 'أحمد الشريف' },
+  { role: 'مدير العمليات', name: 'محمود عادل' },
+  { role: 'مدير التسويق', name: 'فاطمة السيد' },
 ]
 
 const socialLinks = [
-  { label: 'واتساب', icon: MessageCircle, color: 'text-green-600', bg: 'bg-green-50', hoverBg: 'bg-green-100', description: 'تواصل سريع' },
-  { label: 'إنستجرام', icon: Instagram, color: 'text-pink-600', bg: 'bg-pink-50', hoverBg: 'bg-pink-100', description: '@studylink' },
+  { label: 'واتساب', icon: MessageCircle, color: 'text-teal-600', bg: 'bg-teal-50', hoverBg: 'bg-teal-100', description: 'تواصل سريع' },
+  { label: 'إنستجرام', icon: Instagram, color: 'text-navy-800', bg: 'bg-brand-grey-100', hoverBg: 'bg-brand-grey-200', description: '@studylink' },
   { label: 'تويتر', icon: Twitter, color: 'text-sky-500', bg: 'bg-sky-50', hoverBg: 'bg-sky-100', description: '@studylink' },
   { label: 'البريد الإلكتروني', icon: Mail, color: 'text-navy-700', bg: 'bg-navy-50', hoverBg: 'bg-navy-100', description: 'support@studylink.app' },
 ]
@@ -110,22 +110,22 @@ export default function AboutScreen({ onNavigate }: AboutScreenProps) {
       <motion.div
         animate={{ y: [0, -15, 0], x: [0, 5, 0] }}
         transition={{ repeat: Infinity, duration: 6, ease: 'easeInOut' }}
-        className="absolute top-32 right-2 w-3 h-3 rounded-full bg-sky-200/40 pointer-events-none z-0"
+        className="absolute top-32 start-2 w-3 h-3 rounded-full bg-sky-200/40 pointer-events-none z-0"
       />
       <motion.div
         animate={{ y: [0, 10, 0], x: [0, -8, 0] }}
         transition={{ repeat: Infinity, duration: 7, ease: 'easeInOut', delay: 1 }}
-        className="absolute top-56 left-4 w-2 h-2 rounded-full bg-violet-200/40 pointer-events-none z-0"
+        className="absolute top-56 end-4 w-2 h-2 rounded-full bg-brand-grey-200/40 pointer-events-none z-0"
       />
       <motion.div
         animate={{ y: [0, -8, 0] }}
         transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut', delay: 2 }}
-        className="absolute bottom-64 right-8 w-4 h-4 rounded-full bg-amber-200/30 pointer-events-none z-0"
+        className="absolute bottom-64 start-8 w-4 h-4 rounded-full bg-amber-200/30 pointer-events-none z-0"
       />
       <motion.div
         animate={{ y: [0, 12, 0], x: [0, 6, 0] }}
         transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut', delay: 0.5 }}
-        className="absolute bottom-96 left-6 w-2.5 h-2.5 rounded-full bg-teal-200/40 pointer-events-none z-0"
+        className="absolute bottom-96 end-6 w-2.5 h-2.5 rounded-full bg-teal-200/40 pointer-events-none z-0"
       />
 
       {/* Header */}
@@ -160,15 +160,15 @@ export default function AboutScreen({ onNavigate }: AboutScreenProps) {
           <motion.div
             animate={{ x: [0, 10, 0], y: [0, -10, 0] }}
             transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }}
-            className="pointer-events-none absolute -left-8 -top-8 h-32 w-32 rounded-full bg-white/5"
+            className="pointer-events-none absolute -end-8 -top-8 h-32 w-32 rounded-full bg-white/5"
           />
           <motion.div
             animate={{ x: [0, -8, 0], y: [0, 8, 0] }}
             transition={{ repeat: Infinity, duration: 6, ease: 'easeInOut', delay: 1 }}
-            className="pointer-events-none absolute -right-6 bottom-[-16px] h-24 w-24 rounded-full bg-white/5"
+            className="pointer-events-none absolute -start-6 bottom-[-16px] h-24 w-24 rounded-full bg-white/5"
           />
           {/* Small decorative dots */}
-          <div className="pointer-events-none absolute top-3 right-6 flex gap-1.5">
+          <div className="pointer-events-none absolute top-3 start-6 flex gap-1.5">
             {[0, 1, 2].map(i => (
               <motion.div
                 key={i}
@@ -204,7 +204,7 @@ export default function AboutScreen({ onNavigate }: AboutScreenProps) {
             رسالتنا
           </h3>
           <p className="text-[13px] text-brand-grey-600 leading-[1.9]">
-            نجمع حل مشكلة حقيقية بيع الطالب محاضراتهم وأدواتهم من المكتبات المختلفة. بدل ما يروحوا من مكتبة لمكتبة، StudyLink يجمع كل المحاضرات في مكان واحد مع توصيل سريع وأسعار شفافة.
+            نجمع حل مشكلة حقيقية بيع الطالب محاضراتهم وأدواتهم من المكتبات المختلفة. بدل ما يروحوا من مكتبة لمكتبة، StudyLink يجمعها في مكان واحد، مع توصيل أو استلام وسعر مفصّل بندًا بندًا.
           </p>
           <p className="text-[13px] text-brand-grey-500 leading-[1.9] mt-2">
             بنينا التطبيق ليكون سهل الاستخدام قدر الإمكان — لأن وقت الطالب غالي وكل دقيقة بتعني حاجة.
@@ -325,9 +325,9 @@ export default function AboutScreen({ onNavigate }: AboutScreenProps) {
                 <motion.div
                   whileHover={{ scale: 1.15, rotate: [0, -5, 5, 0] }}
                   transition={{ duration: 0.4 }}
-                  className={`w-12 h-12 rounded-xl bg-gradient-to-br ${member.gradient} flex items-center justify-center text-2xl shadow-sm`}
+                  className="w-12 h-12 rounded-xl bg-brand-grey-50 flex items-center justify-center shadow-sm"
                 >
-                  {member.emoji}
+                  <User className="w-6 h-6 text-brand-grey-400" aria-hidden="true" />
                 </motion.div>
                 <div>
                   <p className="text-[13px] font-semibold text-navy-800">{member.name}</p>
@@ -354,7 +354,7 @@ export default function AboutScreen({ onNavigate }: AboutScreenProps) {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.25 + idx * 0.06, duration: 0.25 }}
-                  className="bg-white rounded-2xl p-3.5 border border-brand-grey-200/50 shadow-sm text-right hover:bg-brand-grey-50 transition-all group"
+                  className="bg-white rounded-2xl p-3.5 border border-brand-grey-200/50 shadow-sm text-start hover:bg-brand-grey-50 transition-all group"
                 >
                   <motion.div
                     whileHover={{ rotate: [0, -8, 8, 0], scale: 1.1 }}
@@ -385,14 +385,14 @@ export default function AboutScreen({ onNavigate }: AboutScreenProps) {
               whileTap={{ scale: 0.95 }}
               className="bg-white text-sky-600 text-[12px] font-semibold px-4 py-2 rounded-xl shadow-sm"
             >
-              📧 support@studylink.app
+              support@studylink.app
             </motion.button>
             <motion.button data-tap="44"
               whileHover={{ scale: 1.05, y: -1 }}
               whileTap={{ scale: 0.95 }}
               className="bg-white text-sky-600 text-[12px] font-semibold px-4 py-2 rounded-xl shadow-sm"
             >
-              📱 واتسابنا
+              واتسابنا
             </motion.button>
           </div>
         </motion.div>

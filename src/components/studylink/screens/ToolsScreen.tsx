@@ -3,7 +3,7 @@
 import { asset } from '@/lib/asset'
 
 import { useState, useCallback } from 'react'
-import { Plus, ChevronLeft, Search, Check } from 'lucide-react'
+import { Plus, ChevronLeft, Search, Check, Package, Stethoscope, PenLine } from 'lucide-react'
 import BottomNavBar from '@/components/studylink/BottomNavBar'
 import CartHeaderButton from '../CartHeaderButton'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -104,7 +104,7 @@ export default function ToolsScreen({ onNavigate }: ToolsScreenProps) {
 
         {/* Filter Pills */}
         <div className="flex gap-2">
-          {([['الكل', '📦'], ['أدوات طبية', '🏥'], ['أدوات مكتبية', '✏️']] as const).map(([label, emoji]) => {
+          {([['الكل', Package], ['أدوات طبية', Stethoscope], ['أدوات مكتبية', PenLine]] as const).map(([label, Icon]) => {
             const count = getFilterCount(label)
             const isActive = activeFilter === label
             return (
@@ -118,7 +118,7 @@ export default function ToolsScreen({ onNavigate }: ToolsScreenProps) {
                 }`}
                 style={{ minHeight: 48 }}
               >
-                <span>{emoji}</span>
+                <Icon className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>{label}</span>
                 {isActive && (
                   <motion.span
@@ -177,7 +177,7 @@ export default function ToolsScreen({ onNavigate }: ToolsScreenProps) {
                     unoptimized
                   />
                   {/* Category badge */}
-                  <span className={`absolute top-1 right-1 text-[11px] font-semibold px-1.5 py-px rounded-full border z-20 ${
+                  <span className={`absolute top-1 start-1 text-[11px] font-semibold px-1.5 py-px rounded-full border z-20 ${
                     isMedical
                       ? 'bg-white/90 text-teal-900 border-teal-200/60'
                       : 'bg-white/90 text-amber-900 border-amber-200/60'
@@ -185,13 +185,13 @@ export default function ToolsScreen({ onNavigate }: ToolsScreenProps) {
                     {isMedical ? 'طبي' : 'مكتبي'}
                   </span>
                   {hasDiscount && (
-                    <span className="absolute top-1 left-1 text-[11px] font-bold sl-num bg-amber-500 text-white px-1.5 py-px rounded-full z-20">
-                      🔥 خصم {discountPct}%
+                    <span className="absolute top-1 end-1 text-[11px] font-bold sl-num bg-amber-500 text-white px-1.5 py-px rounded-full z-20">
+                      خصم {discountPct}%
                     </span>
                   )}
                   {/* Has variants indicator */}
                   {product.hasVariants && (
-                    <span className="absolute bottom-1 right-1 text-[11px] font-semibold bg-navy-800/80 text-white px-1.5 py-px rounded z-20">
+                    <span className="absolute bottom-1 start-1 text-[11px] font-semibold bg-navy-800/80 text-white px-1.5 py-px rounded z-20">
                       خيارات متعددة
                     </span>
                   )}
@@ -216,8 +216,8 @@ export default function ToolsScreen({ onNavigate }: ToolsScreenProps) {
                       </div>
                       {hasDiscount && (
                         <div className="flex items-center gap-0.5 mt-px">
-                          <Check className="w-2.5 h-2.5 text-emerald-600" />
-                          <span className="text-[11px] font-semibold text-emerald-600">وفرت {savingsAmt} ج.م</span>
+                          <Check className="w-2.5 h-2.5 text-teal-600" />
+                          <span className="text-[11px] font-semibold text-teal-600">وفرت {savingsAmt} ج.م</span>
                         </div>
                       )}
                     </div>

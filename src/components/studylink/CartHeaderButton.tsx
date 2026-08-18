@@ -28,6 +28,7 @@ export default function CartHeaderButton({ onNavigate, size = 'default', light =
 
   return (
     <motion.button data-tap="44"
+      aria-label="السلة"
       onClick={() => onNavigate?.('cart')}
       whileTap={{ scale: 0.9 }}
       className={`relative flex items-center justify-center rounded-full active:scale-95 transition-colors ${
@@ -43,7 +44,7 @@ export default function CartHeaderButton({ onNavigate, size = 'default', light =
           initial={{ scale: 0.5 }}
           animate={{ scale: 1 }}
           transition={{ type: 'spring' as const, stiffness: 500, damping: 15 }}
-          className={`absolute -top-0.5 -right-0.5 flex items-center justify-center rounded-full bg-sky-500 text-white font-bold sl-num px-0.5 shadow-sm shadow-sky-500/30 ${badgeClass}`}
+          className={`absolute -top-0.5 -start-0.5 flex items-center justify-center rounded-full bg-sky-500 text-white font-bold sl-num px-0.5 shadow-sm shadow-sky-500/30 ${badgeClass}`}
         >
           {cartCount}
         </motion.span>

@@ -42,15 +42,15 @@ const quickReplies = [
 
 const botResponses: Record<string, string> = {
   'أسعار المحاضرات':
-    '💰 أسعار المحاضرات تبدأ من 45 ج.م فقط! عندك باقات اقتصادية وباقات شاملة. استخدم كود STUDY10 لخصم إضافي 10% 🎉',
+    'أسعار المحاضرات تبدأ من 45 ج.م، وفيه باقات اقتصادية وباقات شاملة. أكواد الخصم بتتحط في صفحة الدفع.',
   'مواعيد التوصيل':
     'الوقت المتوقع للتوصيل بيظهر مع طلبك وبيتحدّث مع حالته، وتقدر تتابعه من «طلباتي».',
   'كود خصم':
-    '🏷️ عندك 3 أكواد خصم متاحة:\n• STUDY10 → خصم 10%\n• WELCOME20 → خصم 20% للعملاء الجدد\n• AMBASSADOR → خصم 15% للسفراء\nجربهم دلوقتي! 🎁',
+    'أكواد الخصم بتتحط في صفحة الدفع قبل التأكيد.\nلو معاك كود سفير هتلاقيه في صفحة السفراء جاهز للنسخ.',
   'سياسة الاسترجاع':
     'لو في مشكلة في المنتج اللي وصلك، ابعتلنا من هنا وهنرجعلك بالخطوة اللي تحل المشكلة.',
   'التحدث مع موظف':
-    '👤 بالطبع! تقدر تواصل مع فريقنا عبر:\n• واتساب: متاح 9ص - 11م\n• إيميل: support@studylink.com\nهنرد عليك في أسرع وقت! 💬',
+    'تقدر تتواصل مع الفريق عبر:\n• واتساب: 9 ص — 11 م\n• إيميل: support@studylink.com',
 }
 
 const faqItems: FAQItem[] = [
@@ -63,9 +63,9 @@ const faqItems: FAQItem[] = [
   },
   {
     id: 'faq2',
-    question: 'هل التوصيل مجاني؟',
+    question: 'التوصيل بكام؟',
     answer:
-      'سعر التوصيل 25 ج.م بسعر مخفض (بدل 30 ج.م). لو طلبت أكتر من 200 ج.م، التوصيل يكون مجاني! وصل سريع خلال 30-45 دقيقة.',
+      'التوصيل 25 ج.م لكل طلب، والاستلام من المكتبة بدون رسوم. الوقت تقديري وبيظهر في صفحة التتبع بعد التأكيد.',
     icon: <ArrowLeft size={18} className="text-sky-500" />,
   },
   {
@@ -175,7 +175,7 @@ function TypingIndicator() {
       className="flex items-start gap-2 mb-3"
     >
       <div className="w-7 h-7 rounded-full bg-gradient-to-br from-navy-800 to-sky-600 flex items-center justify-center flex-shrink-0 mt-1 shadow-sm shadow-navy-800/30">
-        <span className="text-[13px]">🤖</span>
+        <Bot className="w-4 h-4 text-white" aria-hidden />
       </div>
       <div className="bg-white rounded-2xl rounded-br-md px-4 py-3 shadow-sm">
         <div className="flex items-center gap-1.5">
@@ -225,7 +225,7 @@ function FloatingBotIcon() {
         transition={{ delay: 0.5 }}
         className="text-[13px] text-brand-grey-400"
       >
-        مساعدك الذكي جاهز لمساعدتك ✨
+        مساعدك الذكي جاهز لمساعدتك
       </motion.p>
     </div>
   )
@@ -269,7 +269,7 @@ export default function ChatSupportScreen({ onNavigate }: ChatSupportScreenProps
       setIsTyping(false)
       const botMsg: ChatMessage = {
         id: `bot-${Date.now()}`,
-        text: botResponses[reply] || '🙏 شكراً لرسالتك! فريقنا هيرد عليك في أقرب وقت.',
+        text: botResponses[reply] || 'شكرًا لرسالتك — الفريق هيرد عليك في أقرب وقت.',
         sender: 'bot',
         time: getTimestamp(),
       }
@@ -297,20 +297,20 @@ export default function ChatSupportScreen({ onNavigate }: ChatSupportScreenProps
     setTimeout(() => {
       setIsTyping(false)
       let response =
-        '🙏 شكراً لرسالتك! فريقنا متاح يومياً من 9 صباحاً لـ 11 مساءً. لو محتاج مساعدة فورية، تواصل معانا على support@studylink.com 💬'
+        'شكرًا لرسالتك. الفريق متاح يوميًا من 9 ص إلى 11 م، ولو محتاج مساعدة فورية ابعت على support@studylink.com.'
 
       // Smart keyword matching
       const lowerText = text
       if (lowerText.includes('سعر') || lowerText.includes('كم')) {
-        response = '💰 أسعار المحاضرات تبدأ من 45 ج.م فقط! عندك باقات اقتصادية وباقات شاملة حسب ميزانيتك. جرب كود STUDY10 لخصم 10% إضافي 🎉\n\nتقدر تشوف كل الأسعار من صفحة المحاضرات مباشرة! 📚'
+        response = 'أسعار المحاضرات تبدأ من 45 ج.م، وفيه باقات اقتصادية وباقات شاملة.\n\nكل الأسعار معروضة في صفحة المحاضرات قبل الإضافة للسلة.'
       } else if (lowerText.includes('توصيل') || lowerText.includes('شحن')) {
-        response = '🚀 التوصيل عندنا سريع جداً! بيوصلك خلال 30-45 دقيقة فقط ⏱️\n\nلو طلبت أكتر من 200 ج.م، التوصيل بيكون مجاني تماماً! 📦✨\n\nتقدر تتبع طلبك من صفحة "طلباتي" في التطبيق.'
+        response = 'عندك اختيارين:\n• توصيل لباب البيت — 25 ج.م\n• استلام من المكتبة — بدون رسوم\n\nوقت التوصيل بيختلف حسب المكتبة والزحمة، وبيظهر مُقدَّرًا في صفحة التتبع بعد تأكيد الطلب.'
       } else if (lowerText.includes('استرجاع') || lowerText.includes('ارجاع')) {
-        response = '🔄 سياسة الاسترجاع عندنا سهلة ومضمونة:\n\n• تقدر ترجع أي منتج خلال 24 ساعة من الاستلام\n• لازم يكون المنتج مش مستخدم\n• الفلوس ترجع لمحفظتك في StudyLink خلال 48 ساعة\n\nمحتاج مساعدة في الاسترجاع؟ أنا هنا أساعدك! ✅'
+        response = 'الاسترجاع لسه تحت التفعيل ومش متاح دلوقتي.\n\nلو وصلك منتج غلط أو تالف، كلّم الدعم في نفس اليوم وهنتصرف مع المكتبة حالة بحالة.'
       } else if (lowerText.includes('خصم') || lowerText.includes('كود')) {
-        response = '🏷️ يلا نوصفلك بأحسن العروض!\n\nعندك 3 أكواد خصم متاحة:\n• STUDY10 → خصم 10% على كل المحاضرات\n• WELCOME20 → خصم 20% للعملاء الجدد 🎉\n• AMBASSADOR → خصم 15% لسفراء StudyLink\n\nانسخ الكود وحطه في صفحة الدفع! 🎁'
+        response = 'أكواد الخصم بتتحط في صفحة الدفع قبل التأكيد.\n\nلو معاك كود سفير، هتلاقيه في صفحة السفراء جاهز للنسخ.'
       } else if (lowerText.includes('مرحبا') || lowerText.includes('هاي') || lowerText.includes('سلام')) {
-        response = 'أهلاً وسهلاً! 👋😊\n\nأنا مساعدك الذكي في StudyLink. تقدر تسألني عن:\n• 💰 أسعار المحاضرات\n• 🚀 مواعيد التوصيل\n• 🏷️ أكواد الخصم\n• 🔄 سياسة الاسترجاع\n\nأو اختار من الاقتراحات السريعة بالأسفل! ⬇️'
+        response = 'أهلًا بيك. تقدر تسألني عن:\n• أسعار المحاضرات\n• التوصيل والاستلام\n• أكواد الخصم\n• حالة طلبك\n\nأو اختار من الاقتراحات السريعة بالأسفل.'
       }
 
       const botMsg: ChatMessage = {
@@ -409,7 +409,7 @@ export default function ChatSupportScreen({ onNavigate }: ChatSupportScreenProps
                   animate={{ scale: 1 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 20, delay: 0.1 }}
                 >
-                  <span className="text-[12px]">🤖</span>
+                  <Bot className="w-3.5 h-3.5 text-white" aria-hidden />
                 </motion.div>
               )}
               <div className="max-w-[78%]">
@@ -522,7 +522,7 @@ export default function ChatSupportScreen({ onNavigate }: ChatSupportScreenProps
                       <div className="w-7 h-7 rounded-lg bg-sky-50 flex items-center justify-center flex-shrink-0">
                         {faq.icon}
                       </div>
-                      <span className="flex-1 text-right text-navy-800 text-[13px] font-medium">
+                      <span className="flex-1 text-start text-navy-800 text-[13px] font-medium">
                         {faq.question}
                       </span>
                       <motion.div
@@ -608,7 +608,7 @@ export default function ChatSupportScreen({ onNavigate }: ChatSupportScreenProps
               onFocus={() => setInputFocused(true)}
               onBlur={() => setInputFocused(false)}
               placeholder="اكتب رسالتك..."
-              className="relative w-full bg-brand-grey-100 rounded-xl px-4 py-2.5 text-[13px] text-navy-800 placeholder:text-brand-grey-400 outline-none transition-shadow"
+              aria-label="اكتب رسالتك" className="relative w-full min-h-11 bg-brand-grey-100 rounded-xl px-4 py-2.5 text-[13px] text-navy-800 placeholder:text-brand-grey-400 outline-none transition-shadow"
               dir="rtl"
             />
           </motion.div>

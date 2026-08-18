@@ -49,7 +49,7 @@ const messagesData: SLMessage[] = [
     category: 'promo',
     title: 'عرض خاص — خصم 20% على كل المحاضرات',
     preview: 'يلا نراجع مع بعض! استخدم كود EXAM20 عند الطلب وخصّص على أي محاضرة في الموقع...',
-    body: '🎉 عرض حصري لعملاء StudyLink!\n\nخصم 20% على جميع المحاضرات المسجلة لكل الفرق.\n\nاستخدم الكود: EXAM20\n\nالعرض صالح حتى نهاية الأسبوع.\n\n• ينطبق على محاضرات هارفرد وبرلين\n• يشمل المراجعات الشاملة\n• يمكن استخدامه أكثر من مرة\n\nيلا بندأ نراجع مع بعض! 📚',
+    body: 'عرض حصري لعملاء StudyLink!\n\nخصم 20% على جميع المحاضرات المسجلة لكل الفرق.\n\nاستخدم الكود: EXAM20\n\nالعرض صالح حتى نهاية الأسبوع.\n\n• ينطبق على محاضرات هارفرد وبرلين\n• يشمل المراجعات الشاملة\n• يمكن استخدامه أكثر من مرة\n\nيلا بندأ نراجع مع بعض!',
     time: 'الآن',
     timestamp: NOW - 3 * MINUTE,
     read: false,
@@ -63,12 +63,12 @@ const messagesData: SLMessage[] = [
     category: 'order',
     title: 'طلبك #1092 في الطريق إليك',
     preview: 'تم شحن طلبك (مذكرات التشريح + فسيولوجيا) عن طريق مندوبنا. التوصيل المتوقع خلال ساعة...',
-    body: '📦 تحديث الشحن\n\nتم شحن طلبك بنجاح!\n\nرقم الطلب: #1092\nالمحتويات: مذكرات التشريح + فسيولوجيا\nالمندوب: محمود\n\nالتوصيل المتوقع: خلال ساعة\n\nيمكنك تتبع الطلب من صفحة طلباتي.',
+    body: 'تحديث الشحن\n\nتم شحن طلبك بنجاح!\n\nرقم الطلب: #1092\nالمحتويات: مذكرات التشريح + فسيولوجيا\nالمندوب: محمود\n\nالوقت التقديري للوصول في صفحة التتبع\n\nيمكنك تتبع الطلب من صفحة طلباتي.',
     time: '30 دقيقة',
     timestamp: NOW - 30 * MINUTE,
     read: false,
-    iconBg: 'bg-emerald-50',
-    iconColor: 'text-emerald-500',
+    iconBg: 'bg-teal-50',
+    iconColor: 'text-teal-500',
     Icon: Package,
     highlight: 'في الطريق',
   },
@@ -77,7 +77,7 @@ const messagesData: SLMessage[] = [
     category: 'study',
     title: 'ملخص الإسعاف — نسخة محدّثة متاحة',
     preview: 'تم رفع نسخة جديدة من ملخص الإسعاف والطوارئ تشمل آخر التحديثات. حملها دلوقتي مجاناً...',
-    body: '📚 ملخص جديد متاح!\n\nملخص الإسعاف والطوارئ — نسخة 2024 المحدّثة\n\nيشمل:\n• حالات الطوارئ الأكثر شيوعاً\n• بروتوكولات ACLS و BLS\n• أسئلة امتحانية مع الحل\n\nمجاني تماماً — حملها دلوقتي! 🚀',
+    body: 'ملخص جديد متاح!\n\nملخص الإسعاف والطوارئ — نسخة 2024 المحدّثة\n\nيشمل:\n• حالات الطوارئ الأكثر شيوعاً\n• بروتوكولات ACLS و BLS\n• أسئلة امتحانية مع الحل\n\nمتاح دلوقتي من صفحة المحاضرات.',
     time: 'ساعتين',
     timestamp: NOW - 2 * HOUR,
     read: false,
@@ -91,26 +91,26 @@ const messagesData: SLMessage[] = [
     category: 'promo',
     title: 'ورشة التشريح العملي — تسجيل مفتوح',
     preview: 'ورشة عملية في قاعة التشريح مع د. أحمد. أماكن محدودة — سجّل دلوقتي واحجز مكانك...',
-    body: '🔬 ورشة التشريح العملي\n\nمع د. أحمد المنصور\n\nالميعاد: السبت 3 مساءً\nالمكان: قاعة التشريح — الدور الثالث\n\nمحتوى الورشة:\n• مراجعة عملية على الأعضاء\n• توقعات أسئلة الامتحان\n• ورقة عمل مجانية\n\nالأماكن محدودة — سجّل دلوقتي!',
+    body: 'ورشة التشريح العملي\n\nمع د. أحمد المنصور\n\nالميعاد: السبت 3 مساءً\nالمكان: قاعة التشريح — الدور الثالث\n\nمحتوى الورشة:\n• مراجعة عملية على الأعضاء\n• توقعات أسئلة الامتحان\n• ورقة عمل مجانية\n\nالأماكن محدودة — سجّل دلوقتي!',
     time: '4 ساعات',
     timestamp: NOW - 4 * HOUR,
     read: true,
-    iconBg: 'bg-violet-50',
-    iconColor: 'text-violet-500',
+    iconBg: 'bg-brand-grey-50',
+    iconColor: 'text-brand-grey-500',
     Icon: Sparkles,
     highlight: 'تسجيل مفتوح',
   },
   {
     id: 'm5',
     category: 'order',
-    title: 'تم تسليم طلبك #1087 بنجاح ✓',
-    preview: 'تم تسليم طلبك (أدوات فحص طبية) بنجاح. لو عجبك المنتج، قيّمنا ولو في مش عاجبك...',
-    body: '✅ تم التسليم بنجاح!\n\nطلب #1087 — أدوات فحص طبية\n\nتم التسليم في 2:30 مساءً\n\nلو عجبك المنتج، قيّمنا ⭐⭐⭐⭐⭐\nولو في أي مشكلة، تواصل معانا على الواتساب.',
+    title: 'تم تسليم طلبك #1087 بنجاح',
+    preview: 'تم تسليم طلبك (أدوات فحص طبية) بنجاح. لو في أي مشكلة، تواصل معانا...',
+    body: 'تم التسليم بنجاح!\n\nطلب #1087 — أدوات فحص طبية\n\nتم التسليم في 2:30 مساءً\n\nولو في أي مشكلة، تواصل معانا على الواتساب.',
     time: 'أمس',
     timestamp: NOW - DAY - 3 * HOUR,
     read: true,
-    iconBg: 'bg-emerald-50',
-    iconColor: 'text-emerald-500',
+    iconBg: 'bg-teal-50',
+    iconColor: 'text-teal-500',
     Icon: CheckCheck,
   },
   {
@@ -118,7 +118,7 @@ const messagesData: SLMessage[] = [
     category: 'study',
     title: 'نصائح قبل الامتحان — من د. سارة',
     preview: '5 نصائح ذهبية من د. سارة حسن عشان تذاكر بذكاء وما ترهقش نفسك قبل الامتحان...',
-    body: '💡 5 نصائح ذهبية قبل الامتحان\n\nمن د. سارة حسن\n\n1. ذاكر في بلوكات — 50 دقيقة ذاكرة، 10 دقائق راحة\n2. راجع بالأسئلة مش بالقراءة بس\n3. نم 7 ساعات على الأقل\n4. ابدأ بالمادة الأصعب وأنت نشيط\n5. اشرب مية كتير وخد وجبات خفيفة\n\nبالتوفيق لكم جميعاً! 🎓',
+    body: '5 نصائح ذهبية قبل الامتحان\n\nمن د. سارة حسن\n\n1. ذاكر في بلوكات — 50 دقيقة ذاكرة، 10 دقائق راحة\n2. راجع بالأسئلة مش بالقراءة بس\n3. نم 7 ساعات على الأقل\n4. ابدأ بالمادة الأصعب وأنت نشيط\n5. اشرب مية كتير وخد وجبات خفيفة\n\nبالتوفيق لكم جميعاً!',
     time: 'أمس',
     timestamp: NOW - DAY - 8 * HOUR,
     read: true,
@@ -129,9 +129,9 @@ const messagesData: SLMessage[] = [
   {
     id: 'm7',
     category: 'system',
-    title: 'مرحباً بك في StudyLink! 👋',
+    title: 'مرحباً بك في StudyLink!',
     preview: 'أهلاً بيك في StudyLink — سوقك الأكاديمي الأول. هنا تلاقي كل محتاجك من مذكرات وأدوات...',
-    body: '👋 أهلاً بيك في StudyLink!\n\nStudyLink هو سوقك الأكاديمي الأول.\n\nالمميزات:\n• 240+ مذكرة لكل الفرق\n• أدوات طبية أصلية\n• توصيل سريع خلال 30 دقيقة\n• محفظة ذكية للدفع والعمولة\n\nلو محتاج أي مساعدة، تواصل معانا من صفحة "تواصل مع الدعم".\n\nبالتوفيق في رحلتك الأكاديمية! 🚀',
+    body: 'أهلاً بيك في StudyLink!\n\nStudyLink سوق أكاديمي لطلبة جامعة المنصورة.\n\nالمميزات:\n• مذكرات وملخصات لكل الفرق\n• أدوات طبية من المكتبات الشريكة\n• توصيل لباب البيت أو استلام من المكتبة\n• محفظة ذكية للدفع والعمولة\n\nلو محتاج أي مساعدة، تواصل معانا من صفحة "تواصل مع الدعم".\n\nبالتوفيق في رحلتك الأكاديمية!',
     time: 'من أسبوع',
     timestamp: NOW - 5 * DAY,
     read: true,
@@ -463,9 +463,9 @@ export default function GiftScreen({ onNavigate }: GiftScreenProps) {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.25, delay: idx * 0.04 }}
                         onClick={() => { setSelectedMessage(msg); markAsRead(msg.id) }}
-                        className="w-full text-right bg-white rounded-2xl border border-sky-100 p-3.5 active:scale-[0.99] transition-all duration-150 hover:shadow-sm relative overflow-hidden"
+                        className="w-full text-start bg-white rounded-2xl border border-sky-100 p-3.5 active:scale-[0.99] transition-all duration-150 hover:shadow-sm relative overflow-hidden"
                       >
-                        <div className="absolute top-0 right-0 w-1 h-full bg-sky-500 rounded-l-full" />
+                        <div className="absolute top-0 start-0 w-1 h-full bg-sky-500 rounded-s-full" />
                         <div className="flex items-start gap-3">
                           <div className={`w-10 h-10 rounded-xl ${msg.iconBg} flex items-center justify-center flex-shrink-0 mt-0.5`}>
                             <MIcon className={`w-[18px] h-[18px] ${msg.iconColor}`} />
@@ -514,7 +514,7 @@ export default function GiftScreen({ onNavigate }: GiftScreenProps) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.25, delay: idx * 0.04 }}
                     onClick={() => { setSelectedMessage(msg); markAsRead(msg.id) }}
-                    className="w-full text-right bg-white rounded-2xl border border-brand-grey-200/50 p-3.5 active:scale-[0.99] transition-all duration-150 hover:shadow-sm"
+                    className="w-full text-start bg-white rounded-2xl border border-brand-grey-200/50 p-3.5 active:scale-[0.99] transition-all duration-150 hover:shadow-sm"
                   >
                     <div className="flex items-start gap-3">
                       <div className={`w-10 h-10 rounded-xl ${msg.iconBg} flex items-center justify-center flex-shrink-0 mt-0.5`}>

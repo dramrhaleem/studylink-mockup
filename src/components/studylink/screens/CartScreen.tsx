@@ -10,6 +10,8 @@ import { computeOrderTotals } from '@/lib/pricing'
 import { toast } from 'sonner'
 import { useStudylinkStore } from '@/lib/use-studylink-store'
 import { products, isProductForGrade } from '@/lib/studylink-data'
+import { categoryStyle } from '@/lib/category'
+import CategoryGlyph from '@/components/studylink/CategoryGlyph'
 import type { Product } from '@/lib/studylink-data'
 
 interface CartScreenProps {
@@ -73,6 +75,8 @@ export default function CartScreen({ onNavigate }: CartScreenProps) {
   /* expand all stores whenever cart changes */
   useEffect(() => {
     const stores = new Set(cart.map(i => i.product.store))
+    /* توسيع المكتبات حالة واجهة تتبع السلة؛ اشتقاقها أثناء الرسم يمنع المستخدم من طيّ مكتبة يدويًا. */
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (stores.size > 0) setExpandedStores(stores)
   }, [cart])
 
@@ -340,13 +344,7 @@ export default function CartScreen({ onNavigate }: CartScreenProps) {
                                 <div className="flex gap-3">
                                   {/* Thumbnail */}
                                   <div
-                                    className={`w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden ${
-                                      item.product.category === 'محاضرات'
-                                        ? 'bg-navy-50'
-                                        : item.product.category === 'أدوات طبية'
-                                          ? 'bg-teal-50'
-                                          : 'bg-amber-50'
-                                    }`}
+                                    className={`w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden ${categoryStyle(item.product.category).iconBg}`}
                                   >
                                     {item.product.image ? (
                                       <Image
@@ -358,13 +356,7 @@ export default function CartScreen({ onNavigate }: CartScreenProps) {
                                         unoptimized
                                       />
                                     ) : (
-                                      <span className="text-2xl">
-                                        {item.product.category === 'محاضرات'
-                                          ? '📚'
-                                          : item.product.category === 'أدوات طبية'
-                                            ? '🏥'
-                                            : '✏️'}
-                                      </span>
+                                      <CategoryGlyph category={item.product.category} className="w-6 h-6" />
                                     )}
                                   </div>
 
@@ -402,7 +394,7 @@ export default function CartScreen({ onNavigate }: CartScreenProps) {
                                             }
                                             updateQuantity(item.product.id, item.quantity - 1)
                                           }}
-                                          className="w-9 h-9 flex items-center justify-center active:scale-90 transition-transform border-l border-brand-grey-200/50 tap-44"
+                                          className="w-9 h-9 flex items-center justify-center active:scale-90 transition-transform border-e border-brand-grey-200/50 tap-44"
                                         >
                                           <Minus className="w-3 h-3 text-navy-800" />
                                         </button>
@@ -414,7 +406,7 @@ export default function CartScreen({ onNavigate }: CartScreenProps) {
                                       </div>
 
                                       {/* Price */}
-                                      <div className="text-left">
+                                      <div className="text-end">
                                         <span className="text-[14px] font-bold text-navy-800 sl-num">
                                           {item.product.price * item.quantity} ج.م
                                         </span>
@@ -433,7 +425,7 @@ export default function CartScreen({ onNavigate }: CartScreenProps) {
                               <motion.button data-tap="44" aria-label="زيادة"
                                 whileTap={{ scale: 0.8 }}
                                 onClick={() => { if (navigator.vibrate) navigator.vibrate(10); updateQuantity(item.product.id, item.quantity + 1) }}
-                                className="absolute -bottom-3 -left-3 w-9 h-9 rounded-full bg-sky-500 text-white flex items-center justify-center shadow-md shadow-sky-500/30 z-10 border-[3px] border-brand-grey-100 tap-44"
+                                className="absolute -bottom-3 -end-3 w-9 h-9 rounded-full bg-sky-500 text-white flex items-center justify-center shadow-md shadow-sky-500/30 z-10 border-[3px] border-brand-grey-100 tap-44"
                               >
                                 <Plus className="w-4 h-4" />
                               </motion.button>
@@ -467,13 +459,7 @@ export default function CartScreen({ onNavigate }: CartScreenProps) {
                           className="bg-white rounded-xl border border-brand-grey-200/50 shadow-sm overflow-hidden"
                         >
                           <div
-                            className={`w-full h-16 flex items-center justify-center overflow-hidden ${
-                              product.category === 'محاضرات'
-                                ? 'bg-navy-50'
-                                : product.category === 'أدوات طبية'
-                                  ? 'bg-teal-50'
-                                  : 'bg-amber-50'
-                            }`}
+                            className={`w-full h-16 flex items-center justify-center overflow-hidden ${categoryStyle(product.category).iconBg}`}
                           >
                             {product.image ? (
                               <Image
@@ -485,13 +471,7 @@ export default function CartScreen({ onNavigate }: CartScreenProps) {
                                 unoptimized
                               />
                             ) : (
-                              <span className="text-2xl">
-                                {product.category === 'محاضرات'
-                                  ? '📚'
-                                  : product.category === 'أدوات طبية'
-                                    ? '🏥'
-                                    : '✏️'}
-                              </span>
+                              <CategoryGlyph category={product.category} className="w-6 h-6" />
                             )}
                           </div>
                           <div className="p-2.5 pb-3">
@@ -514,7 +494,7 @@ export default function CartScreen({ onNavigate }: CartScreenProps) {
                               : {}
                           }
                           transition={{ duration: 0.45, ease: 'easeInOut' }}
-                          className="absolute -bottom-2.5 -left-1 w-9 h-9 rounded-full bg-sky-500 text-white flex items-center justify-center shadow-sm shadow-sky-500/30 z-10 border-[2.5px] border-brand-grey-100 tap-44"
+                          className="absolute -bottom-2.5 -end-1 w-9 h-9 rounded-full bg-sky-500 text-white flex items-center justify-center shadow-sm shadow-sky-500/30 z-10 border-[2.5px] border-brand-grey-100 tap-44"
                           style={{ minWidth: 44, minHeight: 44 }}
                         >
                           <Plus className="w-3.5 h-3.5" />
@@ -550,7 +530,7 @@ export default function CartScreen({ onNavigate }: CartScreenProps) {
                     >
                       <Truck className="w-4 h-4 text-white" />
                     </div>
-                    <div className="text-right">
+                    <div className="text-start">
                       <p
                         className={`text-[13px] font-semibold ${
                           deliveryOption === 'delivery' ? 'text-navy-800' : 'text-brand-grey-600'
@@ -583,7 +563,7 @@ export default function CartScreen({ onNavigate }: CartScreenProps) {
                     >
                       <Store className="w-4 h-4 text-white" />
                     </div>
-                    <div className="text-right">
+                    <div className="text-start">
                       <p
                         className={`text-[13px] font-semibold ${
                           deliveryOption === 'pickup' ? 'text-navy-800' : 'text-brand-grey-600'
@@ -594,7 +574,7 @@ export default function CartScreen({ onNavigate }: CartScreenProps) {
                       <p className="text-[12px] text-brand-grey-500">استلام فوري</p>
                     </div>
                   </div>
-                  <span className="text-[13px] font-bold text-success sl-num">مجاني</span>
+                  <span className="text-[13px] font-bold text-success">مجاني</span>
                 </button>
               </div>
             </motion.div>

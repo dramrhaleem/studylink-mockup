@@ -24,6 +24,8 @@ import {
   Users,
   TrendingUp,
   Info,
+  Medal,
+  Tag,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import BottomNavBar from '../BottomNavBar'
@@ -35,9 +37,9 @@ interface AmbassadorScreenProps {
 
 /* ─── Tier Configuration ─── */
 const tiers = [
-  { name: 'برونزي', emoji: '🥉', earning: 15, minReferrals: 0, color: '#CD7F32', bgLight: 'bg-amber-50', borderColor: 'border-amber-300/50', textColor: 'text-amber-800', progressColor: 'bg-amber-400' },
-  { name: 'فضي', emoji: '🥈', earning: 20, minReferrals: 5, color: '#A0A0B0', bgLight: 'bg-slate-50', borderColor: 'border-slate-300/50', textColor: 'text-slate-700', progressColor: 'bg-slate-400' },
-  { name: 'ذهبي', emoji: '🥇', earning: 25, minReferrals: 15, color: '#FFD700', bgLight: 'bg-yellow-50', borderColor: 'border-yellow-400/50', textColor: 'text-yellow-800', progressColor: 'bg-yellow-400' },
+  { name: 'برونزي', icon: Medal, earning: 15, minReferrals: 0, color: 'var(--color-brand-grey-400)', bgLight: 'bg-brand-grey-50', borderColor: 'border-brand-grey-200', textColor: 'text-brand-grey-700' },
+  { name: 'فضي', icon: Medal, earning: 20, minReferrals: 5, color: 'var(--color-navy-600)', bgLight: 'bg-navy-50', borderColor: 'border-navy-200', textColor: 'text-navy-800' },
+  { name: 'ذهبي', icon: Medal, earning: 25, minReferrals: 15, color: 'var(--color-amber-400)', bgLight: 'bg-amber-50', borderColor: 'border-amber-200', textColor: 'text-amber-600' },
 ]
 
 /* ─── Mock Data ─── */
@@ -121,7 +123,7 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
     if (kycState === 'card_reviewing') {
       reviewingTimer.current = setTimeout(() => {
         setKycState('approved')
-        toast.success('تم قبول الكارنيه بنجاح! ✓', {
+        toast.success('تم قبول الكارنيه بنجاح!', {
           style: { direction: 'rtl', fontSize: '12px' },
         })
       }, 3000)
@@ -154,7 +156,7 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
 
   /* ─── Handlers ─── */
   const handlePhoneVerify = () => {
-    toast.success('تم تأكيد رقم الموبايل بنجاح ✓', {
+    toast.success('تم تأكيد رقم الموبايل بنجاح', {
       style: { direction: 'rtl', fontSize: '12px' },
     })
     setKycState('phone_verified')
@@ -164,7 +166,7 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
     setUploadingCard(true)
     setTimeout(() => {
       setUploadingCard(false)
-      toast.success('تم رفع الكارنيه بنجاح ✓', {
+      toast.success('تم رفع الكارنيه بنجاح', {
         style: { direction: 'rtl', fontSize: '12px' },
       })
       setKycState('card_reviewing')
@@ -187,19 +189,19 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
   }
 
   const handleShareWhatsApp = () => {
-    const msg = `🚀 استخدم كود خصم ${MOCK_AMBASSADOR.code} على StudyLink واحصل على خصم حصري!`
+    const msg = `استخدم كود خصم ${MOCK_AMBASSADOR.code} على StudyLink واحصل على خصم حصري!`
     window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank')
   }
 
   const handleShareTelegram = () => {
-    const msg = `🚀 استخدم كود خصم ${MOCK_AMBASSADOR.code} على StudyLink واحصل على خصم حصري!`
+    const msg = `استخدم كود خصم ${MOCK_AMBASSADOR.code} على StudyLink واحصل على خصم حصري!`
     window.open(`https://t.me/share/url?url=${encodeURIComponent('https://studylink.com')}&text=${encodeURIComponent(msg)}`, '_blank')
   }
 
   const statusColor: Record<string, string> = {
-    'مكتمل': 'bg-emerald-50 text-emerald-700',
+    'مكتمل': 'bg-teal-50 text-teal-700',
     'معلّق': 'bg-amber-50 text-amber-700',
-    'ملغي': 'bg-red-50 text-red-600',
+    'ملغي': 'bg-error-bg text-error',
   }
 
   const cardBg = 'bg-white'
@@ -223,15 +225,17 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
           {/* Back arrow — right side in RTL */}
           <button data-tap="44" aria-label="رجوع"
             onClick={() => onNavigate?.('home')}
-            className={'absolute right-3 top-0 flex h-9 w-9 items-center justify-center rounded-full active:scale-95 transition-transform bg-brand-grey-100 text-navy-800'}
+            className={'absolute start-3 top-0 flex h-9 w-9 items-center justify-center rounded-full active:scale-95 transition-transform bg-brand-grey-100 text-navy-800'}
             style={{ minWidth: 48, minHeight: 48 }}
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
 
-          {/* Centered title */}
-          <div className="flex flex-col items-center">
-            <h1 className={'text-[15px] font-bold ' + textPrimary}>
+          {/* Centered title.
+              الحشو الجانبي إلزامي: زر الرجوع مطلق فوق نفس الشريط، وبدون
+              إخلاء 48px على الجانبين يمرّ العنوان تحته فيُقرأ «فراء StudyLink». */}
+          <div className="flex flex-col items-center px-14 min-w-0 text-center">
+            <h1 className={'text-[15px] font-bold truncate max-w-full ' + textPrimary}>
               سفراء StudyLink
             </h1>
 
@@ -241,12 +245,12 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.3, duration: 0.3 }}
-                className="mt-0.5 flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5"
+                className="mt-0.5 flex items-center gap-1 rounded-full bg-teal-50 px-2.5 py-0.5"
               >
-                <div className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-emerald-500">
+                <div className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-teal-500">
                   <Check className="h-2 w-2 text-white" />
                 </div>
-                <span className="text-[12px] font-bold text-emerald-700">✔️ سفير معتمد</span>
+                <span className="text-[12px] font-bold text-teal-700">سفير معتمد</span>
               </motion.div>
             )}
           </div>
@@ -269,8 +273,8 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
           {/* Hook Card */}
           <motion.div variants={fadeUp}>
             <div className="relative overflow-hidden rounded-2xl bg-gradient-to-bl from-navy-800 via-navy-900 to-sky-900 p-4 shadow-lg">
-              <div className="pointer-events-none absolute -left-10 -top-10 h-36 w-36 rounded-full bg-sky-500/10" />
-              <div className="pointer-events-none absolute -bottom-8 -right-8 h-28 w-28 rounded-full bg-sky-400/5" />
+              <div className="pointer-events-none absolute -end-10 -top-10 h-36 w-36 rounded-full bg-sky-500/10" />
+              <div className="pointer-events-none absolute -bottom-8 -start-8 h-28 w-28 rounded-full bg-sky-400/5" />
 
               <h2 className="relative text-center text-[18px] font-extrabold leading-tight text-white">
                 حوّل علاقاتك لفلوس{' '}
@@ -303,11 +307,11 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
                 <div className="flex items-start gap-3">
                   <div className="flex flex-col items-center">
                     <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-300 ${
-                      kycState !== 'none' ? 'border-emerald-500 bg-emerald-500' : 'border-sky-300 bg-white'
+                      kycState !== 'none' ? 'border-teal-500 bg-teal-500' : 'border-sky-300 bg-white'
                     }`}>
                       {kycState !== 'none' ? <CheckCircle2 className="h-4 w-4 text-white" /> : <Smartphone className="h-4 w-4 text-sky-500" />}
                     </div>
-                    <div className={`w-0.5 h-6 mt-1 rounded-full transition-colors duration-300 ${isCardUploaded ? 'bg-emerald-400' : 'bg-brand-grey-200'}`} />
+                    <div className={`w-0.5 h-6 mt-1 rounded-full transition-colors duration-300 ${isCardUploaded ? 'bg-teal-400' : 'bg-brand-grey-200'}`} />
                   </div>
                   <div className="flex-1 pt-1">
                     <p className="text-[13px] font-bold text-navy-900">تأكيد الموبايل (OTP)</p>
@@ -318,10 +322,10 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
                         تأكيد الموبايل
                       </button>
                     ) : (
-                      <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-emerald-50 border border-emerald-200/60 px-3 py-2">
-                        <CircleCheckBig className="h-3.5 w-3.5 text-emerald-600" />
-                        <span className="text-[12px] font-bold text-emerald-700">تم التحقق ✓</span>
-                        {user?.phone && <span className="text-[12px] text-emerald-600/70 mr-auto sl-num">{user.phone}</span>}
+                      <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-teal-50 border border-teal-200/60 px-3 py-2">
+                        <CircleCheckBig className="h-3.5 w-3.5 text-teal-600" />
+                        <span className="text-[12px] font-bold text-teal-700">تم التحقق</span>
+                        {user?.phone && <span className="text-[12px] text-teal-600/70 ms-auto sl-num">{user.phone}</span>}
                       </div>
                     )}
                   </div>
@@ -331,13 +335,13 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
                 <div className="flex items-start gap-3">
                   <div className="flex flex-col items-center">
                     <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-300 ${
-                      isCardUploaded ? 'border-emerald-500 bg-emerald-500' : kycState === 'phone_verified' ? 'border-sky-400 bg-sky-50' : 'border-brand-grey-200 bg-brand-grey-100'
+                      isCardUploaded ? 'border-teal-500 bg-teal-500' : kycState === 'phone_verified' ? 'border-sky-400 bg-sky-50' : 'border-brand-grey-200 bg-brand-grey-100'
                     }`}>
                       {isCardUploaded ? <CheckCircle2 className="h-4 w-4 text-white" /> : <Camera className={`h-4 w-4 ${kycState === 'phone_verified' ? 'text-sky-500' : 'text-brand-grey-400'}`} />}
                     </div>
                   </div>
                   <div className="flex-1 pt-1">
-                    <p className="text-[13px] font-bold text-navy-900">🪪 رفع كارنيه الكلية</p>
+                    <p className="text-[13px] font-bold text-navy-900">رفع كارنيه الكلية</p>
                     <p className="mt-0.5 text-[12px] text-brand-grey-500 leading-relaxed">وثّق إنك طالب حقيقي</p>
                     {!isCardUploaded ? (
                       <button data-tap="44" onClick={kycState === 'phone_verified' ? handleUploadCard : undefined} disabled={kycState !== 'phone_verified'} className={`mt-2 flex items-center gap-1.5 rounded-lg border px-3 py-2 text-[12px] font-bold shadow-sm transition-all ${kycState === 'phone_verified' ? 'border-navy-800 bg-white text-navy-800 active:scale-95' : 'border-brand-grey-200 bg-brand-grey-50 text-brand-grey-400 cursor-not-allowed'}`}>
@@ -346,12 +350,12 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
                     ) : isReviewing ? (
                       <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-amber-50 border border-amber-200/60 px-3 py-2">
                         <Clock className="h-3.5 w-3.5 text-amber-600 animate-pulse" />
-                        <span className="text-[12px] font-bold text-amber-700">⏳ الكارنيه بيتراجع حالياً..</span>
+                        <span className="text-[12px] font-bold text-amber-700">الكارنيه بيتراجع حاليًا</span>
                       </div>
                     ) : (
-                      <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-emerald-50 border border-emerald-200/60 px-3 py-2">
-                        <CircleCheckBig className="h-3.5 w-3.5 text-emerald-600" />
-                        <span className="text-[12px] font-bold text-emerald-700">تم قبول الكارنيه ✓</span>
+                      <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-teal-50 border border-teal-200/60 px-3 py-2">
+                        <CircleCheckBig className="h-3.5 w-3.5 text-teal-600" />
+                        <span className="text-[12px] font-bold text-teal-700">تم قبول الكارنيه</span>
                       </div>
                     )}
                   </div>
@@ -376,12 +380,12 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
           <motion.div variants={fadeUp}>
             <div className={'rounded-2xl p-4 shadow-sm border border-brand-grey-200/50 ' + cardBg}>
               <h3 className={'text-[13px] font-bold mb-3 flex items-center gap-1.5 ' + textPrimary}>
-                <span className="text-base">🏆</span>مستويات الأرباح
+                <Trophy className="h-4 w-4 text-amber-600" aria-hidden />مستويات الأرباح
               </h3>
               <div className="relative grid grid-cols-3 gap-2">
                 {tiers.map((tier, idx) => (
                   <div key={tier.name} className={`flex flex-col items-center gap-1.5 rounded-xl bg-gradient-to-b ${tier.bgLight} border ${tier.borderColor} p-3 text-center`}>
-                    <span className="text-2xl">{tier.emoji}</span>
+                    <tier.icon className="h-6 w-6" style={{ color: tier.color }} aria-hidden />
                     <span className={`text-[12px] font-bold ${tier.textColor}`}>{tier.name}</span>
                     <div className="flex items-baseline gap-0.5">
                       <span className="text-[16px] font-extrabold text-navy-900 sl-num">{tier.earning}</span>
@@ -429,7 +433,7 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
               {/* Level indicator row */}
               <div className="flex items-center gap-3 mb-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-100 to-amber-50 border border-amber-300/50 shadow-sm">
-                  <span className="text-2xl">{currentTier.emoji}</span>
+                  <currentTier.icon className="h-6 w-6" style={{ color: currentTier.color }} aria-hidden />
                 </div>
                 <div className="flex-1">
                   <p className={'text-[13px] font-bold ' + textPrimary}>أنت الآن في المستوى {currentTier.name}</p>
@@ -442,12 +446,16 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
               {/* Progress bar */}
               <div className="mb-3">
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className={'text-[12px] font-bold ' + textPrimary}>{currentTier.emoji} {currentTier.name}</span>
+                  <span className={'flex items-center gap-1 text-[12px] font-bold ' + textPrimary}>
+                    <currentTier.icon className="h-3.5 w-3.5" style={{ color: currentTier.color }} aria-hidden />{currentTier.name}
+                  </span>
                   {nextTier && (
-                    <span className={'text-[12px] font-bold ' + textSecondary}>{nextTier.emoji} {nextTier.name}</span>
+                    <span className={'flex items-center gap-1 text-[12px] font-bold ' + textSecondary}>
+                      <nextTier.icon className="h-3.5 w-3.5" style={{ color: nextTier.color }} aria-hidden />{nextTier.name}
+                    </span>
                   )}
                   {!nextTier && (
-                    <span className="text-[12px] font-bold text-emerald-600">🏆 المستوى الأقصى</span>
+                    <span className="text-[12px] font-bold text-teal-600">المستوى الأقصى</span>
                   )}
                 </div>
                 <div className={'h-2.5 w-full rounded-full overflow-hidden bg-brand-grey-200'}>
@@ -467,7 +475,7 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
                 <div className={'flex items-start gap-2 rounded-xl p-3 bg-amber-50/80'}>
                   <TrendingUp className="h-4 w-4 text-amber-500 mt-0.5 shrink-0" />
                   <p className={'text-[12px] leading-relaxed text-amber-800'}>
-                    <span className="font-bold">باقٍ لك {referralsForNext} دعوات</span> للترقية للمستوى {nextTier.name} {nextTier.emoji} وكسب{' '}
+                    <span className="font-bold">باقٍ لك {referralsForNext} دعوات</span> للترقية للمستوى {nextTier.name} وكسب{' '}
                     <span className="font-bold">{nextTier.earning} جنيهاً</span> عن كل دعوة!
                   </p>
                 </div>
@@ -475,10 +483,10 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
 
               {/* Max tier celebration */}
               {!nextTier && (
-                <div className={'flex items-start gap-2 rounded-xl p-3 bg-emerald-50/80'}>
-                  <Trophy className="h-4 w-4 text-emerald-500 mt-0.5 shrink-0" />
-                  <p className={'text-[12px] leading-relaxed text-emerald-800'}>
-                    <span className="font-bold">وصلت لأعلى مستوى! 🎉</span> أنت من أفضل سفراء StudyLink. استمر في الدعوة بدون أي حد أقصى للأرباح.
+                <div className={'flex items-start gap-2 rounded-xl p-3 bg-teal-50/80'}>
+                  <Trophy className="h-4 w-4 text-teal-500 mt-0.5 shrink-0" />
+                  <p className={'text-[12px] leading-relaxed text-teal-800'}>
+                    <span className="font-bold">وصلت لأعلى مستوى!</span> أنت من أفضل سفراء StudyLink. استمر في الدعوة بدون أي حد أقصى للأرباح.
                   </p>
                 </div>
               )}
@@ -492,7 +500,7 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
             <div className={'rounded-2xl p-4 shadow-sm border ' + cardBg + ' border-brand-grey-200/50'}>
               {/* Subtitle */}
               <p className={'text-[12px] font-bold mb-3 flex items-center gap-1.5 ' + textSecondary}>
-                <span className="text-sm">🏷️</span>
+                <Tag className="h-3.5 w-3.5" aria-hidden />
                 كود الخصم الخاص بك
               </p>
 
@@ -505,7 +513,7 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
                   onClick={handleCopyCode}
                   className={`flex h-9 w-9 items-center justify-center rounded-xl transition-all active:scale-90 ${
                     codeCopied
-                      ? 'bg-emerald-500 text-white'
+                      ? 'bg-teal-500 text-white'
                       : 'bg-sky-100 text-sky-600'
                   } tap-44`}
                 >
@@ -517,7 +525,7 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
               <div className="mt-3 grid grid-cols-2 gap-2">
                 <button data-tap="44"
                   onClick={handleShareWhatsApp}
-                  className="flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-3 py-3 text-[13px] font-bold text-white active:scale-[0.97] transition-transform shadow-sm"
+                  className="flex items-center justify-center gap-2 rounded-xl bg-teal-500 px-3 py-3 text-[13px] font-bold text-white active:scale-[0.97] transition-transform shadow-sm"
                   style={{ minHeight: 48 }}
                 >
                   <MessageCircle className="h-4 w-4" />
@@ -555,7 +563,7 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
 
                 {/* Left: Total Earnings */}
                 <div className={'flex flex-col items-center rounded-xl p-3.5 bg-brand-grey-50'}>
-                  <Wallet className="h-4 w-4 text-emerald-500 mb-1.5" />
+                  <Wallet className="h-4 w-4 text-teal-500 mb-1.5" />
                   <span className="text-[26px] font-extrabold text-navy-900 sl-num leading-none">
                     {MOCK_AMBASSADOR.totalEarnings}
                   </span>
@@ -605,7 +613,7 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
                     </div>
                     <div className="mt-1 flex items-center justify-between">
                       <span className={'text-[12px] ' + textSecondary}>{record.date}</span>
-                      <span className={`text-[13px] font-extrabold sl-num ${record.status === 'ملغي' ? 'text-brand-grey-400 line-through' : 'text-emerald-600'}`}>
+                      <span className={`text-[13px] font-extrabold sl-num ${record.status === 'ملغي' ? 'text-brand-grey-400 line-through' : 'text-teal-600'}`}>
                         {record.status === 'ملغي' ? '0' : `+${record.amount}`} ج.م
                       </span>
                     </div>
@@ -659,7 +667,7 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
                 className="w-full rounded-xl bg-gradient-to-l from-sky-500 to-sky-600 py-4 text-[14px] font-bold text-white shadow-md shadow-sky-500/30 active:shadow-lg transition-shadow"
                 style={{ minHeight: '56px' }}
               >
-                🚀 شارك كودك الآن واكسب {currentTier.earning} جنيهاً
+                شارك كودك الآن واكسب {currentTier.earning} جنيهاً
               </motion.button>
 
               {/* Utility Link — How does it work? */}
@@ -702,7 +710,7 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className={'fixed bottom-0 left-0 right-0 z-50 rounded-t-3xl px-5 pt-4 pb-8 max-h-[80vh] overflow-y-auto bg-white'}
+              className={'fixed bottom-0 end-0 start-0 z-50 rounded-t-3xl px-5 pt-4 pb-8 max-h-[80vh] overflow-y-auto bg-white'}
             >
               {/* Handle */}
               <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-brand-grey-300" />
@@ -722,15 +730,15 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
                   const isPast = idx < MOCK_AMBASSADOR.currentTier
                   const isLocked = idx > MOCK_AMBASSADOR.currentTier
                   return (
-                    <div key={tier.name} className={`flex items-center gap-3 rounded-xl p-3.5 border ${isActive ? 'border-sky-300 bg-sky-50/80' : isPast ? 'border-emerald-200/50 bg-emerald-50/50' : isLocked ? 'border-brand-grey-200/50 bg-brand-grey-50/50' : 'border-brand-grey-200/50 bg-white'}`}>
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-b text-2xl" style={{ background: `${tier.color}20` }}>
-                        {tier.emoji}
+                    <div key={tier.name} className={`flex items-center gap-3 rounded-xl p-3.5 border ${isActive ? 'border-sky-300 bg-sky-50/80' : isPast ? 'border-teal-200/50 bg-teal-50/50' : isLocked ? 'border-brand-grey-200/50 bg-brand-grey-50/50' : 'border-brand-grey-200/50 bg-white'}`}>
+                      <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${tier.bgLight}`}>
+                        <tier.icon className="h-5 w-5" style={{ color: tier.color }} aria-hidden />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
                           <span className={'text-[13px] font-bold ' + (isActive ? 'text-sky-700' : textPrimary)}>{tier.name}</span>
                           {isActive && <span className="rounded-full bg-sky-500 px-2 py-0.5 text-[11px] font-bold text-white">مستواك الحالي</span>}
-                          {isPast && <span className="rounded-full bg-emerald-500 px-2 py-0.5 text-[11px] font-bold text-white">تم تجاوزه</span>}
+                          {isPast && <span className="rounded-full bg-teal-500 px-2 py-0.5 text-[11px] font-bold text-white">تم تجاوزه</span>}
                           {isLocked && <Lock className="h-3 w-3 text-brand-grey-400" />}
                         </div>
                         <p className={'mt-0.5 text-[12px] leading-relaxed ' + textSecondary}>
@@ -739,7 +747,7 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
                           {idx === 2 && `${tier.minReferrals}+ دعوة — اكسب ${tier.earning} جنيه عن كل دعوة (المستوى الأقصى!)`}
                         </p>
                       </div>
-                      <span className="text-[18px] font-extrabold text-navy-900 sl-num">{tier.earning}<span className="text-[12px] font-bold text-brand-grey-500 mr-0.5">ج.م</span></span>
+                      <span className="text-[18px] font-extrabold text-navy-900 sl-num">{tier.earning}<span className="text-[12px] font-bold text-brand-grey-500 ms-0.5">ج.م</span></span>
                     </div>
                   )
                 })}

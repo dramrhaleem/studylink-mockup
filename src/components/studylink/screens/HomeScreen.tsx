@@ -22,12 +22,15 @@ import {
   GraduationCap,
   ShoppingCart,
   Store,
+  CalendarClock,
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { toast } from 'sonner'
 import BottomNavBar from '@/components/studylink/BottomNavBar'
 import { products, ALL_GRADES, type StoreType, type Product, type GradeType, isProductForGrade } from '@/lib/studylink-data'
 import { useStudylinkStore } from '@/lib/use-studylink-store'
+import { CATEGORY, CATEGORY_ORDER } from '@/lib/category'
+import { activeSeason } from '@/lib/season'
 import ProductDetailScreen from '@/components/studylink/screens/ProductDetailScreen'
 import QuantityControl from '@/components/studylink/QuantityControl'
 import LibraryClosedSheet from '@/components/studylink/LibraryClosedSheet'
@@ -37,7 +40,7 @@ import BundleBuilderSheet from '@/components/studylink/screens/BundleBuilderShee
 const banners = [
   { title: 'خصم 15% على باقات الامتحانات', subtitle: 'مكتبة هارفرد × StudyLink', subtext: 'لفترة محدودة', image: asset('/banners/home-banner-1.png'), overlay: 'from-navy-900/70 via-navy-900/40 to-transparent' },
   { title: 'محاضرات الأسبوع الجديدة', subtitle: 'شرح نظري + ورق عملي', subtext: 'جراحة · باطنة · أطفال', image: asset('/banners/home-banner-2.png'), overlay: 'from-sky-900/70 via-sky-900/40 to-transparent' },
-  { title: 'أدوات طبية ومكتبية', subtitle: 'سماعات · بالطو · أدوات فحص', subtext: 'من المكتبات الشريكة', image: asset('/banners/home-banner-3.png'), overlay: 'from-emerald-900/70 via-emerald-900/40 to-transparent' },
+  { title: 'أدوات طبية ومكتبية', subtitle: 'سماعات · بالطو · أدوات فحص', subtext: 'من المكتبات الشريكة', image: asset('/banners/home-banner-3.png'), overlay: 'from-teal-900/70 via-teal-900/40 to-transparent' },
 ]
 
 interface HomeScreenProps {
@@ -254,7 +257,7 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
           {/* Offers section skeleton */}
           <div className="flex items-center gap-1.5">
             <div className="h-4 w-36 skeleton-shimmer rounded" />
-            <div className="h-5 w-14 skeleton-shimmer rounded-full mr-auto" />
+            <div className="h-5 w-14 skeleton-shimmer rounded-full ms-auto" />
           </div>
           <div className="flex gap-2.5">
             {[...Array(3)].map((_, i) => (
@@ -282,7 +285,7 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
           {/* Store section skeleton */}
           <div className="flex items-center gap-1.5">
             <div className="h-4 w-32 skeleton-shimmer rounded" />
-            <div className="h-5 w-14 skeleton-shimmer rounded-full mr-auto" />
+            <div className="h-5 w-14 skeleton-shimmer rounded-full ms-auto" />
           </div>
           <div className="flex gap-2.5">
             {[...Array(2)].map((_, i) => (
@@ -310,12 +313,13 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
           <div className="flex items-center gap-2">
             <button data-tap="44"
               onClick={() => onNavigate('cart')}
+              aria-label="السلة"
               className="relative flex h-9 w-9 items-center justify-center rounded-full bg-brand-grey-100 text-navy-800 active:scale-95 transition-transform tap-44"
               style={{ minWidth: 48, minHeight: 48 }}
             >
               <ShoppingCart className="h-[18px] w-[18px]" />
               {cartCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-[16px] flex items-center justify-center rounded-full bg-sky-500 text-white text-[12px] font-bold sl-num px-0.5">
+                <span className="absolute -top-0.5 -start-0.5 min-w-[16px] h-[16px] flex items-center justify-center rounded-full bg-sky-500 text-white text-[12px] font-bold sl-num px-0.5">
                   {cartCount}
                 </span>
               )}
@@ -556,11 +560,13 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
 
         {/* ===== 3. Ambassador Card — Gradient Border ===== */}
         <div className="mx-4 mt-4">
-          <div className="rounded-2xl bg-gradient-to-l from-sky-400 via-sky-500 to-sky-600 p-[2px] shadow-sm shadow-sky-500/20">
-            <div className="flex items-center justify-between overflow-hidden rounded-[14px] bg-white px-4 py-3">
+          {/* الإطار المتدرّج ثلاثي الدرجات صار حدًّا واحدًا: البطاقة تنافس
+              بطاقة الموسم على الانتباه بلا داعٍ. */}
+          <div className="rounded-2xl border border-sky-200 bg-white shadow-sm">
+            <div className="flex items-center justify-between overflow-hidden rounded-2xl px-4 py-3">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 to-sky-600 text-lg">
-                  🌟
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-50">
+                  <Users className="h-5 w-5 text-sky-500" aria-hidden />
                 </div>
                 <div>
                   <p className="text-[13px] font-bold text-navy-900">
@@ -583,13 +589,13 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
           </div>
         </div>
 
-        {/* ===== 4. "عروض مينفعش تفوتك 🔥" Section ===== */}
+        {/* ===== 4. "عروض مينفعش تفوتك" Section ===== */}
         <div className="pt-4">
           <div className="flex items-center justify-between px-4">
             <div className="flex items-center gap-1.5">
               <Flame className="h-4 w-4 text-amber-900" />
               <span className="text-[13px] font-bold text-navy-900">
-                عروض مينفعش تفوتك 🔥
+                عروض مينفعش تفوتك
               </span>
             </div>
             <button data-tap="44"
@@ -663,7 +669,7 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
                       exit={{ opacity: 0, scale: 0.9 }}
                       whileTap={{ scale: 0.97 }}
                       onClick={() => setDetailProduct(p)}
-                      className="flex-shrink-0 w-[100px] bg-white rounded-xl border border-brand-grey-200/50 shadow-[0_1px_4px_rgba(0,0,0,0.04)] overflow-hidden text-right"
+                      className="flex-shrink-0 w-[100px] bg-white rounded-xl border border-brand-grey-200/50 shadow-[0_1px_4px_rgba(0,0,0,0.04)] overflow-hidden text-start"
                     >
                       <div className="relative w-full aspect-square overflow-hidden bg-brand-grey-50">
                         <Image
@@ -704,54 +710,56 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
               <ArrowLeft className="h-3 w-3" />
             </button>
           </div>
-          <div className="grid grid-cols-2 gap-2.5">
-            <button data-tap="44"
-              onClick={() => onNavigate('lectures')}
-              className="relative flex flex-col gap-1 overflow-hidden rounded-2xl bg-gradient-to-bl from-sky-500 to-sky-600 p-3 text-start text-white shadow-sm shadow-sky-500/20 active:scale-[0.98] transition-transform"
-            >
-              <div className="absolute -top-3 -left-3 h-16 w-16 rounded-full bg-white/10" />
-              <div className="relative z-10 flex h-8 w-8 items-center justify-center rounded-lg bg-white/20 backdrop-blur-sm">
-                <BookOpen className="h-4.5 w-4.5 text-white" />
+          {/* ── المدخل الموسمي ──────────────────────────────────────────────
+              البطاقة الوحيدة التي يتغيّر محتواها بتغيّر الوقت لا بتغيّر
+              المستخدم، فأخذت أقوى سطح في النظام (الحبر) وعرضًا كاملًا وشارة
+              موسم صريحة — تمييز وظيفي لا زخرفي.
+              كل نصوصها من `src/lib/season.ts` · بدّل `ACTIVE_SEASON` فقط. */}
+          <button
+            data-tap="44"
+            onClick={() => onNavigate(activeSeason.screen)}
+            className="relative w-full overflow-hidden rounded-2xl bg-navy-800 p-4 text-start text-white shadow-sm shadow-navy-800/20 active:scale-[0.99] transition-transform mb-2.5"
+          >
+            <div className="relative z-10 flex items-start gap-3">
+              <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-white/10">
+                <CalendarClock className="h-[18px] w-[18px] text-amber-200" />
               </div>
-              <span className="relative z-10 text-[13px] font-bold">العملي في الجيب!</span>
-              <span className="relative z-10 text-[12px] text-white/70">كل ما يتعلق بامتحانات العملي الحالية في مكان واحد.</span>
-            </button>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-[12px] font-bold text-navy-900 bg-amber-200 px-2 py-0.5 rounded-full whitespace-nowrap">
+                    {activeSeason.chip}
+                  </span>
+                  <span className="text-[12px] text-white/60 truncate">يتغيّر كل موسم</span>
+                </div>
+                <p className="mt-1.5 text-[14px] font-bold leading-tight">{activeSeason.title}</p>
+                <p className="mt-1 text-[12px] leading-relaxed text-white/70">{activeSeason.subtitle}</p>
+              </div>
+              <ArrowLeft className="mt-1 h-4 w-4 flex-shrink-0 text-white/50" aria-hidden />
+            </div>
+          </button>
 
-            <button data-tap="44"
-              onClick={() => onNavigate('tools')}
-              className="relative flex flex-col gap-1 overflow-hidden rounded-2xl bg-gradient-to-bl from-navy-700 to-navy-900 p-3 text-start text-white shadow-sm shadow-navy-800/20 active:scale-[0.98] transition-transform"
-            >
-              <div className="absolute -bottom-3 -right-3 h-14 w-14 rounded-full bg-white/5" />
-              <div className="relative z-10 flex h-8 w-8 items-center justify-center rounded-lg bg-white/15 backdrop-blur-sm">
-                <Stethoscope className="h-4.5 w-4.5 text-sky-300" />
-              </div>
-              <span className="relative z-10 text-[13px] font-bold">أدوات طبية</span>
-              <span className="relative z-10 text-[12px] text-white/50">60+ منتج</span>
-            </button>
-
-            <button data-tap="44"
-              onClick={() => onNavigate('tools')}
-              className="relative flex flex-col gap-1 overflow-hidden rounded-2xl bg-gradient-to-bl from-amber-100 to-amber-50 p-3 text-start text-amber-900 shadow-sm shadow-amber-200/30 active:scale-[0.98] transition-transform"
-            >
-              <div className="absolute -top-3 -left-3 h-12 w-12 rounded-full bg-amber-200/30" />
-              <div className="relative z-10 flex h-8 w-8 items-center justify-center rounded-lg bg-amber-200/60 backdrop-blur-sm">
-                <FlaskConical className="h-4.5 w-4.5 text-amber-700" />
-              </div>
-              <span className="relative z-10 text-[13px] font-bold">أدوات مكتبية</span>
-              <span className="relative z-10 text-[12px] text-amber-700/60">80+ منتج</span>
-            </button>
-
-            <button data-tap="44"
-              onClick={() => onNavigate('lectures')}
-              className="relative flex flex-col gap-1 overflow-hidden rounded-2xl bg-gradient-to-bl from-teal-100 to-teal-50 p-3 text-start text-teal-900 shadow-sm shadow-teal-200/30 active:scale-[0.98] transition-transform"
-            >
-              <div className="absolute -bottom-2 -right-2 h-12 w-12 rounded-full bg-teal-200/30" />
-              <div className="relative z-10 flex h-8 w-8 items-center justify-center rounded-lg bg-teal-200/60 backdrop-blur-sm">
-                <Flame className="h-4.5 w-4.5 text-teal-700" />
-              </div>
-              <span className="relative z-10 text-[13px] font-bold">المحاضرات</span>
-              <span className="relative z-10 text-[12px] text-teal-700/60">240+ مذكرة</span>
-            </button>
+          {/* ── التصنيفات الثلاثة ───────────────────────────────────────────
+              شكل واحد للثلاثة، والفرق الوحيد بينها زوج لون التصنيف من
+              `lib/category.ts`. كانت أربع بطاقات بأربعة تدرّجات وأيقونات لا
+              علاقة لها بمحتواها (قارورة كيمياء لـ«أدوات مكتبية»)، وأعداد
+              مخزون مُختلَقة («60+ منتج») تخالف بوابة الادعاءات. */}
+          <div className="grid grid-cols-3 gap-2.5">
+            {CATEGORY_ORDER.map((key) => {
+              const c = CATEGORY[key]
+              return (
+                <button
+                  key={key}
+                  data-tap="44"
+                  onClick={() => onNavigate(key === 'محاضرات' ? 'lectures' : 'tools')}
+                  className={`flex flex-col items-start gap-2 rounded-2xl border ${c.border} ${c.bg} p-3 text-start active:scale-[0.98] transition-transform`}
+                >
+                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/70">
+                    <c.Icon className={`h-4.5 w-4.5 ${c.iconInk}`} aria-hidden />
+                  </span>
+                  <span className={`text-[12px] font-bold leading-tight ${c.ink}`}>{c.label}</span>
+                </button>
+              )
+            })}
           </div>
         </div>
 
@@ -795,8 +803,8 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
 
                 {/* Layer 2: System Status */}
                 <div className="flex items-center">
-                  <span className="inline-flex items-center gap-1 text-[12px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="inline-flex items-center gap-1 text-[12px] font-semibold px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-100">
+                    <span className="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse" />
                     مفتوح الآن
                   </span>
                 </div>
@@ -860,7 +868,7 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
             exit={{ opacity: 0, scale: 0.8, y: 10 }}
             transition={{ duration: 0.2 }}
             onClick={scrollToTop}
-            className="absolute bottom-20 left-4 z-30 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg shadow-navy-900/15 border border-brand-grey-200/50 text-navy-700 active:scale-90 transition-transform tap-44"
+            className="absolute bottom-20 end-4 z-30 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg shadow-navy-900/15 border border-brand-grey-200/50 text-navy-700 active:scale-90 transition-transform tap-44"
             style={{ minWidth: 48, minHeight: 48 }}
           >
             <ChevronUp className="h-5 w-5" />
@@ -948,19 +956,19 @@ function LectureProductCard({
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
           {/* Bundle badge */}
           {product.isBundle && (
-            <span className="absolute top-1.5 right-1.5 text-[11px] font-bold text-white bg-navy-800/80 backdrop-blur-sm px-1.5 py-0.5 rounded-md">
+            <span className="absolute top-1.5 start-1.5 text-[11px] font-bold text-white bg-navy-800/80 backdrop-blur-sm px-1.5 py-0.5 rounded-md">
               باقة {product.bundleCount} مذكرات
             </span>
           )}
           {/* "جديد" badge for week === 1 */}
           {product.week === 1 && !product.isBundle && (
-            <span className="absolute top-1.5 right-1.5 text-[11px] font-bold text-white bg-gradient-to-l from-emerald-500 to-teal-500 backdrop-blur-sm px-1.5 py-0.5 rounded-md shadow-sm">
+            <span className="absolute top-1.5 start-1.5 text-[11px] font-bold text-white bg-sky-500 px-1.5 py-0.5 rounded-md shadow-sm">
               جديد
             </span>
           )}
           {/* Discount badge */}
           {product.originalPrice && !product.isBundle && product.week !== 1 && (
-            <span className="absolute top-1.5 left-1.5 text-[11px] font-bold text-white bg-error px-1.5 py-0.5 rounded-md">
+            <span className="absolute top-1.5 end-1.5 text-[11px] font-bold text-white bg-error px-1.5 py-0.5 rounded-md">
               -{Math.round((1 - product.price / product.originalPrice) * 100)}%
             </span>
           )}
@@ -983,7 +991,7 @@ function LectureProductCard({
               </span>
               <span className="text-[12px] text-brand-grey-500">ج.م</span>
               {product.originalPrice && (
-                <span className="mr-1 text-[12px] text-brand-grey-400 sl-num line-through">
+                <span className="ms-1 text-[12px] text-brand-grey-400 sl-num line-through">
                   {product.originalPrice}
                 </span>
               )}
@@ -1072,20 +1080,20 @@ function OfferProductCard({
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
           {/* Badges */}
-          <div className="absolute top-1.5 right-1.5 flex flex-col gap-1">
+          <div className="absolute top-1.5 start-1.5 flex flex-col gap-1">
             {product.isBundle && (
               <span className="text-[11px] font-bold text-white bg-navy-800/80 backdrop-blur-sm px-1.5 py-0.5 rounded-md">
                 باقة {product.bundleCount} مذكرات
               </span>
             )}
             {product.week === 1 && !product.isBundle && (
-              <span className="text-[11px] font-bold text-white bg-gradient-to-l from-emerald-500 to-teal-500 backdrop-blur-sm px-1.5 py-0.5 rounded-md shadow-sm">
+              <span className="text-[11px] font-bold text-white bg-sky-500 px-1.5 py-0.5 rounded-md shadow-sm">
                 جديد
               </span>
             )}
             {hasDiscount && !product.isBundle && product.week !== 1 && (
               <span className="rounded-full px-2 py-0.5 text-[11px] font-bold text-white bg-amber-500">
-                🔥 خصم {discountPct}%
+                خصم {discountPct}%
               </span>
             )}
           </div>
@@ -1154,8 +1162,8 @@ function OfferProductCard({
             </div>
             {hasDiscount && (
               <div className="mt-0.5 flex items-center gap-0.5">
-                <Check className="w-3 h-3 text-emerald-600" />
-                <span className="text-[12px] font-semibold text-emerald-600">وفرت {savingsAmount} ج.م</span>
+                <Check className="w-3 h-3 text-teal-600" />
+                <span className="text-[12px] font-semibold text-teal-600">وفرت {savingsAmount} ج.م</span>
               </div>
             )}
           </div>

@@ -8,7 +8,6 @@ import { X, Plus, Check, Minus, Share2, Heart } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { products, type Product, getDescription, getProductVariants, isProductForGrade } from '@/lib/studylink-data'
 import { useStudylinkStore } from '@/lib/use-studylink-store'
-import StarRating from '@/components/studylink/StarRating'
 
 interface ProductDetailScreenProps {
   product: Product
@@ -29,7 +28,7 @@ function getCategoryConfig(category: string) {
 }
 
 function getStoreName(store: string) {
-  return store === 'هارفرد' ? '📚 مكتبة هارفرد' : '📖 مكتبة برلين'
+  return store === 'هارفرد' ? 'مكتبة هارفرد' : 'مكتبة برلين'
 }
 
 export default function ProductDetailScreen({ product, onClose }: ProductDetailScreenProps) {
@@ -207,7 +206,7 @@ export default function ProductDetailScreen({ product, onClose }: ProductDetailS
         animate={{ y: 0 }}
         exit={{ y: '100%' }}
         transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-        className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-3xl max-h-[85%] flex flex-col overflow-hidden"
+        className="fixed bottom-0 end-0 start-0 z-50 bg-white rounded-t-3xl max-h-[85%] flex flex-col overflow-hidden"
         style={{ boxShadow: '0 -4px 30px rgba(0,0,0,0.15)' }}
       >
         {/* Drag Handle */}
@@ -233,13 +232,13 @@ export default function ProductDetailScreen({ product, onClose }: ProductDetailS
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.1 }}
               onClick={onClose}
-              className="absolute top-3 left-3 z-10 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center active:scale-90 transition-transform tap-44"
+              className="absolute top-3 end-3 z-10 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center active:scale-90 transition-transform tap-44"
             >
               <X className="w-4 h-4 text-white" />
             </motion.button>
 
             {/* Share + Like (top-right) */}
-            <div className="absolute top-3 right-3 z-10 flex gap-2">
+            <div className="absolute top-3 start-3 z-10 flex gap-2">
               <motion.button data-tap="44" aria-label="مشاركة"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -272,14 +271,14 @@ export default function ProductDetailScreen({ product, onClose }: ProductDetailS
 
             {/* Bundle badge */}
             {product.isBundle && (
-              <span className="absolute bottom-3 right-3 text-[12px] font-bold text-white bg-navy-800/80 backdrop-blur-sm px-2 py-1 rounded-lg z-10">
+              <span className="absolute bottom-3 start-3 text-[12px] font-bold text-white bg-navy-800/80 backdrop-blur-sm px-2 py-1 rounded-lg z-10">
                 باقة {product.bundleCount} مذكرات
               </span>
             )}
 
             {/* Discount badge */}
             {product.originalPrice && !product.isBundle && (
-              <span className="absolute bottom-3 left-3 text-[12px] font-bold text-white bg-error px-2 py-1 rounded-lg z-10">
+              <span className="absolute bottom-3 end-3 text-[12px] font-bold text-white bg-error px-2 py-1 rounded-lg z-10">
                 خصم {Math.round((1 - product.price / product.originalPrice) * 100)}%
               </span>
             )}
@@ -317,13 +316,6 @@ export default function ProductDetailScreen({ product, onClose }: ProductDetailS
               >
                 {product.category}
               </span>
-              <div className="mr-auto">
-                {product.rating ? (
-                  <StarRating rating={product.rating} size="sm" showCount={!!product.reviewCount} count={product.reviewCount} />
-                ) : (
-                  <StarRating rating={4.5} size="sm" showCount count={1} />
-                )}
-              </div>
             </div>
 
             {/* Separator */}
@@ -532,7 +524,7 @@ export default function ProductDetailScreen({ product, onClose }: ProductDetailS
                 className="flex-1 h-11 rounded-xl text-[13px] font-bold flex items-center justify-center gap-2 bg-success text-white tap-44"
               >
                 <Check className="w-4 h-4" strokeWidth={3} />
-                <span>تمت الإضافة ✔️</span>
+                <span>تمت الإضافة</span>
               </motion.button>
             ) : (
               <motion.button data-tap="44"
@@ -564,7 +556,7 @@ export default function ProductDetailScreen({ product, onClose }: ProductDetailS
               className="flex-1 h-11 rounded-xl text-[13px] font-bold flex items-center justify-center gap-2 bg-success text-white tap-44"
             >
               <Check className="w-4 h-4" strokeWidth={3} />
-              <span>تمت الإضافة ✔️</span>
+              <span>تمت الإضافة</span>
             </motion.button>
             <div className="flex items-center gap-0.5 bg-brand-grey-100 rounded-xl px-1 py-0.5">
               <motion.button data-tap="44" aria-label="إنقاص"
@@ -634,7 +626,7 @@ function SimilarProductCard({
           unoptimized
         />
         {product.isBundle && (
-          <span className="absolute top-1 right-1 text-[11px] font-bold text-white bg-navy-800/80 backdrop-blur-sm px-1 py-0.5 rounded">
+          <span className="absolute top-1 start-1 text-[11px] font-bold text-white bg-navy-800/80 backdrop-blur-sm px-1 py-0.5 rounded">
             باقة
           </span>
         )}

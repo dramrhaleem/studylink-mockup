@@ -1,5 +1,6 @@
 'use client'
 
+import { categoryStyle } from '@/lib/category'
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import Image from 'next/image'
 import {
@@ -33,9 +34,9 @@ interface LibraryCategoryScreenProps {
   onNavigate?: (screen: string) => void
 }
 
-const STORE_CONFIG: Record<StoreType, { open: boolean; label: string; emoji: string }> = {
-  'هارفرد': { open: true, label: 'مكتبة هارفرد', emoji: '📚' },
-  'برلين': { open: false, label: 'مكتبة برلين', emoji: '📖' },
+const STORE_CONFIG: Record<StoreType, { open: boolean; label: string }> = {
+  'هارفرد': { open: true, label: 'مكتبة هارفرد' },
+  'برلين': { open: false, label: 'مكتبة برلين' },
 }
 
 const cardVariants = {
@@ -134,7 +135,7 @@ export default function LibraryCategoryScreen({ storeName, subject, onNavigate }
             <span className="text-brand-grey-400 text-[13px]">—</span>
             <span className="text-[13px] text-brand-grey-600">{storeConfig.label}</span>
             {hasUnavailable && (
-              <span className="flex items-center gap-0.5 mr-1 px-1.5 py-0.5 rounded-full bg-amber-100 border border-amber-200/60">
+              <span className="flex items-center gap-0.5 ms-1 px-1.5 py-0.5 rounded-full bg-amber-100 border border-amber-200/60">
                 <AlertCircle className="w-3 h-3 text-amber-500" />
                 <span className="text-[12px] font-semibold text-amber-600">غير متوفر</span>
               </span>
@@ -147,18 +148,18 @@ export default function LibraryCategoryScreen({ storeName, subject, onNavigate }
         {/* Search bar */}
         <div className="px-4 pb-2.5">
           <div className="relative">
-            <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-grey-400 pointer-events-none" />
+            <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-grey-400 pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={`ابحث في ${subject}...`}
-              className="w-full h-10 pl-3 pr-9 rounded-xl bg-brand-grey-100 border-none outline-none text-[13px] text-navy-900 placeholder:text-brand-grey-400 focus:ring-2 focus:ring-sky-500/30 transition-shadow"
+              className="w-full h-10 pe-3 ps-9 rounded-xl bg-brand-grey-100 border-none outline-none text-[13px] text-navy-900 placeholder:text-brand-grey-400 focus:ring-2 focus:ring-sky-500/30 transition-shadow"
             />
             {searchQuery && (
               <button data-tap="44" aria-label="إغلاق"
                 onClick={() => setSearchQuery('')}
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded-full bg-brand-grey-200/60 active:scale-90 transition-transform tap-44"
+                className="absolute end-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded-full bg-brand-grey-200/60 active:scale-90 transition-transform tap-44"
               >
                 <X className="w-3 h-3 text-brand-grey-500" />
               </button>
@@ -194,8 +195,8 @@ export default function LibraryCategoryScreen({ storeName, subject, onNavigate }
                   )}
                 </div>
                 {storeConfig.open && !allUnavailable && (
-                  <div className="px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200/60">
-                    <span className="text-[12px] font-semibold text-emerald-600">مفتوحة</span>
+                  <div className="px-2.5 py-1 rounded-full bg-teal-50 border border-teal-200/60">
+                    <span className="text-[12px] font-semibold text-teal-600">مفتوحة</span>
                   </div>
                 )}
               </div>
@@ -285,14 +286,10 @@ function ProductCard({
   const discountPct = hasDiscount ? Math.round(((product.originalPrice! - product.price) / product.originalPrice!) * 100) : 0
   const savingsAmount = hasDiscount ? (product.originalPrice! - product.price).toFixed(0) : '0'
 
-  const gradients = [
-    'from-sky-100 to-sky-50',
-    'from-emerald-100 to-emerald-50',
-    'from-amber-100 to-amber-50',
-    'from-rose-100 to-rose-50',
-    'from-violet-100 to-violet-50',
-  ]
-  const gradientIndex = product.id.charCodeAt(product.id.length - 1) % gradients.length
+  /* كانت خلفية البطاقة تُختار عشوائيًا: `gradients[charCode(id) % 5]` —
+     خمسة تدرّجات لونية مختلفة تُوزَّع على المنتجات بلا أي معنى، فبدا كل رفّ
+     كأنه لوحة ألوان. صارت الخلفية تتبع **تصنيف** المنتج، فاللون يحمل معلومة. */
+  const cardTint = categoryStyle(product.category).iconBg
 
   return (
     <motion.div
@@ -302,7 +299,7 @@ function ProductCard({
       }`}
     >
       {/* Product image */}
-      <div className={`relative w-full ${isTool ? 'aspect-square' : 'aspect-[4/3]'} bg-gradient-to-br ${isUnavailableZero ? 'from-amber-50 to-amber-100/50' : gradients[gradientIndex]} overflow-hidden`}>
+      <div className={`relative w-full ${isTool ? 'aspect-square' : 'aspect-[4/3]'} ${isUnavailableZero ? 'bg-amber-50' : cardTint} overflow-hidden`}>
         {isUnavailableZero ? (
           <div className="flex items-center justify-center w-full h-full">
             <AlertCircle className="w-8 h-8 text-amber-400/70" />
@@ -322,7 +319,7 @@ function ProductCard({
         )}
 
         {/* Badges */}
-        <div className="absolute top-1.5 right-1.5 flex flex-col gap-1">
+        <div className="absolute top-1.5 start-1.5 flex flex-col gap-1">
           {isUnavailableZero && (
             <span className="rounded-full px-2 py-0.5 text-[11px] font-bold text-amber-700 bg-amber-200/80 flex items-center gap-0.5">
               <AlertCircle className="w-2.5 h-2.5" />
@@ -337,14 +334,14 @@ function ProductCard({
           )}
           {hasDiscount && !isUnavailableZero && (
             <span className="rounded-full px-2 py-0.5 text-[11px] font-bold text-white bg-amber-500">
-              🔥 خصم {discountPct}%
+              خصم {discountPct}%
             </span>
           )}
         </div>
 
         {/* CTA button overlay */}
         {!outOfStock && (
-          <div className="absolute bottom-1.5 left-1.5">
+          <div className="absolute bottom-1.5 end-1.5">
             <motion.button aria-label="أضف للسلة" data-tap="44"
               whileTap={{ scale: 0.85 }}
               onClick={(e) => {
@@ -353,7 +350,7 @@ function ProductCard({
               }}
               className={`tap-44 w-8 h-8 rounded-full flex items-center justify-center shadow-sm transition-all duration-300 ${
                 justAdded
-                  ? 'bg-emerald-500 text-white scale-110'
+                  ? 'bg-teal-500 text-white scale-110'
                   : inCart
                   ? 'bg-sky-100 text-sky-500'
                   : 'bg-white text-navy-800'
@@ -419,14 +416,14 @@ function ProductCard({
             </div>
             {hasDiscount && (
               <div className="mt-0.5 flex items-center gap-0.5">
-                <Check className="w-3 h-3 text-emerald-600" />
-                <span className={`font-semibold text-emerald-600 ${isTool ? 'text-[11px]' : 'text-[12px]'}`}>وفرت {savingsAmount} ج.م</span>
+                <Check className="w-3 h-3 text-teal-600" />
+                <span className={`font-semibold text-teal-600 ${isTool ? 'text-[11px]' : 'text-[12px]'}`}>وفرت {savingsAmount} ج.م</span>
               </div>
             )}
 
             {/* Out of stock label */}
             {outOfStock && (
-              <span className="text-[12px] text-red-400 font-semibold mt-1">
+              <span className="text-[12px] text-error font-semibold mt-1">
                 غير متوفرة
               </span>
             )}

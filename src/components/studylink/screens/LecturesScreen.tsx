@@ -20,7 +20,6 @@ import ProductDetailScreen from '@/components/studylink/screens/ProductDetailScr
 import QuantityControl from '@/components/studylink/QuantityControl'
 import GradeGateOverlay from '@/components/studylink/GradeGateOverlay'
 import BundleBuilderSheet from '@/components/studylink/screens/BundleBuilderSheet'
-import StarRating from '@/components/studylink/StarRating'
 
 interface LecturesScreenProps {
   onNavigate?: (screen: string) => void
@@ -310,7 +309,7 @@ export default function LecturesScreen({ onNavigate }: LecturesScreenProps) {
                             unoptimized
                           />
                           {product.contentType && (
-                            <span className="absolute bottom-1 right-1 text-[11px] font-medium text-white/90 bg-black/40 backdrop-blur-sm px-1 py-0.5 rounded">
+                            <span className="absolute bottom-1 start-1 text-[11px] font-medium text-white/90 bg-black/40 backdrop-blur-sm px-1 py-0.5 rounded">
                               {product.contentType}
                             </span>
                           )}
@@ -451,22 +450,22 @@ export default function LecturesScreen({ onNavigate }: LecturesScreenProps) {
                             unoptimized
                           />
                           {product.isBundle && (
-                            <span className="absolute top-1.5 right-1.5 text-[11px] font-bold text-white bg-navy-800/80 backdrop-blur-sm px-1.5 py-0.5 rounded-md">
+                            <span className="absolute top-1.5 start-1.5 text-[11px] font-bold text-white bg-navy-800/80 backdrop-blur-sm px-1.5 py-0.5 rounded-md">
                               باقة {product.bundleCount}
                             </span>
                           )}
                           {hasDiscount && !product.isBundle && (
-                            <span className="absolute top-1.5 left-1.5 text-[11px] font-bold text-white bg-amber-500 px-1.5 py-0.5 rounded-full">
-                              🔥 خصم {discountPct}%
+                            <span className="absolute top-1.5 end-1.5 text-[11px] font-bold text-white bg-amber-500 px-1.5 py-0.5 rounded-full">
+                              خصم {discountPct}%
                             </span>
                           )}
                           {product.contentType && (
-                            <span className="absolute bottom-1.5 right-1.5 text-[11px] font-medium text-white/90 bg-black/40 backdrop-blur-sm px-1.5 py-0.5 rounded-md">
+                            <span className="absolute bottom-1.5 start-1.5 text-[11px] font-medium text-white/90 bg-black/40 backdrop-blur-sm px-1.5 py-0.5 rounded-md">
                               {product.contentType}
                             </span>
                           )}
                           {product.week && (
-                            <span className="absolute top-1.5 right-1.5 text-[11px] font-bold text-white/90 bg-sky-500/80 backdrop-blur-sm px-1.5 py-0.5 rounded-md">
+                            <span className="absolute top-1.5 start-1.5 text-[11px] font-bold text-white/90 bg-sky-500/80 backdrop-blur-sm px-1.5 py-0.5 rounded-md">
                               أسبوع {product.week}
                             </span>
                           )}
@@ -478,11 +477,6 @@ export default function LecturesScreen({ onNavigate }: LecturesScreenProps) {
                           <span className="text-[12px] text-brand-grey-500 font-medium leading-none mb-1 truncate">
                             {product.doctor}
                           </span>
-                          {product.rating && (
-                            <div className="mb-1">
-                              <StarRating rating={product.rating} size="sm" />
-                            </div>
-                          )}
 
                           {/* Title */}
                           <p className="text-[12px] font-bold text-navy-900 line-clamp-2 leading-[1.35] flex-1 min-h-[27px]">
@@ -504,8 +498,8 @@ export default function LecturesScreen({ onNavigate }: LecturesScreenProps) {
                             </div>
                             {hasDiscount && (
                               <div className="flex items-center gap-0.5 mt-0.5">
-                                <Check className="w-3 h-3 text-emerald-600" />
-                                <span className="text-[11px] font-semibold text-emerald-600">وفرت {savingsAmt} ج.م</span>
+                                <Check className="w-3 h-3 text-teal-600" />
+                                <span className="text-[11px] font-semibold text-teal-600">وفرت {savingsAmt} ج.م</span>
                               </div>
                             )}
                             <div className="flex items-center justify-end mt-1.5">

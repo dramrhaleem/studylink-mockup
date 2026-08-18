@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, Wallet as WalletIcon, ArrowUpRight, ArrowDownLeft, Send, Gift, Clock, Star, TrendingUp, Tag, X, CreditCard, History, ArrowLeftRight } from 'lucide-react'
+import { ChevronLeft, Wallet as WalletIcon, ArrowUpRight, ArrowDownLeft, Send, Gift, Clock, Star, TrendingUp, Tag, X, CreditCard, History, ArrowLeftRight, Package } from 'lucide-react'
 import BottomNavBar from '../BottomNavBar'
 
 interface WalletScreenProps {
@@ -38,8 +38,9 @@ const transactions = [
     amount: '+20.00',
     rawAmount: 20,
     type: 'credit' as const,
-    icon: '🎁',
+    icon: Gift,
     iconBg: 'bg-success/10',
+    iconColor: 'text-success',
   },
   {
     id: 't2',
@@ -49,8 +50,9 @@ const transactions = [
     amount: '-45.00',
     rawAmount: -45,
     type: 'debit' as const,
-    icon: '📦',
+    icon: Package,
     iconBg: 'bg-error/10',
+    iconColor: 'text-error',
   },
   {
     id: 't3',
@@ -60,8 +62,9 @@ const transactions = [
     amount: '+10.00',
     rawAmount: 10,
     type: 'credit' as const,
-    icon: '⭐',
+    icon: Star,
     iconBg: 'bg-amber-50',
+    iconColor: 'text-amber-500',
   },
   {
     id: 't4',
@@ -71,8 +74,9 @@ const transactions = [
     amount: '+20.00',
     rawAmount: 20,
     type: 'credit' as const,
-    icon: '🎁',
+    icon: Gift,
     iconBg: 'bg-success/10',
+    iconColor: 'text-success',
   },
   {
     id: 't5',
@@ -82,8 +86,9 @@ const transactions = [
     amount: '-65.00',
     rawAmount: -65,
     type: 'debit' as const,
-    icon: '📦',
+    icon: Package,
     iconBg: 'bg-error/10',
+    iconColor: 'text-error',
   },
   {
     id: 't6',
@@ -93,8 +98,9 @@ const transactions = [
     amount: '+200.00',
     rawAmount: 200,
     type: 'credit' as const,
-    icon: '💳',
+    icon: CreditCard,
     iconBg: 'bg-sky-50',
+    iconColor: 'text-sky-500',
   },
 ]
 
@@ -117,7 +123,7 @@ const quickActions = [
     id: 'transfer',
     label: 'تحويل',
     icon: ArrowLeftRight,
-    gradient: 'from-success to-emerald-600',
+    gradient: 'from-success to-teal-600',
     shadowColor: 'shadow-success/20',
   },
 ]
@@ -214,7 +220,7 @@ function SpendingChart() {
               </p>
             </div>
           </div>
-          <div className="text-left">
+          <div className="text-end">
             <p className="text-[12px] text-brand-grey-400">آخر 7 أيام</p>
           </div>
         </div>
@@ -337,7 +343,7 @@ function TopUpSheet({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-3xl shadow-2xl max-w-[375px] mx-auto"
+            className="fixed bottom-0 end-0 start-0 z-50 bg-white rounded-t-3xl shadow-2xl max-w-[375px] mx-auto"
           >
             {/* Handle bar */}
             <div className="flex justify-center pt-3 pb-1">
@@ -383,8 +389,8 @@ function TopUpSheet({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
                   </span>
 
                   {/* Decorative corner accent */}
-                  <div className="absolute top-2 left-2 w-3 h-3 rounded-full bg-sky-100 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="absolute bottom-2 right-2 w-2 h-2 rounded-full bg-sky-200 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="absolute top-2 end-2 w-3 h-3 rounded-full bg-sky-100 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="absolute bottom-2 start-2 w-2 h-2 rounded-full bg-sky-200 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </motion.button>
               ))}
             </div>
@@ -491,19 +497,19 @@ export default function WalletScreen({ onNavigate }: WalletScreenProps) {
             />
 
             {/* Decorative credit-card circles */}
-            <div className="absolute -top-16 -left-16 w-48 h-48 rounded-full bg-white/[0.04]" />
-            <div className="absolute -bottom-12 -right-12 w-40 h-40 rounded-full bg-white/[0.03]" />
-            <div className="absolute top-2 right-8 w-24 h-24 rounded-full bg-sky-400/[0.06]" />
-            <div className="absolute bottom-8 left-12 w-16 h-16 rounded-full bg-sky-300/[0.04]" />
+            <div className="absolute -top-16 -end-16 w-48 h-48 rounded-full bg-white/[0.04]" />
+            <div className="absolute -bottom-12 -start-12 w-40 h-40 rounded-full bg-white/[0.03]" />
+            <div className="absolute top-2 start-8 w-24 h-24 rounded-full bg-sky-400/[0.06]" />
+            <div className="absolute bottom-8 end-12 w-16 h-16 rounded-full bg-sky-300/[0.04]" />
             <div className="absolute -top-4 right-1/3 w-8 h-8 rounded-full bg-white/[0.05]" />
 
             {/* StudyLink watermark */}
-            <p className="absolute top-4 left-4 text-[13px] font-bold text-white/[0.08]" style={{ fontFamily: 'Inter, sans-serif' }}>
+            <p className="absolute top-4 end-4 text-[13px] font-bold text-white/[0.08]" style={{ fontFamily: 'Inter, sans-serif' }}>
               StudyLink
             </p>
 
             {/* Animated wave pattern at bottom */}
-            <div className="absolute bottom-0 left-0 right-0 h-10 overflow-hidden pointer-events-none">
+            <div className="absolute bottom-0 end-0 start-0 h-10 overflow-hidden pointer-events-none">
               <motion.svg
                 viewBox="0 0 400 40"
                 preserveAspectRatio="none"
@@ -543,7 +549,7 @@ export default function WalletScreen({ onNavigate }: WalletScreenProps) {
                 >
                   160.00
                 </motion.span>{' '}
-                <span className="text-[15px] text-white/60 font-normal mr-0.5">ج.م</span>
+                <span className="text-[15px] text-white/60 font-normal ms-0.5">ج.م</span>
               </motion.p>
 
               {/* Points + Referral badge */}
@@ -554,9 +560,9 @@ export default function WalletScreen({ onNavigate }: WalletScreenProps) {
                   <span className="text-[12px] text-white/60">نقطة</span>
                 </div>
                 <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1.5">
-                  <Gift className="w-3.5 h-3.5 text-green-300" />
+                  <Gift className="w-3.5 h-3.5 text-teal-300" />
                   <span className="text-[12px] text-white/60">أرباح الإحالة</span>
-                  <TrendingUp className="w-3 h-3 text-green-300" />
+                  <TrendingUp className="w-3 h-3 text-teal-300" />
                 </div>
               </div>
 
@@ -640,17 +646,17 @@ export default function WalletScreen({ onNavigate }: WalletScreenProps) {
                         className="flex items-center gap-3 px-4 py-3.5 hover:bg-brand-grey-50/50 transition-colors relative"
                       >
                         {/* Colored bar on right side (RTL) */}
-                        <div className={`absolute right-0 top-2 bottom-2 w-[3px] rounded-full ${
+                        <div className={`absolute start-0 top-2 bottom-2 w-[3px] rounded-full ${
                           tx.type === 'credit' ? 'bg-success' : 'bg-error'
                         }`} />
 
                         {/* Icon with colored border accent */}
                         <div className="relative">
                           <div className={`w-10 h-10 rounded-xl ${tx.iconBg} flex items-center justify-center flex-shrink-0`}>
-                            <span className="text-lg">{tx.icon}</span>
+                            <tx.icon className={`w-5 h-5 ${tx.iconColor}`} aria-hidden />
                           </div>
                           {/* Colored arrow indicator */}
-                          <div className={`absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center ${
+                          <div className={`absolute -top-0.5 -start-0.5 w-4 h-4 rounded-full flex items-center justify-center ${
                             tx.type === 'credit' ? 'bg-success' : 'bg-error'
                           }`}>
                             {tx.type === 'credit' ? (

@@ -15,7 +15,7 @@ type FilterType = 'all' | 'active' | 'completed'
 const statusConfig: Record<string, { color: string; bg: string; icon: typeof Clock }> = {
   'جاري التحضير': { color: 'text-amber-600', bg: 'bg-amber-50', icon: Clock },
   'مع المندوب': { color: 'text-sky-600', bg: 'bg-sky-50', icon: Truck },
-  'تم التسليم': { color: 'text-emerald-600', bg: 'bg-emerald-50', icon: Check },
+  'تم التسليم': { color: 'text-teal-600', bg: 'bg-teal-50', icon: Check },
 }
 
 export default function MyOrdersScreen({ onNavigate }: MyOrdersScreenProps) {
@@ -118,7 +118,7 @@ export default function MyOrdersScreen({ onNavigate }: MyOrdersScreenProps) {
                   {/* Order Header */}
                   <button data-tap="44"
                     onClick={() => setExpandedId(isExpanded ? null : order.id)}
-                    className="w-full px-4 py-3.5 flex items-start gap-3 text-right"
+                    className="w-full px-4 py-3.5 flex items-start gap-3 text-start"
                   >
                     <div className="w-10 h-10 rounded-xl bg-brand-grey-50 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <ShoppingCart className="w-5 h-5 text-brand-grey-500" />
@@ -135,7 +135,7 @@ export default function MyOrdersScreen({ onNavigate }: MyOrdersScreenProps) {
                       </p>
                       <p className="text-[12px] text-brand-grey-400">{order.date}</p>
                     </div>
-                    <div className="text-left flex-shrink-0 pt-1">
+                    <div className="text-end flex-shrink-0 pt-1">
                       <p className="text-[14px] font-extrabold text-navy-800 sl-num">{order.total}</p>
                       <p className="text-[12px] text-brand-grey-400">ج.م</p>
                     </div>
@@ -148,7 +148,7 @@ export default function MyOrdersScreen({ onNavigate }: MyOrdersScreenProps) {
                         initial={{ width: 0 }}
                         animate={{ width: `${order.progress}%` }}
                         transition={{ duration: 0.8, ease: 'easeOut' }}
-                        className={`h-full rounded-full ${order.statusType === 'completed' ? 'bg-emerald-500' : 'bg-sky-500'}`}
+                        className={`h-full rounded-full ${order.statusType === 'completed' ? 'bg-teal-500' : 'bg-sky-500'}`}
                       />
                     </div>
                     {order.eta && (
