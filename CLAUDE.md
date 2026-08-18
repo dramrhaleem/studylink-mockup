@@ -145,16 +145,22 @@ deliveryFee = 25 · pickupFee = 0
 ## دورة العمل
 
 ```bash
-npm install --legacy-peer-deps     # مرة واحدة
-npm run dev                        # http://localhost:3000
+npm run setup      # مرة واحدة — install --include=dev + كروميوم للأوديت
+npm run dev        # http://localhost:3000
 ```
+
+**⚠️ `NODE_ENV=production` مضبوط عالميًا على جهاز المستخدم.** `npm install` العادي
+يتخطّى `devDependencies` بصمت فيفشل البناء برسالة مضلِّلة
+(`Cannot find module '@tailwindcss/postcss'`). استخدم `npm run setup` دائمًا.
+ولا تُصدّر `NODE_ENV=development` قبل البناء — Next يضبطها بنفسه، وإجبارها يكسر
+prerender الصفحة `/_global-error`.
 
 شاشة بعينها: `http://localhost:3000/?screen=checkout`
 
 ### التحقق — إلزامي قبل أي تسليم
 
 ```bash
-npx tsc --noEmit                   # لا يُقبل أي خطأ
+npm run typecheck                  # لا يُقبل أي خطأ (لا تستخدم npx tsc — يجلب حزمة خاطئة)
 npm run audit:ui                   # يحتاج dev شغّالًا
 STATIC_EXPORT=1 npm run build      # نفس بناء GitHub بالضبط
 ```

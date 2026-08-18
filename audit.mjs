@@ -3,6 +3,18 @@
 import { chromium } from 'playwright';
 import fs from 'fs';
 
+/* اختيار المتصفح: Playwright بيلاقي نسخته المحمّلة لوحده.
+   لو البيئة فيها كروميوم في مكان مخصص، اضبط PW_CHROME.
+   (كان المسار مثبّتًا على بيئة واحدة فيفشل السكريبت على أي جهاز آخر.) */
+function launchOpts() {
+  const exe = process.env.PW_CHROME
+  return {
+    ...(exe ? { executablePath: exe } : {}),
+    args: ['--no-sandbox', '--font-render-hinting=none'],
+  }
+}
+
+
 const SCREENS = ['home','lectures','ambassador','profile','more','cart','checkout','order-success','tracking','my-orders','wallet','gifts','search','bundle','wishlist','notifications','chat','faq','about','tools','rate','achievements','otp','onboarding','register','library-harvard','library-berlin'];
 
 const BRAND = new Set([
@@ -17,7 +29,7 @@ const BRAND = new Set([
  '#FFFFFF','#000000',
 ]);
 
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome', args: ['--no-sandbox'] });
+const browser = await chromium.launch(launchOpts());
 const page = await (await browser.newContext({ viewport: { width: 1400, height: 1000 }, deviceScaleFactor: 1, locale: 'ar-EG' })).newPage();
 
 const AUDIT = String(fs.readFileSync(new URL('./audit-inpage.js', import.meta.url)));

@@ -1,11 +1,23 @@
 import { chromium } from 'playwright';
 import fs from 'fs';
 
+/* اختيار المتصفح: Playwright بيلاقي نسخته المحمّلة لوحده.
+   لو البيئة فيها كروميوم في مكان مخصص، اضبط PW_CHROME.
+   (كان المسار مثبّتًا على بيئة واحدة فيفشل السكريبت على أي جهاز آخر.) */
+function launchOpts() {
+  const exe = process.env.PW_CHROME
+  return {
+    ...(exe ? { executablePath: exe } : {}),
+    args: ['--no-sandbox', '--font-render-hinting=none'],
+  }
+}
+
+
 const OUT = process.argv[2] || '/tmp/shots/before';
 const SCREENS = ['home','lectures','ambassador','profile','more','cart','checkout','order-success','tracking','my-orders','wallet','gifts','search','bundle','wishlist','notifications','chat','faq','about','tools','rate','achievements','otp','onboarding','register','library-harvard','library-berlin'];
 fs.mkdirSync(OUT, { recursive: true });
 
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome', args: ['--no-sandbox','--font-render-hinting=none'] });
+const browser = await chromium.launch(launchOpts());
 const ctx = await browser.newContext({ viewport: { width: 1400, height: 1000 }, deviceScaleFactor: 2, locale: 'ar-EG' });
 const page = await ctx.newPage();
 const errors = [];

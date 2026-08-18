@@ -22,7 +22,7 @@
 ## التشغيل
 
 ```bash
-npm install --legacy-peer-deps
+npm run setup        # install --include=dev + كروميوم لأدوات الفحص
 npm run dev          # http://localhost:3000
 ```
 

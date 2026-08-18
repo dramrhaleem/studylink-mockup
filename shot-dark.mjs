@@ -1,9 +1,21 @@
 import { chromium } from 'playwright';
 import fs from 'fs';
+
+/* اختيار المتصفح: Playwright بيلاقي نسخته المحمّلة لوحده.
+   لو البيئة فيها كروميوم في مكان مخصص، اضبط PW_CHROME.
+   (كان المسار مثبّتًا على بيئة واحدة فيفشل السكريبت على أي جهاز آخر.) */
+function launchOpts() {
+  const exe = process.env.PW_CHROME
+  return {
+    ...(exe ? { executablePath: exe } : {}),
+    args: ['--no-sandbox', '--font-render-hinting=none'],
+  }
+}
+
 const OUT = '/tmp/shots/dark';
 const SCREENS = ['home','lectures','profile','cart','more','checkout','tracking','wallet'];
 fs.mkdirSync(OUT, { recursive: true });
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome', args: ['--no-sandbox'] });
+const browser = await chromium.launch(launchOpts());
 const page = await (await browser.newContext({ viewport: { width: 1400, height: 1000 }, deviceScaleFactor: 2, locale: 'ar-EG' })).newPage();
 for (const s of SCREENS) {
   await page.goto(`http://localhost:3000/?screen=${s}`, { waitUntil: 'networkidle', timeout: 45000 });

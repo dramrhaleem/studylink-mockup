@@ -10,8 +10,21 @@
 
 ```bash
 cd "/media/amro/Data2/StudyLink P/outputs/studylink-mockup-pages"
-npm install --legacy-peer-deps
+npm run setup
 ```
+
+### ⚠️ لو `NODE_ENV=production` مضبوط في بيئتك
+
+`npm install` هيتخطّى `devDependencies` بصمت، والبناء هيفشل برسالة مضلِّلة:
+`Cannot find module '@tailwindcss/postcss'`. استخدم:
+
+```bash
+npm run setup      # install --include=dev + تنزيل كروميوم للأوديت
+```
+
+وللبناء استخدم `npm run build:static` **بدون** تصدير `NODE_ENV=development` —
+Next بيضبطها لوحده، وإجبارها بيكسر الـprerender.
+
 
 ## ٢. حلقة الشغل اليومية
 
@@ -203,7 +216,7 @@ off-brand colours : 0
 **أي رقم يعلى عن ده = انحدار في تعديلك.** الاتنين الأخرانيين لازم يفضلوا صفر.
 
 ```bash
-npx tsc --noEmit                  # أخطاء الأنواع
+npm run typecheck                 # أخطاء الأنواع (مش npx tsc — بيجيب حزمة غلط)
 STATIC_EXPORT=1 npm run build     # بناء زي اللي على GitHub بالظبط
 npm run shots                     # لقطة لكل الشاشات للمقارنة البصرية
 ```
