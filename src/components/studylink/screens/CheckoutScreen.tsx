@@ -298,7 +298,7 @@ export default function CheckoutScreen({ onNavigate }: CheckoutScreenProps) {
                   {idx < 2 ? <Check className="w-3.5 h-3.5" /> : idx + 1}
                 </div>
                 <span
-                  className={`text-[11px] mt-1 font-medium ${idx === 2 ? 'text-sky-300' : 'text-white/50'}`}
+                  className={`text-[12px] mt-1 font-medium ${idx === 2 ? 'text-sky-300' : 'text-white/50'}`}
                 >
                   {label}
                 </span>

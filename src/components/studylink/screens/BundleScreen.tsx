@@ -381,7 +381,7 @@ export default function BundleScreen({ onNavigate }: BundleScreenProps) {
                           <span className="inline-flex items-center justify-center w-5 h-5 bg-sky-50 text-sky-700 rounded">
                             <TypeIcon className="w-3 h-3" aria-hidden="true" />
                           </span>
-                          <span className="text-[11px] bg-brand-grey-100 text-brand-grey-600 px-1.5 py-0.5 rounded">
+                          <span className="text-[12px] bg-brand-grey-100 text-brand-grey-600 px-1.5 py-0.5 rounded">
                             {item.subject}
                           </span>
                         </div>

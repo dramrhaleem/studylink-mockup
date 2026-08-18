@@ -265,7 +265,7 @@ export default function VariantSelectionSheet({
                         {color.label}
                       </span>
                       {color.priceDiff > 0 && (
-                        <span className="text-[11px] text-brand-grey-400 sl-num">
+                        <span className="text-[12px] text-brand-grey-400 sl-num">
                           +{color.priceDiff} ج
                         </span>
                       )}

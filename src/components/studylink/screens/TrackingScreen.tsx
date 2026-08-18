@@ -293,7 +293,7 @@ export default function TrackingScreen({ onNavigate }: TrackingScreenProps) {
                     </>
                   )}
                 </motion.div>
-                <span className={`text-[11px] leading-tight text-center max-w-[60px] ${
+                <span className={`text-[12px] leading-tight text-center max-w-[60px] ${
                   status === 'pending' ? 'text-brand-grey-400' : 'text-brand-grey-600'
                 }`}>
                   {step}

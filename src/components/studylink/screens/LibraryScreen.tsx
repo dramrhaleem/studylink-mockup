@@ -941,13 +941,13 @@ function CompactProductCard({
         {/* Badges */}
         <div className="absolute top-1.5 start-1.5 flex flex-col gap-1">
           {product.isBundle && (
-            <span className="px-1.5 py-0.5 rounded-md bg-navy-800 text-white text-[11px] font-bold flex items-center gap-0.5">
+            <span className="px-1.5 py-0.5 rounded-md bg-navy-800 text-white text-[12px] font-bold flex items-center gap-0.5">
               <Layers className="w-2.5 h-2.5" />
               باقة
             </span>
           )}
           {hasDiscount && (
-            <span className="rounded-full px-2 py-0.5 text-[11px] font-bold text-white bg-amber-500">
+            <span className="rounded-full px-2 py-0.5 text-[12px] font-bold text-white bg-amber-500">
               خصم {discountPct}%
             </span>
           )}
@@ -1047,7 +1047,7 @@ function OfferCard({
 
         {/* Discount badge */}
         <div className="absolute top-1.5 start-1.5">
-          <span className="rounded-full px-2 py-0.5 text-[11px] font-bold text-white bg-amber-500">
+          <span className="rounded-full px-2 py-0.5 text-[12px] font-bold text-white bg-amber-500">
             خصم {discountPct}%
           </span>
         </div>
@@ -1213,19 +1213,19 @@ function ProductCard({
         {/* Badges */}
         <div className="absolute top-1.5 start-1.5 flex flex-col gap-1">
           {isUnavailableZero && (
-            <span className="rounded-full px-2 py-0.5 text-[11px] font-bold text-amber-700 bg-amber-200/80 flex items-center gap-0.5">
+            <span className="rounded-full px-2 py-0.5 text-[12px] font-bold text-amber-700 bg-amber-200/80 flex items-center gap-0.5">
               <AlertCircle className="w-2.5 h-2.5" />
               غير متوفر
             </span>
           )}
           {product.isBundle && !isUnavailableZero && (
-            <span className="px-1.5 py-0.5 rounded-md bg-navy-800 text-white text-[11px] font-bold flex items-center gap-0.5">
+            <span className="px-1.5 py-0.5 rounded-md bg-navy-800 text-white text-[12px] font-bold flex items-center gap-0.5">
               <Layers className="w-2.5 h-2.5" />
               باقة
             </span>
           )}
           {hasDiscount && !isUnavailableZero && (
-            <span className="rounded-full px-2 py-0.5 text-[11px] font-bold text-white bg-amber-500">
+            <span className="rounded-full px-2 py-0.5 text-[12px] font-bold text-white bg-amber-500">
               خصم {discountPct}%
             </span>
           )}
@@ -1274,7 +1274,7 @@ function ProductCard({
               <span className="font-black text-amber-600 sl-num text-[13px]">0.00</span>
               <span className="text-amber-400 text-[12px]">ج.م</span>
             </div>
-            <p className="mt-1 text-[11px] text-amber-500 font-medium leading-relaxed">
+            <p className="mt-1 text-[12px] text-amber-500 font-medium leading-relaxed">
               غير متوفر في المكتبة والمكتبة هتسعى لتوفيره في اسرع وقت
             </p>
           </div>
@@ -1289,12 +1289,12 @@ function ProductCard({
               <span className={`font-black text-navy-900 sl-num ${isTool ? 'text-[13px]' : 'text-[13px]'}`}>
                 {product.price.toFixed(2)}
               </span>
-              <span className={`text-brand-grey-400 ${isTool ? 'text-[11px]' : 'text-[12px]'}`}>ج.م</span>
+              <span className={`text-brand-grey-400 ${isTool ? 'text-[12px]' : 'text-[12px]'}`}>ج.م</span>
             </div>
             {hasDiscount && (
               <div className="mt-0.5 flex items-center gap-0.5">
                 <Check className="w-3 h-3 text-teal-600" />
-                <span className={`font-semibold text-teal-600 ${isTool ? 'text-[11px]' : 'text-[12px]'}`}>وفرت {savingsAmount} ج.م</span>
+                <span className={`font-semibold text-teal-600 ${isTool ? 'text-[12px]' : 'text-[12px]'}`}>وفرت {savingsAmount} ج.م</span>
               </div>
             )}
             {outOfStock && (

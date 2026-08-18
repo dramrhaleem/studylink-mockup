@@ -526,12 +526,12 @@ export default function BundleBuilderSheet({ isOpen, onClose, store, grade }: Bu
                                                 {cg.type}
                                               </span>
                                               {cg.activeCount > 0 && (
-                                                <span className="text-[11px] font-bold text-white bg-sky-500 px-1.5 py-0.5 rounded-full">
+                                                <span className="text-[12px] font-bold text-white bg-sky-500 px-1.5 py-0.5 rounded-full">
                                                   {cg.activeCount}
                                                 </span>
                                               )}
                                               {hasUnavailable && (
-                                                <span className="text-[11px] font-medium text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-full border border-amber-200/60">
+                                                <span className="text-[12px] font-medium text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-full border border-amber-200/60">
                                                   غير متوفر
                                                 </span>
                                               )}

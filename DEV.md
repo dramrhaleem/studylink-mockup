@@ -53,6 +53,21 @@ git push
 
 ## ٤. خريطة: «عايز أغيّر كذا» ← «روح فين»
 
+### أدوّر على الأصول (أيقونات · شعار · خطوط · ألوان)
+
+كلها في `public/brand/` ومعروضة في قسم **البراند بوك** آخر الصفحة:
+
+| عايز | روح |
+|---|---|
+| البراند بوك الكامل | `public/brand/studylink-brand-book.html` |
+| أيقونات النظام (٣٥ SVG) | `public/brand/icons/` — `currentColor` وسمك 2، بتاخد لونها من الصنف |
+| حزم التنزيل (شعار · خطوط · توكنز · قوالب) | `public/brand/downloads/*.zip` |
+| قائمة الحزم والأيقونات المعروضة | `src/lib/brand-assets.ts` |
+| نسخة سحابية | [مجلد Drive](https://drive.google.com/drive/folders/1BX9YVdAvYwxu-eWqCweIvsKJKMwOcDYZ) |
+
+⚠️ المصدر الأصلي بره المستودع: `deliverables/brand/studylink-identity-v1` في قاعدة
+معرفة المشروع. لو اتحدّث هناك، **أعد نسخ** `public/brand/` منه — ما تعدّلش النسخة يدوي.
+
 ### أفهم نظام الألوان قبل ما ألمسه
 
 اقرأ **[`DESIGN-SYSTEM-COLOR.md`](DESIGN-SYSTEM-COLOR.md)** الأول. فيه قانون
@@ -250,7 +265,8 @@ node scripts/gen-banner-art.mjs      # بانرات + علامات المكتب�
 6. **`translateX` فيزيائية مش منطقية.** في RTL الحركة للأمام **سالبة**:
    `animate={{ x: on ? -20 : 0 }}`.
 
-7. **الحد الأدنى للخط:** 12px لعناصر الواجهة، 13px للمتن.
+7. **الحد الأدنى للخط:** 12px لعناصر الواجهة، 13px للمتن. **ممنوع `text-[11px]`**
+   جوه إطار الهاتف — `npm run audit:ux` بيمسكها.
 
 8. **الأزرار الصغيرة تاخد `data-tap="44"`** — بيوسّع منطقة اللمس من غير ما يغيّر الشكل.
 
@@ -290,6 +306,7 @@ npm run lint                      # لازم صفر أخطاء
 npm run test:pricing              # قواعد المال — كل الحالات المسجّلة
 npm run audit:overlap             # نص بيمر تحت زرار مطلق (مش بيطلّع خطأ في الكونسول)
 npm run audit:scroll              # الصفحة بترجع لفوق لوحدها؟
+npm run audit:ux                  # نص مقصوص · نص تحت 12px · شاشة بلا مخرج
 STATIC_EXPORT=1 npm run build     # بناء زي اللي على GitHub بالظبط
 npm run shots                     # لقطة لكل الشاشات للمقارنة البصرية
 ```

@@ -988,19 +988,19 @@ function LectureProductCard({
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
           {/* Bundle badge */}
           {product.isBundle && (
-            <span className="absolute top-1.5 start-1.5 text-[11px] font-bold text-white bg-navy-800/80 backdrop-blur-sm px-1.5 py-0.5 rounded-md">
+            <span className="absolute top-1.5 start-1.5 text-[12px] font-bold text-white bg-navy-800/80 backdrop-blur-sm px-1.5 py-0.5 rounded-md">
               باقة {product.bundleCount} مذكرات
             </span>
           )}
           {/* "جديد" badge for week === 1 */}
           {product.week === 1 && !product.isBundle && (
-            <span className="absolute top-1.5 start-1.5 text-[11px] font-bold text-white bg-sky-500 px-1.5 py-0.5 rounded-md shadow-sm">
+            <span className="absolute top-1.5 start-1.5 text-[12px] font-bold text-white bg-sky-500 px-1.5 py-0.5 rounded-md shadow-sm">
               جديد
             </span>
           )}
           {/* Discount badge */}
           {product.originalPrice && !product.isBundle && product.week !== 1 && (
-            <span className="absolute top-1.5 end-1.5 text-[11px] font-bold text-white bg-error px-1.5 py-0.5 rounded-md">
+            <span className="absolute top-1.5 end-1.5 text-[12px] font-bold text-white bg-error px-1.5 py-0.5 rounded-md">
               -{Math.round((1 - product.price / product.originalPrice) * 100)}%
             </span>
           )}
@@ -1114,17 +1114,17 @@ function OfferProductCard({
           {/* Badges */}
           <div className="absolute top-1.5 start-1.5 flex flex-col gap-1">
             {product.isBundle && (
-              <span className="text-[11px] font-bold text-white bg-navy-800/80 backdrop-blur-sm px-1.5 py-0.5 rounded-md">
+              <span className="text-[12px] font-bold text-white bg-navy-800/80 backdrop-blur-sm px-1.5 py-0.5 rounded-md">
                 باقة {product.bundleCount} مذكرات
               </span>
             )}
             {product.week === 1 && !product.isBundle && (
-              <span className="text-[11px] font-bold text-white bg-sky-500 px-1.5 py-0.5 rounded-md shadow-sm">
+              <span className="text-[12px] font-bold text-white bg-sky-500 px-1.5 py-0.5 rounded-md shadow-sm">
                 جديد
               </span>
             )}
             {hasDiscount && !product.isBundle && product.week !== 1 && (
-              <span className="rounded-full px-2 py-0.5 text-[11px] font-bold text-white bg-amber-500">
+              <span className="rounded-full px-2 py-0.5 text-[12px] font-bold text-white bg-amber-500">
                 خصم {discountPct}%
               </span>
             )}

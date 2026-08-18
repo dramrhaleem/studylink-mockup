@@ -124,7 +124,7 @@ export default function ToolsScreen({ onNavigate }: ToolsScreenProps) {
                   <motion.span
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="text-[11px] font-bold sl-num bg-white/20 px-1.5 py-px rounded-full min-w-[16px] text-center"
+                    className="text-[12px] font-bold sl-num bg-white/20 px-1.5 py-px rounded-full min-w-[16px] text-center"
                   >
                     {count}
                   </motion.span>
@@ -177,7 +177,7 @@ export default function ToolsScreen({ onNavigate }: ToolsScreenProps) {
                     unoptimized
                   />
                   {/* Category badge */}
-                  <span className={`absolute top-1 start-1 text-[11px] font-semibold px-1.5 py-px rounded-full border z-20 ${
+                  <span className={`absolute top-1 start-1 text-[12px] font-semibold px-1.5 py-px rounded-full border z-20 ${
                     isMedical
                       ? 'bg-white/90 text-teal-900 border-teal-200/60'
                       : 'bg-white/90 text-amber-900 border-amber-200/60'
@@ -185,13 +185,13 @@ export default function ToolsScreen({ onNavigate }: ToolsScreenProps) {
                     {isMedical ? 'طبي' : 'مكتبي'}
                   </span>
                   {hasDiscount && (
-                    <span className="absolute top-1 end-1 text-[11px] font-bold sl-num bg-amber-500 text-white px-1.5 py-px rounded-full z-20">
+                    <span className="absolute top-1 end-1 text-[12px] font-bold sl-num bg-amber-500 text-white px-1.5 py-px rounded-full z-20">
                       خصم {discountPct}%
                     </span>
                   )}
                   {/* Has variants indicator */}
                   {product.hasVariants && (
-                    <span className="absolute bottom-1 start-1 text-[11px] font-semibold bg-navy-800/80 text-white px-1.5 py-px rounded z-20">
+                    <span className="absolute bottom-1 start-1 text-[12px] font-semibold bg-navy-800/80 text-white px-1.5 py-px rounded z-20">
                       خيارات متعددة
                     </span>
                   )}
@@ -201,23 +201,23 @@ export default function ToolsScreen({ onNavigate }: ToolsScreenProps) {
                     {product.title}
                   </p>
                   {product.specs && (
-                    <p className="text-[11px] text-brand-grey-500 mt-0.5 truncate">{product.specs}</p>
+                    <p className="text-[12px] text-brand-grey-500 mt-0.5 truncate">{product.specs}</p>
                   )}
                   <div className="flex items-center justify-between mt-1.5">
                     <div className="flex flex-col">
                       <div className="flex items-baseline gap-0.5">
                         {hasDiscount && (
-                          <span className="text-[11px] text-brand-grey-400 line-through sl-num">
+                          <span className="text-[12px] text-brand-grey-400 line-through sl-num">
                             {product.originalPrice}
                           </span>
                         )}
                         <span className="text-[12px] font-black text-navy-900 sl-num">{product.price}</span>
-                        <span className="text-[11px] text-brand-grey-400">ج.م</span>
+                        <span className="text-[12px] text-brand-grey-400">ج.م</span>
                       </div>
                       {hasDiscount && (
                         <div className="flex items-center gap-0.5 mt-px">
                           <Check className="w-2.5 h-2.5 text-teal-600" />
-                          <span className="text-[11px] font-semibold text-teal-600">وفرت {savingsAmt} ج.م</span>
+                          <span className="text-[12px] font-semibold text-teal-600">وفرت {savingsAmt} ج.م</span>
                         </div>
                       )}
                     </div>
@@ -242,7 +242,7 @@ export default function ToolsScreen({ onNavigate }: ToolsScreenProps) {
                         </button>
                       )
                     ) : (
-                      <span className="text-[11px] text-brand-grey-500 font-medium">غير متوفرة</span>
+                      <span className="text-[12px] text-brand-grey-500 font-medium">غير متوفرة</span>
                     )}
                   </div>
                 </div>

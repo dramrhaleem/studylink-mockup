@@ -23,7 +23,7 @@ export default function CartHeaderButton({ onNavigate, size = 'default', light =
     ? 'w-[16px] h-[16px]'
     : 'w-[18px] h-[18px]'
   const badgeClass = isSm
-    ? 'min-w-[14px] h-[14px] text-[11px]'
+    ? 'min-w-[14px] h-[14px] text-[12px]'
     : 'min-w-[16px] h-[16px] text-[12px]'
 
   return (

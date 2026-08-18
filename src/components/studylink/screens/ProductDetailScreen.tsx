@@ -441,7 +441,7 @@ export default function ProductDetailScreen({ product, onClose }: ProductDetailS
                             {color.label}
                           </span>
                           {color.priceDiff > 0 && (
-                            <span className="text-[11px] text-brand-grey-400 sl-num">
+                            <span className="text-[12px] text-brand-grey-400 sl-num">
                               +{color.priceDiff} ج
                             </span>
                           )}
@@ -626,7 +626,7 @@ function SimilarProductCard({
           unoptimized
         />
         {product.isBundle && (
-          <span className="absolute top-1 start-1 text-[11px] font-bold text-white bg-navy-800/80 backdrop-blur-sm px-1 py-0.5 rounded">
+          <span className="absolute top-1 start-1 text-[12px] font-bold text-white bg-navy-800/80 backdrop-blur-sm px-1 py-0.5 rounded">
             باقة
           </span>
         )}

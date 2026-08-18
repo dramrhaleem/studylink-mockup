@@ -4,24 +4,7 @@ import { asset } from '@/lib/asset'
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import {
-  RotateCcw,
-  Palette,
-  Type,
-  LayoutGrid,
-  Square,
-  Layers,
-  MousePointerClick,
-  CreditCard,
-  Tag,
-  Grid3X3,
-  Hash,
-  Sparkles,
-  Smartphone,
-  ShieldCheck,
-  Moon,
-  Sun,
-} from 'lucide-react'
+import { RotateCcw, Palette, Layers, Sparkles, Smartphone, ShieldCheck, Moon, Sun } from 'lucide-react'
 import {
   useStudylinkStore,
   hydrateStudylinkStore,
@@ -58,24 +41,7 @@ import MoreScreen from '@/components/studylink/screens/MoreScreen'
 import GiftScreen from '@/components/studylink/screens/GiftScreen'
 import SpecPanel from '@/components/studylink/SpecPanel'
 import SplashScreen from '@/components/studylink/SplashScreen'
-import DesignSystemShowcase from '@/components/studylink/DesignSystemShowcase'
-
-/* ─── Design System Section Pills ─── */
-const dsSections = [
-  { id: 'sec-colors', label: 'الألوان', icon: Palette },
-  { id: 'sec-typography', label: 'الخطوط', icon: Type },
-  { id: 'sec-spacing', label: 'المسافات', icon: LayoutGrid },
-  { id: 'sec-radius', label: 'الزوايا', icon: Square },
-  { id: 'sec-shadows', label: 'الظلال', icon: Layers },
-  { id: 'sec-buttons', label: 'الأزرار', icon: MousePointerClick },
-  { id: 'sec-cards', label: 'البطاقات', icon: CreditCard },
-  { id: 'sec-badges', label: 'الشارات', icon: Tag },
-  { id: 'sec-filters', label: 'الفلاتر', icon: Grid3X3 },
-  { id: 'sec-inputs', label: 'الإدخال', icon: Hash },
-  { id: 'sec-animations', label: 'الحركة', icon: Sparkles },
-  { id: 'sec-patterns', label: 'أنماط', icon: Smartphone },
-  { id: 'sec-rules', label: 'القواعد', icon: ShieldCheck },
-]
+import BrandBookHub from '@/components/studylink/BrandBookHub'
 
 /* ─── Main Component ─── */
 
@@ -87,7 +53,6 @@ const NAV_TAB_IDS = ['home', 'lectures', 'ambassador', 'gifts', 'profile', 'more
 
 export default function StudyLinkDesignPage() {
   const [activeScreen, setActiveScreen] = useState<string>('home')
-  const [activeDsSection, setActiveDsSection] = useState('')
   /* الترطيب: الخادم يرسم دائمًا الحالة الابتدائية. أي شيء يعتمد على
      localStorage ينتظر هذه الراية، وإلا اختلف رسم الخادم عن العميل. */
   const [mounted, setMounted] = useState(false)
@@ -135,11 +100,6 @@ export default function StudyLinkDesignPage() {
   }, [])
 
   const handleSplashComplete = useCallback(() => setShowSplash(false), [])
-
-  const scrollToDsSection = useCallback((sectionId: string) => {
-    setActiveDsSection(sectionId)
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }, [])
 
   // الملف ناقص = مسجّل دخول لكن بلا فرقة أو كلية. لا يُقيَّم قبل الترطيب.
   const showProfileWarning = mounted && !!user && (!user.grade || !user.college)
@@ -329,53 +289,31 @@ export default function StudyLinkDesignPage() {
             </div>
           </motion.section>
 
-          {/* ===== DESIGN SYSTEM SECTION PILLS (in dark area) ===== */}
+          {/* ===== BRAND BOOK ENTRY (in dark area) ===== */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: showSplash ? 0 : 1, y: showSplash ? 10 : 0 }}
             transition={{ duration: 0.5, delay: 0.35 }}
-            className="pb-6 px-4"
+            className="pb-8 px-4 flex justify-center"
           >
-            <p className="text-[12px] font-bold text-white/60 mb-3 text-center">دليل نظام التصميم — أقسام</p>
-            <div className="flex gap-2 justify-center flex-wrap max-w-4xl mx-auto">
-              {dsSections.map(({ id, label, icon: Icon }) => {
-                const isActive = activeDsSection === id
-                return (
-                  <button
-                    key={id}
-                    onClick={() => scrollToDsSection(id)}
-                    className={`relative flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-semibold transition-all duration-300 active:scale-95 cursor-pointer whitespace-nowrap ${
-                      isActive
-                        ? 'text-white'
-                        : 'text-white/40 hover:text-white/60'
-                    }`}
-                  >
-                    {isActive && (
-                      <motion.span
-                        layoutId="ds-section-pill-active"
-                        className="absolute inset-0 bg-white/15 border border-white/20 rounded-full"
-                        transition={{ type: 'spring', stiffness: 380, damping: 28 }}
-                      />
-                    )}
-                    <span className="relative z-10 flex items-center gap-1.5">
-                      <Icon className="w-3 h-3" />
-                      <span>{label}</span>
-                    </span>
-                  </button>
-                )
-              })}
-            </div>
+            <a
+              href="#brand-book"
+              className="flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-[12px] font-semibold text-white/70 backdrop-blur-sm transition-colors hover:border-white/30 hover:text-white"
+            >
+              <Palette className="h-3.5 w-3.5" aria-hidden />
+              البراند بوك وأصول الهوية
+            </a>
           </motion.div>
         </div>
         {/* ===== END DARK PHONE AREA ===== */}
 
-        {/* ===== DESIGN SYSTEM SHOWCASE (has its own hero + footer) ===== */}
+        {/* ===== BRAND BOOK + ASSETS ===== */}
         <motion.section
           initial={{ opacity: 0 }}
           animate={{ opacity: showSplash ? 0 : 1 }}
           transition={{ duration: 0.5, delay: 0.5 }}
         >
-          <DesignSystemShowcase />
+          <BrandBookHub />
         </motion.section>
 
         {/* ===== FEATURE HIGHLIGHTS ===== */}
@@ -397,25 +335,25 @@ export default function StudyLinkDesignPage() {
                   icon: <Sparkles className="w-5 h-5 text-sky-500" />,
                   title: 'مذكرات كل الفرق',
                   desc: 'شرح نظري وورق عملي وبنوك أسئلة — مفلترة حسب فرقتك',
-                  color: 'bg-sky-50 border-sky-100',
+                  color: 'bg-white border-brand-grey-200/60',
                 },
                 {
-                  icon: <ShieldCheck className="w-5 h-5 text-teal-500" />,
+                  icon: <ShieldCheck className="w-5 h-5 text-sky-500" />,
                   title: 'مكتبات معتمدة',
                   desc: 'هارفرد وبرلين — الطلب بيتجمّع من المكتبة نفسها',
-                  color: 'bg-teal-50 border-teal-100',
+                  color: 'bg-white border-brand-grey-200/60',
                 },
                 {
-                  icon: <Smartphone className="w-5 h-5 text-amber-500" />,
+                  icon: <Smartphone className="w-5 h-5 text-sky-500" />,
                   title: 'رسائل ذكية',
                   desc: 'عروض وتحديثات وتنبيهات طلباتك في مكان واحد — كل حاجة تخصك هنا',
-                  color: 'bg-amber-50 border-amber-100',
+                  color: 'bg-white border-brand-grey-200/60',
                 },
                 {
-                  icon: <Layers className="w-5 h-5 text-brand-grey-500" />,
+                  icon: <Layers className="w-5 h-5 text-sky-500" />,
                   title: 'محفظة ذكية',
                   desc: 'ادفع وأكسب عمولة وشارك مع زمايلك بسهولة وسرية',
-                  color: 'bg-brand-grey-50 border-brand-grey-100',
+                  color: 'bg-white border-brand-grey-200/60',
                 },
               ].map((feature, i) => (
                 <motion.div

@@ -33,6 +33,28 @@ npm run dev          # http://localhost:3000
 > إطار الهاتف: لكل شاشة غرضها ومصدر بياناتها وقواعدها والحالات المطلوبة وما هو
 > **مؤجَّل لا يُبنى**. المحتوى في `src/lib/spec.ts`.
 
+---
+
+## البراند بوك وأصول الهوية
+
+المرجع البصري المعتمد ([`studylink-identity-v1`](https://drive.google.com/drive/folders/1BX9YVdAvYwxu-eWqCweIvsKJKMwOcDYZ)) منشور مع الموك اب:
+
+| | |
+|---|---|
+| **البراند بوك** | [`/brand/studylink-brand-book.html`](https://dramrhaleem.github.io/studylink-mockup/brand/studylink-brand-book.html) |
+| **أيقونات النظام** | ٣٥ أيقونة SVG — [تنزيل](https://dramrhaleem.github.io/studylink-mockup/brand/downloads/studylink-native-icons-svg.zip) · معاينة في قسم البراند بوك بالصفحة |
+| **توكنز الألوان** | [تنزيل](https://dramrhaleem.github.io/studylink-mockup/brand/downloads/studylink-color-tokens.zip) — `tokens.css` · `tokens.scss` · `palette.json` · `tokens.dtcg.json` |
+| **الخطوط** | [تنزيل](https://dramrhaleem.github.io/studylink-mockup/brand/downloads/studylink-fonts.zip) — SIL OFL 1.1 |
+| **حزمة الشعار** | [تنزيل](https://dramrhaleem.github.io/studylink-mockup/brand/downloads/studylink-logo-pack.zip) |
+| **العربية وRTL واللغة** | [تنزيل](https://dramrhaleem.github.io/studylink-mockup/brand/downloads/studylink-verbal-arabic-rtl.zip) |
+| **قوالب الطباعة** | [تنزيل](https://dramrhaleem.github.io/studylink-mockup/brand/downloads/studylink-print-templates.zip) |
+| **السوشيال ومتاجر التطبيقات** | [تنزيل](https://dramrhaleem.github.io/studylink-mockup/brand/downloads/studylink-social-appstore.zip) |
+| **نسخة سحابية** | [مجلد Google Drive](https://drive.google.com/drive/folders/1BX9YVdAvYwxu-eWqCweIvsKJKMwOcDYZ) |
+
+**لا يوجد «دليل نظام تصميم» في الصفحة، وهذا مقصود:** كان قسمًا يعيد بناء النظام
+يدويًا فصار نسخة ثانية تناقض المصدر مع الوقت. حلّ محله البراند بوك نفسه.
+أما **متى** يُستخدم كل لون فمكانه [`DESIGN-SYSTEM-COLOR.md`](DESIGN-SYSTEM-COLOR.md).
+
 ## التنقّل بين الشاشات
 
 كل شاشة لها رابط مباشر:
@@ -139,6 +161,7 @@ npm run test:pricing   # قواعد المال مقابل الإفادة الم�
 npm run audit:ui       # تباين · أحجام لمس · أسماء وصول · تجاوز أفقي · ألوان خارج اللوحة
 npm run audit:overlap  # نص يمرّ تحت زر مطلق — عطل لا ينتج خطأً في الكونسول
 npm run audit:scroll   # سرقة التمرير: شاشة تعيد المستخدم لأعلى وحدها
+npm run audit:ux       # نص مقصوص · نص تحت 12px · شاشة بلا مخرج · شاشة فارغة
 npm run shots          # لقطة لكل شاشة
 npm run shots:dark     # الوضع الداكن
 npm run shots:cart     # شاشات المال بسلة مزروعة بمنتجات

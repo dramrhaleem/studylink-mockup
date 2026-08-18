@@ -737,8 +737,8 @@ export default function AmbassadorScreen({ onNavigate }: AmbassadorScreenProps) 
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
                           <span className={'text-[13px] font-bold ' + (isActive ? 'text-sky-700' : textPrimary)}>{tier.name}</span>
-                          {isActive && <span className="rounded-full bg-sky-500 px-2 py-0.5 text-[11px] font-bold text-white">مستواك الحالي</span>}
-                          {isPast && <span className="rounded-full bg-teal-500 px-2 py-0.5 text-[11px] font-bold text-white">تم تجاوزه</span>}
+                          {isActive && <span className="rounded-full bg-sky-500 px-2 py-0.5 text-[12px] font-bold text-white">مستواك الحالي</span>}
+                          {isPast && <span className="rounded-full bg-teal-500 px-2 py-0.5 text-[12px] font-bold text-white">تم تجاوزه</span>}
                           {isLocked && <Lock className="h-3 w-3 text-brand-grey-400" />}
                         </div>
                         <p className={'mt-0.5 text-[12px] leading-relaxed ' + textSecondary}>

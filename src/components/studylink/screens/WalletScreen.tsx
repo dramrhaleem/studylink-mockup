@@ -718,7 +718,7 @@ export default function WalletScreen({ onNavigate }: WalletScreenProps) {
                 <ProgressRing progress={68} size={72} strokeWidth={6} color="#1A70B0" />
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <span className="text-[16px] font-bold text-navy-800" style={{ fontFamily: 'Inter, sans-serif' }}>340</span>
-                  <span className="text-[11px] text-brand-grey-500">نقطة</span>
+                  <span className="text-[12px] text-brand-grey-500">نقطة</span>
                 </div>
               </div>
 

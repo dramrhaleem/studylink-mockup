@@ -114,7 +114,8 @@ deliveryFee = 25 · pickupFee = 0
 
 ### هـ. التخطيط
 
-- **الحد الأدنى للخط:** 12px لعناصر الواجهة، 13px للمتن.
+- **الحد الأدنى للخط:** 12px لعناصر الواجهة، 13px للمتن. **لا `text-[11px]`**
+  داخل إطار الهاتف — كانت ٦٠ حالة ورُفعت كلها. `npm run audit:ux` يحرس هذا.
 - **الأزرار الصغيرة تأخذ `data-tap="44"`** — يوسّع منطقة اللمس بلا تغيير الشكل.
 - **الشرائط الأفقية تأخذ `rail-gutter`** — حشو نهاية حاوية التمرير تُسقطه محرّكات
   التخطيط، فآخر بطاقة تُقص على حافة الشاشة.
@@ -156,6 +157,7 @@ deliveryFee = 25 · pickupFee = 0
 | **محتوى بطاقة «العملي في الجيب»** | `src/lib/season.ts` (`ACTIVE_SEASON`) |
 | **مراحل الطلب وشريط الطلب الجاري** | `src/lib/order-status.ts` · `ActiveOrderBar.tsx` |
 | **مواصفة شاشة للمطوّر** | `src/lib/spec.ts` |
+| **البراند بوك وحزم الأصول** | `src/lib/brand-assets.ts` · `BrandBookHub.tsx` · `public/brand/` |
 | سعر · رسم · عرض تشغيلي | `src/lib/pricing.ts` |
 | منتج · مكتبة · بيانات | `src/lib/studylink-data.ts` |
 | شاشة | `src/components/studylink/screens/<Name>Screen.tsx` |
@@ -193,6 +195,29 @@ deliveryFee = 25 · pickupFee = 0
 
 ---
 
+## البراند بوك وأصول الهوية
+
+**لا يوجد «دليل نظام تصميم» في الصفحة، وهذا مقصود.** كان هناك قسم من ١٤٢٤ سطرًا
+يعيد بناء نظام التصميم يدويًا — لوحة ألوان مكتوبة بالـhex ومقاييس خطوط وأمثلة
+أزرار. المشكلة أنه كان **نسخة ثانية من المصدر**: أي تعديل في حزمة الهوية لا يصل
+إليه، فيصير مع الوقت مرجعًا يناقض المرجع. حُذف واستُبدل بالمصدر نفسه.
+
+| ما تريد | أين |
+|---|---|
+| المرجع البصري الكامل | `public/brand/studylink-brand-book.html` — البراند بوك كما وُلِّد من الحزمة |
+| **متى** يُستخدم كل لون | `DESIGN-SYSTEM-COLOR.md` (قانون من ٨ بنود) |
+| توكنز التطبيق الفعلية | `src/app/globals.css` داخل `@theme` |
+| أيقونات النظام (٣٥ SVG) | `public/brand/icons/` — `currentColor` وسمك 2 |
+| حزم التنزيل | `public/brand/downloads/*.zip` |
+| قائمة الحزم والأيقونات | `src/lib/brand-assets.ts` |
+| نسخة سحابية | [مجلد Drive](https://drive.google.com/drive/folders/1BX9YVdAvYwxu-eWqCweIvsKJKMwOcDYZ) |
+
+**المصدر الأصلي** خارج المستودع: `deliverables/brand/studylink-identity-v1` في
+قاعدة معرفة المشروع. لو حدّثت الحزمة هناك، أعد توليد `public/brand/` منها —
+لا تعدّل الملفات المنسوخة يدويًا.
+
+---
+
 ## دورة العمل
 
 ```bash
@@ -217,6 +242,7 @@ npm run test:pricing               # قواعد المال مقابل الإفا
 npm run audit:ui                   # يحتاج dev شغّالًا
 npm run audit:overlap              # نص يمرّ تحت زر مطلق — لا ينتج خطأً ولا يظهر في أي فحص آخر
 npm run audit:scroll               # سرقة التمرير: شاشة تعيد المستخدم لأعلى وحدها
+npm run audit:ux                   # نص مقصوص · نص تحت 12px · شاشة بلا مخرج · شاشة فارغة
 STATIC_EXPORT=1 npm run build      # نفس بناء GitHub بالضبط
 ```
 
@@ -270,6 +296,7 @@ git add -A && git commit -m "…" && git push
 |---|---|
 | `UPGRADE-REPORT.md` | **اقرأه قبل أي تعديل أساسي** — كل باج أُصلح ولماذا |
 | `DESIGN-SYSTEM-COLOR.md` | **قانون اللون** — متى يُستخدم اللون، لا أيّه موجود |
+| `public/brand/studylink-brand-book.html` | البراند بوك الرسمي — المرجع البصري |
 | `DEV.md` | دليل التعديل للبشر |
 | `DESIGN-SYSTEM.md` | نظام التصميم بالتفصيل |
 | `README.md` | نظرة عامة |

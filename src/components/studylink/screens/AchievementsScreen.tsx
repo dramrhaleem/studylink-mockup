@@ -258,7 +258,7 @@ export default function AchievementsScreen({ onNavigate }: AchievementsScreenPro
                 <LevelProgressRing progress={60} size={100} strokeWidth={8} />
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <span className="text-[22px] font-bold text-navy-800 sl-num leading-none">3</span>
-                  <span className="text-[11px] text-brand-grey-500 mt-0.5">من 5</span>
+                  <span className="text-[12px] text-brand-grey-500 mt-0.5">من 5</span>
                 </div>
               </div>
 
@@ -277,7 +277,7 @@ export default function AchievementsScreen({ onNavigate }: AchievementsScreenPro
                   <Crown className="w-3.5 h-3.5 text-brand-grey-400" aria-hidden />
                   <div className="flex-1">
                     <p className="text-[12px] font-semibold text-brand-grey-400">الطالب المثالي</p>
-                    <p className="text-[11px] text-brand-grey-400">مقفل</p>
+                    <p className="text-[12px] text-brand-grey-400">مقفل</p>
                   </div>
                   <span className="text-[12px] text-brand-grey-400 sl-num">Lv.4</span>
                 </div>
@@ -392,7 +392,7 @@ export default function AchievementsScreen({ onNavigate }: AchievementsScreenPro
                           transition={{ duration: 0.8, ease: 'easeOut', delay: 0.8 }}
                         />
                       </div>
-                      <p className="text-[11px] text-brand-grey-400 mt-0.5 sl-num">
+                      <p className="text-[12px] text-brand-grey-400 mt-0.5 sl-num">
                         {achievement.current}/{achievement.target}
                       </p>
                     </div>
