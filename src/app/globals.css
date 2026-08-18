@@ -1,0 +1,836 @@
+/* ============================================================================
+   StudyLink — Global stylesheet
+   Design source of truth: deliverables/brand/studylink-identity-v1
+     · 02-color/tokens.css   (palette, spacing, radius, type scale)
+     · 03-type/              (StudyLink Arabic + StudyLink Mono, SIL OFL 1.1)
+     · 10-arabic/            (Arabic + RTL typographic law)
+   Every colour utility below resolves to a brand token. There is no escape
+   hatch: even the stock Tailwind palettes (red/green/violet/…) are remapped
+   onto brand ramps so a stray class can never leave the system.
+   ========================================================================== */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ─────────────────────────── 1. Typefaces ─────────────────────────────────
+   StudyLink Arabic  = IBM Plex Sans Arabic subset (SIL OFL 1.1)
+   StudyLink Mono    = IBM Plex Mono subset (SIL OFL 1.1)
+
+   الملفات تُحمَّل من `src/app/fonts.ts` عبر `next/font/local`، لا بـ@font-face
+   هنا: المسار المطلق داخل CSS لا يحترم `basePath` عند النشر في مجلد مستودع،
+   فيسقط الخط بصمت. راجع التعليق في `fonts.ts`.
+   ------------------------------------------------------------------------ */
+
+/* ─────────────────────── 2. Brand palette (static) ────────────────────────
+   Ramps are theme-independent: they are the brand's colours, full stop.
+   Semantic aliases (§3) are what flips between light and dark.
+   ------------------------------------------------------------------------ */
+@theme {
+  /* fonts ---------------------------------------------------------------- */
+  --font-sans: var(--font-studylink-arabic), 'IBM Plex Sans Arabic', 'Segoe UI Arabic', system-ui, sans-serif;
+  --font-mono: var(--font-studylink-mono), 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* ── INK — authority, headings, primary surfaces (sl-ink) ─────────────── */
+  --color-navy-50:  #EEF6FF;
+  --color-navy-100: #DCE6F1;
+  --color-navy-200: #C4CFDC;
+  --color-navy-300: #A6B2C1;
+  --color-navy-400: #8694A4;
+  --color-navy-500: #677688;
+  --color-navy-600: #495A6D;
+  --color-navy-700: #304156;
+  --color-navy-800: #13253A; /* ← INK. brand base. primary CTA, headings     */
+  --color-navy-900: #08192C;
+  --color-navy-950: #000919;
+
+  /* ── SKY — interactive.
+        Measured against the real canvas, not against white. The brand's live
+        blue #1A70B0 is 4.35:1 on paper (#F2EEE3) — 0.15 short of the 4.5 AA
+        gate for body text. The functional ramp is darkened by one perceptual
+        step so `text-sky-500` passes wherever it lands; the literal brand
+        values are preserved untouched under `brandsky-*` for large display and
+        decorative use, where the 3:1 gate applies and they pass comfortably.
+        50–300 stay soft for tints and fills. ────────────────────────────── */
+  --color-sky-50:  #EDF6FF;
+  --color-sky-100: #CFE8FF;
+  --color-sky-200: #A4D4FF;
+  --color-sky-300: #82B7E7;
+  --color-sky-400: #5998CF;
+  --color-sky-500: #17699F; /* on paper 4.94:1 · white-on 5.91:1 — AA both ways */
+  --color-sky-600: #0A5C94; /* pressed / hover-dark — 5.87:1 on paper        */
+  --color-sky-700: #0A5C94;
+  --color-sky-800: #00426F;
+  --color-sky-900: #002D4E;
+  --color-sky-950: #001A30;
+
+  /* ── BRAND SKY — decorative only (large fills, gradients, glows).
+        Never place small text on or in it: 3.1:1 on white. ─────────────── */
+  --color-brandsky-100: #EDF6FF;
+  --color-brandsky-300: #A4D4FF;
+  --color-brandsky-500: #4595D7;
+  --color-brandsky-live: #1A70B0; /* the literal brand "live" — display use  */
+  --color-brandsky-700: #327AB3;
+
+  /* ── PAPER — the canvas. warm, not clinical grey (sl-paper / sl-neutral).
+        50–300 are surfaces & rules · 400–900 are text tiers, all AA.  ────── */
+  --color-brand-grey-50:  #FBF9F4; /* raised surface / soft panel            */
+  --color-brand-grey-100: #F2EEE3; /* ← PAPER. app canvas                    */
+  --color-brand-grey-200: #DAD7CF; /* rule / divider / card border           */
+  --color-brand-grey-300: #BEBAB1; /* rule-strong / disabled border          */
+  --color-brand-grey-400: #6B6860; /* muted text & inactive icons — 4.9:1    */
+  --color-brand-grey-500: #5A5852; /* secondary text — 6.0:1                 */
+  --color-brand-grey-600: #42403A; /* helper copy — 9.2:1                    */
+  --color-brand-grey-700: #2D2B27; /* strong secondary                       */
+  --color-brand-grey-800: #1B2C41;
+  --color-brand-grey-900: #13253A; /* primary body text = ink                */
+
+  /* ── DONE (was "teal") — completion, verified, medical-equipment badge ─── */
+  --color-teal-50:  #DCFFEB;
+  --color-teal-100: #C6F1D8;
+  --color-teal-200: #A9DCBF;
+  --color-teal-300: #84C1A0;
+  --color-teal-400: #59A47E;
+  --color-teal-500: #28885D;
+  --color-teal-600: #00734A; /* ← DONE, contrast-tuned for the paper canvas  */
+  --color-teal-700: #006943;
+  --color-teal-800: #004D30;
+  --color-teal-900: #003520;
+
+  /* ── HILITE (was "amber") — reward, stationery badge, attention.
+        50–200 are fills · 300↑ are text tiers.  ─────────────────────────── */
+  --color-amber-50:  #FFF6CA;
+  --color-amber-100: #FFEE9E;
+  --color-amber-200: #FFE24B; /* ← HILITE base. fills & dots only            */
+  --color-amber-300: #CAB129;
+  --color-amber-400: #756500; /* on paper 4.87:1                             */
+  --color-amber-500: #665800; /* on paper 5.94:1                             */
+  --color-amber-600: #524600; /* on paper 7.9:1                              */
+  --color-amber-700: #4B4000;
+  --color-amber-800: #332B00;
+  --color-amber-900: #1E1800;
+
+  /* ── System feedback (sl-done / sl-delay / sl-alert) ──────────────────── */
+  --color-success:      #00734A; /* on paper 4.94:1 (brand #007C50 = 4.44)   */
+  --color-success-bg:   #DCFFEB;
+  --color-success-ink:  #004D30;
+  /* الأخضر الأساسي على بطاقة حبرية داكنة = 2.95:1. هذا هو المقابل الفاتح. */
+  --color-success-on-dark: #4FD39A;
+  --color-warning:      #8A5300; /* on paper 5.29:1 (brand #9C5E00 = 4.37)   */
+  --color-warning-bg:   #FFF3E7;
+  --color-warning-ink:  #5C3500;
+  --color-error:        #B4122E;
+  --color-error-bg:     #FFF1F1;
+  --color-error-ink:    #7C001A;
+
+  /* ── Category badge pairings (WCAG AAA ≥ 7:1) ─────────────────────────── */
+  --color-badge-lectures-bg:    #EEF6FF;
+  --color-badge-lectures-ink:   #13253A; /* 13.0:1 */
+  --color-badge-medical-bg:     #DCFFEB;
+  --color-badge-medical-ink:    #004D30; /*  9.1:1 */
+  --color-badge-stationery-bg:  #FFF6CA;
+  --color-badge-stationery-ink: #13253A; /* 13.6:1 */
+
+  /* ── Stock Tailwind palettes, closed onto the brand ───────────────────────
+        Nothing in this app should reach for these, but if it does it lands
+        inside the system instead of outside it. ──────────────────────────── */
+  --color-emerald-50:  #DCFFEB; --color-emerald-100: #C6F1D8; --color-emerald-200: #A9DCBF;
+  --color-emerald-300: #84C1A0; --color-emerald-400: #28885D; --color-emerald-500: #00734A;
+  --color-emerald-600: #006943; --color-emerald-700: #004D30; --color-emerald-800: #003520;
+  --color-emerald-900: #001F10; --color-emerald-950: #000D05;
+
+  --color-green-50:  #DCFFEB; --color-green-100: #C6F1D8; --color-green-200: #A9DCBF;
+  --color-green-300: #84C1A0; --color-green-400: #28885D; --color-green-500: #00734A;
+  --color-green-600: #006943; --color-green-700: #004D30; --color-green-800: #003520;
+  --color-green-900: #001F10; --color-green-950: #000D05;
+
+  --color-red-50:  #FFF1F1; --color-red-100: #FFDAD9; --color-red-200: #FFB9B7;
+  --color-red-300: #F59090; --color-red-400: #DE686A; --color-red-500: #C53D46;
+  --color-red-600: #B4122E; --color-red-700: #A50828; --color-red-800: #7C001A;
+  --color-red-900: #58000F; --color-red-950: #360006;
+
+  --color-rose-50:  #FFF1F1; --color-rose-100: #FFDAD9; --color-rose-200: #FFB9B7;
+  --color-rose-300: #F59090; --color-rose-400: #DE686A; --color-rose-500: #C53D46;
+  --color-rose-600: #B4122E; --color-rose-700: #A50828; --color-rose-800: #7C001A;
+  --color-rose-900: #58000F; --color-rose-950: #360006;
+
+  --color-pink-50:  #FFF1F1; --color-pink-100: #FFDAD9; --color-pink-200: #FFB9B7;
+  --color-pink-300: #F59090; --color-pink-400: #DE686A; --color-pink-500: #C53D46;
+  --color-pink-600: #B4122E; --color-pink-700: #A50828; --color-pink-800: #7C001A;
+  --color-pink-900: #58000F; --color-pink-950: #360006;
+
+  --color-orange-50:  #FFF3E7; --color-orange-100: #FFDEBD; --color-orange-200: #EFC59B;
+  --color-orange-300: #D7A775; --color-orange-400: #BC854A; --color-orange-500: #A16515;
+  --color-orange-600: #9C5E00; --color-orange-700: #7D4A00; --color-orange-800: #5C3500;
+  --color-orange-900: #402400; --color-orange-950: #261300;
+
+  --color-yellow-50:  #FFF6CA; --color-yellow-100: #FFEE9E; --color-yellow-200: #FFE24B;
+  --color-yellow-300: #CAB129; --color-yellow-400: #8E7A00; --color-yellow-500: #877400;
+  --color-yellow-600: #665800; --color-yellow-700: #4B4000; --color-yellow-800: #332B00;
+  --color-yellow-900: #1E1800; --color-yellow-950: #0C0900;
+
+  --color-blue-50:  #EDF6FF; --color-blue-100: #CFE8FF; --color-blue-200: #A4D4FF;
+  --color-blue-300: #82B7E7; --color-blue-400: #5998CF; --color-blue-500: #2C79B7;
+  --color-blue-600: #1A70B0; --color-blue-700: #0A5C94; --color-blue-800: #00426F;
+  --color-blue-900: #002D4E; --color-blue-950: #001A30;
+
+  --color-cyan-50:  #EDF6FF; --color-cyan-100: #CFE8FF; --color-cyan-200: #A4D4FF;
+  --color-cyan-300: #82B7E7; --color-cyan-400: #5998CF; --color-cyan-500: #2C79B7;
+  --color-cyan-600: #1A70B0; --color-cyan-700: #0A5C94; --color-cyan-800: #00426F;
+  --color-cyan-900: #002D4E; --color-cyan-950: #001A30;
+
+  --color-indigo-50:  #EEF6FF; --color-indigo-100: #DCE6F1; --color-indigo-200: #C4CFDC;
+  --color-indigo-300: #A6B2C1; --color-indigo-400: #677688; --color-indigo-500: #495A6D;
+  --color-indigo-600: #304156; --color-indigo-700: #13253A; --color-indigo-800: #08192C;
+  --color-indigo-900: #000919; --color-indigo-950: #000919;
+
+  --color-violet-50:  #EEF6FF; --color-violet-100: #DCE6F1; --color-violet-200: #C4CFDC;
+  --color-violet-300: #A6B2C1; --color-violet-400: #677688; --color-violet-500: #495A6D;
+  --color-violet-600: #304156; --color-violet-700: #13253A; --color-violet-800: #08192C;
+  --color-violet-900: #000919; --color-violet-950: #000919;
+
+  --color-purple-50:  #EEF6FF; --color-purple-100: #DCE6F1; --color-purple-200: #C4CFDC;
+  --color-purple-300: #A6B2C1; --color-purple-400: #677688; --color-purple-500: #495A6D;
+  --color-purple-600: #304156; --color-purple-700: #13253A; --color-purple-800: #08192C;
+  --color-purple-900: #000919; --color-purple-950: #000919;
+
+  --color-slate-50:  #FBF9F4; --color-slate-100: #F2EEE3; --color-slate-200: #DAD7CF;
+  --color-slate-300: #BEBAB1; --color-slate-400: #6B6860; --color-slate-500: #5A5852;
+  --color-slate-600: #42403A; --color-slate-700: #2D2B27; --color-slate-800: #1B2C41;
+  --color-slate-900: #13253A; --color-slate-950: #08192C;
+
+  --color-gray-50:  #FBF9F4; --color-gray-100: #F2EEE3; --color-gray-200: #DAD7CF;
+  --color-gray-300: #BEBAB1; --color-gray-400: #6B6860; --color-gray-500: #5A5852;
+  --color-gray-600: #42403A; --color-gray-700: #2D2B27; --color-gray-800: #1B2C41;
+  --color-gray-900: #13253A; --color-gray-950: #08192C;
+
+  --color-neutral-50:  #FBF9F4; --color-neutral-100: #F2EEE3; --color-neutral-200: #DAD7CF;
+  --color-neutral-300: #BEBAB1; --color-neutral-400: #6B6860; --color-neutral-500: #5A5852;
+  --color-neutral-600: #42403A; --color-neutral-700: #2D2B27; --color-neutral-800: #1B2C41;
+  --color-neutral-900: #13253A; --color-neutral-950: #08192C;
+
+  --color-zinc-50:  #FBF9F4; --color-zinc-100: #F2EEE3; --color-zinc-200: #DAD7CF;
+  --color-zinc-300: #BEBAB1; --color-zinc-400: #6B6860; --color-zinc-500: #5A5852;
+  --color-zinc-600: #42403A; --color-zinc-700: #2D2B27; --color-zinc-800: #1B2C41;
+  --color-zinc-900: #13253A; --color-zinc-950: #08192C;
+
+  --color-stone-50:  #FBF9F4; --color-stone-100: #F2EEE3; --color-stone-200: #DAD7CF;
+  --color-stone-300: #BEBAB1; --color-stone-400: #6B6860; --color-stone-500: #5A5852;
+  --color-stone-600: #42403A; --color-stone-700: #2D2B27; --color-stone-800: #1B2C41;
+  --color-stone-900: #13253A; --color-stone-950: #08192C;
+
+  /* ── Radius — brand anchors 4 / 8 / 14 / 22 / pill ────────────────────── */
+  --radius-xs:   2px;
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:  14px;
+  --radius-xl:  18px;
+  --radius-2xl: 22px;
+  --radius-3xl: 28px;
+  --radius-4xl: 36px;
+
+  /* ── Spacing — 4px base, brand steps ──────────────────────────────────── */
+  --spacing: 4px;
+
+  /* ── Shadows — ink-tinted, never neutral black ────────────────────────── */
+  --shadow-xs: 0 1px 2px rgba(19, 37, 58, 0.05);
+  --shadow-sm: 0 1px 3px rgba(19, 37, 58, 0.07), 0 1px 2px rgba(19, 37, 58, 0.04);
+  --shadow-md: 0 4px 10px -2px rgba(19, 37, 58, 0.08), 0 2px 4px -2px rgba(19, 37, 58, 0.05);
+  --shadow-lg: 0 10px 24px -6px rgba(19, 37, 58, 0.10), 0 4px 8px -4px rgba(19, 37, 58, 0.05);
+  --shadow-xl: 0 20px 40px -12px rgba(19, 37, 58, 0.16);
+}
+
+/* ────────────────── 3. Semantic aliases (theme-aware) ─────────────────────
+   These are the only tokens that change between light and dark.
+   ------------------------------------------------------------------------ */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-text-2: var(--text-2);
+  --color-text-3: var(--text-3);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 14px;
+
+  --background: #F2EEE3;   /* paper                                          */
+  --foreground: #13253A;   /* ink                                            */
+  --surface:    #FBF9F4;
+  --raised:     #FFFFFF;
+  --rule:       #DAD7CF;
+  --rule-strong:#BEBAB1;
+  --text-2:     #5A5852;
+  --text-3:     #6B6860;
+
+  --card: #FFFFFF;
+  --card-foreground: #13253A;
+  --popover: #FFFFFF;
+  --popover-foreground: #13253A;
+  --primary: #13253A;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F2EEE3;
+  --secondary-foreground: #13253A;
+  --muted: #F2EEE3;
+  --muted-foreground: #5A5852;
+  --accent: #EDF6FF;
+  --accent-foreground: #13253A;
+  --destructive: #B4122E;
+  --destructive-foreground: #FFFFFF;
+  --border: #DAD7CF;
+  --input: #DAD7CF;
+  --ring: #1A70B0;
+
+  --chart-1: #1A70B0;
+  --chart-2: #13253A;
+  --chart-3: #007C50;
+  --chart-4: #FFE24B;
+  --chart-5: #9C5E00;
+
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #13253A;
+  --sidebar-primary: #13253A;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #EEF6FF;
+  --sidebar-accent-foreground: #13253A;
+  --sidebar-border: #DAD7CF;
+  --sidebar-ring: #1A70B0;
+}
+
+/* Dark theme — values straight from 02-color/tokens.css.
+   Applied by adding `.dark` (or data-theme="dark") to a container, so the
+   phone mockup can be dark while the showcase page around it stays light. */
+.dark,
+[data-theme='dark'] {
+  --background: #0E1B2C;
+  --foreground: #F2EEE3;
+  --surface:    #14243A;
+  --raised:     #1B2E48;
+  --rule:       #24384F;
+  --rule-strong:#33506E;
+  --text-2:     #B9C4D2;
+  --text-3:     #8595A8;
+
+  --card: #14243A;
+  --card-foreground: #F2EEE3;
+  --popover: #1B2E48;
+  --popover-foreground: #F2EEE3;
+  --primary: #EDF6FF;
+  --primary-foreground: #0E1B2C;
+  --secondary: #14243A;
+  --secondary-foreground: #F2EEE3;
+  --muted: #14243A;
+  --muted-foreground: #B9C4D2;
+  --accent: #1B2E48;
+  --accent-foreground: #EDF6FF;
+  --destructive: #F59090;
+  --destructive-foreground: #1B0002;
+  --border: #24384F;
+  --input: #24384F;
+  --ring: #65B5F9;
+
+  --sidebar: #14243A;
+  --sidebar-foreground: #F2EEE3;
+  --sidebar-primary: #EDF6FF;
+  --sidebar-primary-foreground: #0E1B2C;
+  --sidebar-accent: #1B2E48;
+  --sidebar-accent-foreground: #EDF6FF;
+  --sidebar-border: #24384F;
+  --sidebar-ring: #65B5F9;
+}
+
+/* ── Dark-mode remap of the *literal* brand utilities ───────────────────────
+   The screens are written against navy-* / brand-grey-* / sky-* directly.
+   Rather than annotate ~2,900 call sites with dark: variants, the ramps
+   themselves invert inside a .dark subtree. Ink and paper swap roles; sky
+   brightens to stay AA on a dark ground.                                    */
+.dark {
+  --color-brand-grey-50:  #14243A;
+  --color-brand-grey-100: #0E1B2C;
+  --color-brand-grey-200: #24384F;
+  --color-brand-grey-300: #33506E;
+  --color-brand-grey-400: #8595A8;
+  --color-brand-grey-500: #B9C4D2;
+  --color-brand-grey-600: #CBD5E1;
+  --color-brand-grey-700: #E2E8F0;
+  --color-brand-grey-800: #EDF3F9;
+  --color-brand-grey-900: #F2EEE3;
+
+  --color-navy-50:  #1B2E48;
+  --color-navy-100: #24384F;
+  --color-navy-200: #33506E;
+  --color-navy-300: #4A6889;
+  --color-navy-400: #6E88A6;
+  --color-navy-500: #8FA6BF;
+  --color-navy-600: #B9C4D2;
+  --color-navy-700: #D6DEE8;
+  --color-navy-800: #F2EEE3;
+  --color-navy-900: #FFFFFF;
+
+  --color-sky-50:  #14243A;
+  --color-sky-100: #1B2E48;
+  --color-sky-200: #24384F;
+  --color-sky-400: #4A93D8;
+  --color-sky-500: #65B5F9;
+  --color-sky-600: #8CC8FB;
+  --color-sky-700: #A4D4FF;
+
+  --color-success:    #4FD39A;
+  --color-success-bg: #00301E;
+  --color-warning:    #E0A458;
+  --color-warning-bg: #3A2200;
+  --color-error:      #F59090;
+  --color-error-bg:   #43000C;
+
+  /* `white` is used two ways in these screens: as a card surface (`bg-white`)
+     and as the on-colour for filled buttons (`text-white`). Both invert
+     together — a card becomes the raised dark surface, and text on a now-light
+     ink button or a brightened sky button becomes dark. One token, both roles. */
+  --color-white: #1B2E48;
+
+  --color-teal-50:  #00301E;
+  --color-teal-100: #004D30;
+  --color-teal-600: #4FD39A;
+  --color-teal-700: #6FE0AF;
+  --color-teal-800: #A9DCBF;
+  --color-teal-900: #DCFFEB;
+
+  --color-amber-50:  #3A2200;
+  --color-amber-100: #4B4000;
+  --color-amber-200: #FFE24B;
+  --color-amber-500: #E9CE3E;
+  --color-amber-600: #FFE24B;
+}
+
+/* ───────────────────────── 4. Base layer ─────────────────────────────────── */
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Arabic typographic law — 10-arabic/arabic-and-rtl.md §4.
+     Positive tracking opens gaps inside the cursive join and breaks the word,
+     so every tracking-* utility is neutralised inside RTL. Latin runs that
+     genuinely want tracking opt back in with .tracking-latin.               */
+  [dir='rtl'],
+  [dir='rtl'] *,
+  [dir='rtl'] *::placeholder,
+  [dir='rtl'] *::first-line {
+    letter-spacing: 0 !important;
+  }
+  [dir='rtl'] .tracking-latin {
+    letter-spacing: 0.04em !important;
+  }
+
+  /* Arabic has no letter case. */
+  [lang='ar'] :not(.latin) {
+    text-transform: none;
+  }
+
+  /* Focus is never invisible. */
+  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Respect the OS motion preference — the mockup has ~30 infinite loops. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ─────────────── 5. Money & numerals — a brand asset ──────────────────────
+   From 02-color/tokens.css: tabular by construction, never proportional,
+   and directionally isolated so bidi cannot reorder a price or a date.
+   `.sl-num` replaces the old ad-hoc `font-[Inter]`.
+   ------------------------------------------------------------------------ */
+/* `.sl-num` — the wrapper used across the screens. It usually contains the
+   amount AND the currency word together ("50 ج.م"), so it must NOT force
+   direction:ltr: that would lay the whole run out left-to-right and print the
+   currency to the right of the figure, which reads backwards in Arabic.
+   Isolation alone is what's needed — the digits are already an LTR run inside
+   an RTL paragraph, and the bidi algorithm places them correctly. */
+.sl-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: 'tnum' 1, 'lnum' 1;
+  letter-spacing: 0 !important;
+  unicode-bidi: isolate;
+}
+
+/* `.sl-money` — the brand's strict variant from 02-color/tokens.css, for an
+   element that holds a bare figure with no Arabic inside it. */
+.sl-money {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: 'tnum' 1, 'lnum' 1;
+  letter-spacing: 0 !important;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* Wrap any Latin/technical run inside Arabic copy. */
+.sl-iso {
+  unicode-bidi: isolate;
+}
+
+/* ───────────────────── 6. Phone mockup chrome ────────────────────────────── */
+.phone-scroll::-webkit-scrollbar { width: 3px; }
+.phone-scroll::-webkit-scrollbar-track { background: transparent; }
+.phone-scroll::-webkit-scrollbar-thumb { background: #BEBAB1; border-radius: 10px; }
+.phone-scroll::-webkit-scrollbar-thumb:hover { background: #6B6860; }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* A 44×44 minimum touch target without changing the visual size of the control.
+   WCAG 2.5.5 / iOS HIG both ask for 44pt; a 32px icon button misses it by a
+   third, which on a phone means a lot of near-misses. The pseudo-element is
+   invisible and inherits the button's own click handling. */
+.tap-44,
+[data-tap="44"] { position: relative; }
+.tap-44::after,
+[data-tap="44"]::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: 100%;
+  height: 100%;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Edge-to-edge rails still respect the 16px screen margin at both ends.
+   A scroll container's trailing padding is dropped by flex layout in every
+   engine, which is why the last card in every rail was being sliced flush
+   against the phone bezel. A zero-content ::after becomes a real flex item
+   and holds the gutter open. */
+.rail-gutter {
+  padding-inline-start: 16px;
+  scroll-padding-inline: 16px;
+}
+.rail-gutter::after {
+  content: '';
+  flex: 0 0 16px;
+  align-self: stretch;
+}
+
+.phone-frame {
+  width: 375px;
+  height: 812px;
+  border-radius: 52px;
+  border: 8px solid transparent;
+  background-image:
+    linear-gradient(#0E1B2C, #0E1B2C),
+    linear-gradient(145deg, #33506E 0%, #14243A 40%, #0E1B2C 100%);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 25px 60px -12px rgba(8, 25, 44, 0.5),
+    0 0 0 1px rgba(8, 25, 44, 0.8);
+  overflow: hidden;
+  position: relative;
+  background-color: #F2EEE3;
+}
+
+.phone-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 44px;
+  border: 1px solid rgba(8, 25, 44, 0.3);
+  pointer-events: none;
+  z-index: 60;
+}
+
+.phone-dynamic-island {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  width: 120px;
+  height: 36px;
+  background: linear-gradient(180deg, #000000 0%, #08192C 100%);
+  border-radius: 9999px;
+  z-index: 50;
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.8),
+    inset 0 -0.5px 1px rgba(255, 255, 255, 0.03),
+    0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+.phone-home-indicator {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  width: 140px;
+  height: 4px;
+  background: #13253A;
+  border-radius: 9999px;
+  z-index: 50;
+  transition: opacity 0.3s ease;
+}
+
+.phone-btn-left-top,
+.phone-btn-left-bottom,
+.phone-btn-left-mute,
+.phone-btn-right {
+  position: absolute;
+  z-index: 55;
+  background: linear-gradient(180deg, #33506E 0%, #24384F 100%);
+  border-radius: 2px;
+}
+.phone-btn-left-mute   { left: -3px; top: 160px; width: 3px; height: 22px; border-radius: 1.5px 0 0 1.5px; }
+.phone-btn-left-top    { left: -3px; top: 210px; width: 3px; height: 40px; border-radius: 1.5px 0 0 1.5px; }
+.phone-btn-left-bottom { left: -3px; top: 260px; width: 3px; height: 40px; border-radius: 1.5px 0 0 1.5px; }
+.phone-btn-right       { right: -3px; top: 220px; width: 3px; height: 55px; border-radius: 0 1.5px 1.5px 0; }
+
+/* ───────────────────────── 7. Motion ─────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #EAE6DB 25%, #DAD7CF 50%, #EAE6DB 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+.dark .skeleton-shimmer {
+  background: linear-gradient(90deg, #1B2E48 25%, #24384F 50%, #1B2E48 75%);
+  background-size: 200% 100%;
+}
+
+.screen-enter { animation: screenSlideIn 0.28s cubic-bezier(0.16, 1, 0.3, 1); }
+@keyframes screenSlideIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.bottom-sheet-enter { animation: slideUp 0.35s cubic-bezier(0.32, 0.72, 0, 1); }
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+.timeline-pulse { animation: pulse 2s infinite; }
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.5; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%      { transform: translateY(-8px); }
+}
+.float-animation { animation: float 3s ease-in-out infinite; }
+
+@keyframes shimmerBadge {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.shimmer-badge {
+  background: linear-gradient(90deg, #1A70B0 0%, #4595D7 25%, #1A70B0 50%, #4595D7 75%, #1A70B0 100%);
+  background-size: 200% 100%;
+  animation: shimmerBadge 2.5s linear infinite;
+}
+
+@keyframes ctaShimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.cta-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.15) 50%, transparent 100%);
+  animation: ctaShimmer 2.5s ease-in-out infinite;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+@keyframes confettiFall {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(80px) rotate(360deg); opacity: 0; }
+}
+.confetti-particle { animation: confettiFall 1.5s ease-out forwards; }
+
+@keyframes badgeBounce {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.15); }
+}
+.badge-bounce { animation: badgeBounce 0.5s ease-in-out; }
+
+@keyframes crownFloat {
+  0%, 100% { transform: translateY(0) rotate(-5deg); }
+  50%      { transform: translateY(-6px) rotate(5deg); }
+}
+.crown-float { animation: crownFloat 2.5s ease-in-out infinite; }
+
+@keyframes countGlow {
+  0%, 100% { text-shadow: 0 0 0 transparent; }
+  50%      { text-shadow: 0 0 8px rgba(26, 112, 176, 0.3); }
+}
+.count-glow { animation: countGlow 2s ease-in-out infinite; }
+
+/* Grade-gate drifting shapes */
+@keyframes floatDrift1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25%  { transform: translate(12px, -18px) scale(1.05); }
+  50%  { transform: translate(-8px, -30px) scale(0.95); }
+  75%  { transform: translate(16px, -12px) scale(1.02); }
+}
+@keyframes floatDrift2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25%  { transform: translate(-15px, -10px) scale(0.97); }
+  50%  { transform: translate(10px, -25px) scale(1.04); }
+  75%  { transform: translate(-6px, -35px) scale(0.98); }
+}
+@keyframes floatDrift3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(18px, -14px) scale(1.03); }
+  66% { transform: translate(-12px, -28px) scale(0.96); }
+}
+@keyframes floatDrift4 {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-10px, -22px); }
+  40% { transform: translate(14px, -8px); }
+  60% { transform: translate(-8px, -32px); }
+  80% { transform: translate(6px, -18px); }
+}
+@keyframes floatDrift5 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-18px, -24px) scale(1.06); }
+}
+@keyframes floatDrift6 {
+  0%, 100% { transform: translate(0, 0); }
+  30% { transform: translate(10px, -20px); }
+  70% { transform: translate(-14px, -10px); }
+}
+.float-shape-1 { animation: floatDrift1 12s ease-in-out infinite; }
+.float-shape-2 { animation: floatDrift2 15s ease-in-out infinite; }
+.float-shape-3 { animation: floatDrift3 11s ease-in-out infinite; }
+.float-shape-4 { animation: floatDrift4 14s ease-in-out infinite; }
+.float-shape-5 { animation: floatDrift5 13s ease-in-out infinite; }
+.float-shape-6 { animation: floatDrift6 16s ease-in-out infinite; }
+
+@keyframes iconBreathe {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(26, 112, 176, 0.25), 0 10px 25px -5px rgba(19, 37, 58, 0.1); transform: scale(1); }
+  50%      { box-shadow: 0 0 0 8px rgba(26, 112, 176, 0),   0 10px 25px -5px rgba(19, 37, 58, 0.1); transform: scale(1.04); }
+}
+.icon-breathe { animation: iconBreathe 3s ease-in-out infinite; }
+
+@keyframes frostedGradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.frosted-gradient-shift {
+  background-size: 200% 200%;
+  animation: frostedGradientShift 8s ease-in-out infinite;
+}
+
+.press-scale { transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1); }
+.press-scale:active { transform: scale(0.96); }
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 5px rgba(26, 112, 176, 0.3); }
+  50%      { box-shadow: 0 0 15px rgba(26, 112, 176, 0.5), 0 0 30px rgba(26, 112, 176, 0.15); }
+}
+.glow-pulse { animation: glowPulse 2s ease-in-out infinite; }
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.count-up { animation: countUp 0.3s ease-out; }
+
+@keyframes cardEntrance {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.card-entrance { animation: cardEntrance 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+
+@keyframes progressFill { from { width: 0%; } }
+.progress-fill { animation: progressFill 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+
+@keyframes gentleFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+.gentle-float { animation: gentleFloat 4s ease-in-out infinite; }
+
+@keyframes textShimmer {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+.text-shimmer {
+  background: linear-gradient(90deg, #13253A 0%, #1A70B0 25%, #13253A 50%, #1A70B0 75%, #13253A 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: textShimmer 4s linear infinite;
+}
+
+.expand-transition {
+  transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  overflow: hidden;
+}

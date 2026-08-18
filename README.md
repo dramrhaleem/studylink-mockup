@@ -1,0 +1,160 @@
+<div dir="rtl">
+
+# StudyLink — موك اب التطبيق
+
+معاينة تفاعلية لواجهة تطبيق **StudyLink**: سوق أكاديمي لطلبة جامعة المنصورة — مذكرات وملخصات وأدوات مكتبية وطبية، بتوصيل أو استلام من المكتبة.
+
+٢٧ شاشة كاملة داخل إطار هاتف، بالعربية و`RTL`، مبنية على نظام الهوية الرسمي **`studylink-identity-v1`**.
+
+<p align="center">
+  <img src="screenshots/home.png" width="240" alt="الشاشة الرئيسية">
+  <img src="screenshots/lectures.png" width="240" alt="المحاضرات">
+  <img src="screenshots/checkout.png" width="240" alt="إتمام الطلب">
+</p>
+<p align="center">
+  <img src="screenshots/cart.png" width="240" alt="السلة">
+  <img src="screenshots/tracking.png" width="240" alt="تتبع الطلب">
+  <img src="screenshots/home-dark.png" width="240" alt="الوضع الداكن">
+</p>
+
+---
+
+## التشغيل
+
+```bash
+npm install --legacy-peer-deps
+npm run dev          # http://localhost:3000
+```
+
+## التنقّل بين الشاشات
+
+كل شاشة لها رابط مباشر:
+
+```
+/?screen=home        /?screen=cart          /?screen=checkout
+/?screen=lectures    /?screen=tracking      /?screen=order-success
+/?screen=profile     /?screen=wallet        /?screen=ambassador
+/?screen=more        /?screen=notifications /?screen=library-harvard
+```
+
+القائمة الكاملة في `src/app/page.tsx` داخل `renderSecondaryScreen`.
+
+---
+
+## النشر على GitHub Pages
+
+المستودع فيه `.github/workflows/deploy.yml` يبني ويَنشر تلقائيًا على كل دفعة إلى `main`.
+
+**مرة واحدة بعد أول دفعة:** من `Settings` ← `Pages` ← `Build and deployment` ← اختر **`GitHub Actions`** مصدرًا. مش محتاج تختار فرع.
+
+بعدها الموقع يبقى على:
+
+```
+https://<username>.github.io/<repo-name>/
+```
+
+بادئة المسار (`basePath`) تُحسب تلقائيًا من اسم المستودع عبر `actions/configure-pages`، فالمشروع يعمل سواء نُشر في مجلد مستودع أو على `<username>.github.io` مباشرة.
+
+### بناء النسخة الثابتة محليًا
+
+```bash
+STATIC_EXPORT=1 npm run build          # يخرج إلى ./out
+npx serve out                          # أو أي خادم ملفات ثابتة
+```
+
+لمحاكاة النشر داخل مجلد مستودع:
+
+```bash
+STATIC_EXPORT=1 NEXT_PUBLIC_BASE_PATH=/studylink-mockup npm run build
+```
+
+---
+
+## التقنية
+
+| | |
+|---|---|
+| الإطار | Next.js 16 · React 19 · TypeScript |
+| التنسيق | **Tailwind v4** — الإعداد كله في CSS، **لا يوجد `tailwind.config.ts`** |
+| الحالة | zustand مع `persist` |
+| الحركة | framer-motion |
+| المكوّنات | shadcn/ui فوق Radix |
+| الخطوط | StudyLink Arabic + StudyLink Mono (SIL OFL) عبر `next/font/local` |
+
+---
+
+## قواعد لا يجوز كسرها
+
+هذه ليست تفضيلات — كل واحدة منها كانت خطأً حقيقيًا في نسخة سابقة.
+
+1. **كل التوكنز في `src/app/globals.css`** داخل `@theme`. لا تكتب لونًا في شاشة.
+   حتى نطاقات Tailwind القياسية (`emerald` · `violet` · `rose` …) أُعيد تعريفها
+   لتشير إلى ألوان البراند، فاللوحة مغلقة ولا يمكن الخروج منها بالخطأ.
+
+2. **كل رقم مالي من `src/lib/pricing.ts`.** لا تُعِد اشتقاق أي مبلغ في شاشة.
+   الرسوم كانت مكرّرة في ثلاثة ملفات وقد اختلفت فعليًا.
+
+3. **كل رقم معروض يُلفّ في `.sl-num`.** بدونها تقلب الخوارزمية ثنائية الاتجاه
+   ترتيب الرقم والعملة داخل الجملة العربية.
+   ⚠️ ولا تضعها على حقل نص عربي حر — الخط لاتيني أحادي المسافة ولا يشكّل العربية.
+
+4. **الأرقام الغربية `0-9` في كل مكان.** ممنوع `toLocaleString('ar-EG')`.
+
+5. **ممنوع `tracking-*` على العربية.** أي `letter-spacing` موجب يفتح فجوات داخل
+   الوصل ويكسر الكلمة.
+
+6. **RTL بخصائص منطقية:** `ms-*` · `me-*` · `ps-*` · `pe-*` · `start-*` · `end-*`.
+   و`translateX` خاصية **فيزيائية** لا منطقية — في RTL الإزاحة للأمام سالبة.
+
+7. **أي أصل من `public/` يمرّ عبر `asset()`** من `src/lib/asset.ts`. المسار
+   المطلق لا يحترم `basePath`، فتسقط كل الصور بصمت بعد النشر.
+
+8. **الحد الأدنى للنص:** 12px لعناصر الواجهة و13px للمتن.
+
+9. **الاسم المعروض `StudyLink` باللاتينية دائمًا.** «ستادي لينك» مرفوضة
+   («ستاد» = الملعب).
+
+10. **لا وعد بلا دليل:** ممنوع زمن توصيل ثابت، أو «مضمون»، أو «أصلي 100%»،
+    أو أي عدد مستخدمين/طلبات غير مولّد من النظام.
+
+---
+
+## أدوات التحقق
+
+```bash
+npm run audit:ui      # تباين · أحجام لمس · أسماء وصول · تجاوز أفقي · ألوان خارج اللوحة
+npm run shots         # لقطة لكل شاشة
+npm run shots:dark    # الوضع الداكن
+npm run shots:cart    # شاشات المال بسلة مزروعة بمنتجات
+```
+
+`audit.mjs` يحتاج الخادم شغّالًا (`npm run dev`). الحالة المرجعية الحالية:
+
+```
+contrast failures : 6     ← كلها إيجابيات كاذبة أو عناصر معطّلة
+touch < 44px      : 7     ← نقاط الكاروسيل، ولها توسيع خاص
+unnamed controls  : 18    ← حقول إدخال تحتاج <label> مرتبطًا
+horizontal overflow: 0
+off-brand colours : 0
+```
+
+أي رقم يرتفع بعد تعديلك = انحدار. `UPGRADE-REPORT.md` فيه التفصيل الكامل.
+
+---
+
+## التوليد
+
+الصور في `public/products` و`public/banners` متولّدة من لوحة البراند، لا مرفوعة يدويًا:
+
+```bash
+node scripts/gen-product-art.mjs     # ١٦ رسمة منتج
+node scripts/gen-banner-art.mjs      # ٦ بانرات + علامتا المكتبتين
+```
+
+---
+
+## ملاحظة
+
+هذا **موك اب واجهة**، لا تطبيق عامل. لا يوجد باك-إند ولا مدفوعات ولا حساب حقيقي — البيانات كلها ثابتة في `src/lib/studylink-data.ts`، والحالة تُحفظ في `localStorage` داخل متصفحك وحدك.
+
+</div>

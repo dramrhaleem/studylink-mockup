@@ -1,0 +1,17 @@
+{
+  "name": "StudyLink",
+  "short_name": "StudyLink",
+  "description": "مذكرات وملخصات وأدوات مكتبية وطبية لطلبة جامعة المنصورة — توصيل أو استلام من المكتبة.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F2EEE3",
+  "theme_color": "#13253A",
+  "icons": [
+    { "src": "pwa-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "pwa-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "pwa-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
