@@ -246,11 +246,14 @@ export default function ChatSupportScreen({ onNavigate }: ChatSupportScreenProps
   const [openFAQ, setOpenFAQ] = useState<string | null>(null)
   const [quickRepliesVisible, setQuickRepliesVisible] = useState(true)
   const [inputFocused, setInputFocused] = useState(false)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
   const chatContainerRef = useRef<HTMLDivElement>(null)
 
+  /* تمرير حاوية الرسائل وحدها. `scrollIntoView` كان يمرّر الحاويات الأب أيضًا،
+     فيقفز إطار الشاشة كله مع كل رسالة جديدة. (نفس سبب باج البانرات في الرئيسية.) */
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    const el = chatContainerRef.current
+    if (!el) return
+    el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' })
   }, [messages, isTyping])
 
   const handleQuickReply = (reply: string) => {
@@ -556,7 +559,6 @@ export default function ChatSupportScreen({ onNavigate }: ChatSupportScreenProps
           )}
         </AnimatePresence>
 
-        <div ref={messagesEndRef} />
       </div>
 
       {/* Contact Options */}

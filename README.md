@@ -138,6 +138,7 @@ npm run lint           # صفر أخطاء
 npm run test:pricing   # قواعد المال مقابل الإفادة المسجّلة (D-032 · D-035)
 npm run audit:ui       # تباين · أحجام لمس · أسماء وصول · تجاوز أفقي · ألوان خارج اللوحة
 npm run audit:overlap  # نص يمرّ تحت زر مطلق — عطل لا ينتج خطأً في الكونسول
+npm run audit:scroll   # سرقة التمرير: شاشة تعيد المستخدم لأعلى وحدها
 npm run shots          # لقطة لكل شاشة
 npm run shots:dark     # الوضع الداكن
 npm run shots:cart     # شاشات المال بسلة مزروعة بمنتجات

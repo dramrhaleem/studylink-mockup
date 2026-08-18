@@ -768,6 +768,7 @@ export default function CheckoutScreen({ onNavigate }: CheckoutScreenProps) {
               delivery: deliveryFee,
               total,
               progress: 20,
+              createdAt: now.toISOString(),
             })
             onNavigate?.('success')
           }}

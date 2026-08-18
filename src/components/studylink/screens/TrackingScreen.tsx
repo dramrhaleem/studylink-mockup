@@ -304,140 +304,36 @@ export default function TrackingScreen({ onNavigate }: TrackingScreenProps) {
         </div>
       </motion.div>
 
-      {/* Map Placeholder with subtle pan animation */}
+      {/* التتبع على الخريطة — ميزة مؤجلة.
+          كان هنا مربّع خريطة وهمي بمندوب متحرّك ونبضة «المندوب في الطريق»،
+          يوحي بتتبع حيّ لموقع المندوب. لا يوجد GPS ولا مصدر موقع، فالإيحاء
+          ادعاء بلا سند — ومطوّر يقرأ الشاشة كمواصفة كان سيبنيه.
+          البديل: بطاقة تقول صراحةً إن الميزة خارج هذه الجولة. */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
         className="mx-4 mt-3"
       >
-        <motion.button data-tap="44"
-          onClick={() => setShowMap(!showMap)}
-          whileTap={{ scale: 0.98 }}
-          className="w-full relative overflow-hidden rounded-2xl bg-navy-50 h-[160px] transition-transform"
-        >
-          {/* Map pattern with pan animation */}
-          <motion.div
-            className="absolute inset-[-10px] opacity-[0.06]"
-            animate={{
-              x: [0, 3, 0, -3, 0],
-              y: [0, -2, 0, 2, 0],
-            }}
-            transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-            style={{
-              backgroundImage: `radial-gradient(circle at 1px 1px, #13253A 1px, transparent 0)`,
-              backgroundSize: '12px 12px',
-            }}
-          />
-          {/* Fake map roads with pan */}
-          <motion.div
-            className="absolute inset-0"
-            animate={{
-              x: [0, 2, 0, -2, 0],
-              y: [0, -1.5, 0, 1.5, 0],
-            }}
-            transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <div className="absolute top-1/2 left-0 right-0 h-[2px] bg-navy-800/10" />
-            <div className="absolute top-0 bottom-0 left-1/3 w-[2px] bg-navy-800/10" />
-            <div className="absolute top-0 bottom-0 left-2/3 w-[2px] bg-navy-800/10" />
-            <div className="absolute top-1/4 left-0 right-0 h-px bg-navy-800/5" />
-            <div className="absolute top-3/4 left-0 right-0 h-px bg-navy-800/5" />
-            {/* Diagonal road */}
-            <div className="absolute top-[20%] end-[10%] w-[50%] h-px bg-navy-800/8 rotate-[25deg] origin-right" />
-          </motion.div>
-
-          {/* Building silhouettes */}
-          <motion.div
-            className="absolute bottom-[30%] end-[5%] flex items-end gap-1"
-            animate={{ y: [0, -1, 0] }}
-            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <div className="w-4 h-7 bg-navy-800/8 rounded-t-sm" />
-            <div className="w-3 h-5 bg-navy-800/6 rounded-t-sm" />
-            <div className="w-5 h-9 bg-navy-800/7 rounded-t-sm" />
-            <div className="w-3 h-4 bg-navy-800/5 rounded-t-sm" />
-          </motion.div>
-          <motion.div
-            className="absolute bottom-[25%] start-[10%] flex items-end gap-1"
-            animate={{ y: [0, 1, 0] }}
-            transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-          >
-            <div className="w-3 h-6 bg-navy-800/7 rounded-t-sm" />
-            <div className="w-4 h-8 bg-navy-800/8 rounded-t-sm" />
-            <div className="w-2 h-4 bg-navy-800/6 rounded-t-sm" />
-          </motion.div>
-
-          {/* Road names in Arabic */}
-          <div className="absolute top-[18%] end-[15%]">
-            <span className="text-[11px] text-navy-800/25 font-medium">شارع الجامعة</span>
-          </div>
-          <div className="absolute top-[52%] start-[12%]">
-            <span className="text-[11px] text-navy-800/25 font-medium">عبد الرحمن</span>
-          </div>
-          <div className="absolute bottom-[18%] end-[40%]">
-            <span className="text-[11px] text-navy-800/20 font-medium">شارع النيل</span>
-          </div>
-
-          {/* Location markers */}
-          <motion.div
-            className="absolute top-[30%] end-[22%]"
-            animate={{ y: [0, -2, 0] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <div className="w-6 h-6 rounded-full bg-sky-500 flex items-center justify-center shadow-lg shadow-sky-500/30">
-              <BookOpen className="w-3 h-3 text-white" aria-hidden />
+        <div className="rounded-2xl border border-dashed border-brand-grey-300 bg-brand-grey-50 px-4 py-3.5">
+          <div className="flex items-start gap-3">
+            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-brand-grey-200/60">
+              <MapPin className="h-[18px] w-[18px] text-brand-grey-500" aria-hidden />
+            </span>
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="text-[13px] font-bold text-brand-grey-600">التتبع على الخريطة</p>
+                <span className="text-[12px] font-semibold text-brand-grey-500 bg-brand-grey-200/70 border border-brand-grey-300/60 px-2 py-0.5 rounded-full whitespace-nowrap">
+                  ميزة مؤجلة
+                </span>
+              </div>
+              <p className="mt-1 text-[12px] leading-relaxed text-brand-grey-500">
+                موقع المندوب على الخريطة مش متاح في الإصدار ده. حالة الطلب بتتحدّث
+                في الخط الزمني فوق، وتقدر تتواصل مع المندوب أو الدعم من تحت.
+              </p>
             </div>
-          </motion.div>
-          <motion.div
-            className="absolute top-[50%] end-[58%]"
-            animate={{ y: [0, 2, 0] }}
-            transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-          >
-            <div className="w-6 h-6 rounded-full bg-sky-500 flex items-center justify-center shadow-lg shadow-sky-500/30">
-              <BookMarked className="w-3 h-3 text-white" aria-hidden />
-            </div>
-          </motion.div>
-
-          {/* Delivery person with improved animation */}
-          <motion.div
-            animate={{ x: [0, 8, 0], y: [0, -4, 0] }}
-            transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
-            className="absolute top-[42%] end-[40%]"
-          >
-            <div className="w-8 h-8 rounded-full bg-success flex items-center justify-center shadow-lg shadow-success/30">
-              <Truck className="w-4 h-4 text-white" />
-            </div>
-            <motion.div
-              className="w-10 h-10 rounded-full bg-success/20 absolute -top-1 -end-1"
-              animate={{ scale: [1, 1.6, 1], opacity: [0.4, 0, 0.4] }}
-              transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-            />
-          </motion.div>
-
-          {/* Destination with glow */}
-          <motion.div
-            className="absolute bottom-4 start-4"
-            animate={{ scale: [1, 1.05, 1] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <div className="w-8 h-8 rounded-full bg-navy-800 flex items-center justify-center shadow-lg">
-              <MapPin className="w-4 h-4 text-white" />
-            </div>
-          </motion.div>
-
-          {/* Overlay text */}
-          <div className="absolute bottom-3 end-3 bg-white/90 backdrop-blur-sm rounded-lg px-2.5 py-1.5 shadow-sm">
-            <p className="text-[12px] text-brand-grey-600 flex items-center gap-1">
-              <motion.span
-                className="w-1.5 h-1.5 rounded-full bg-success"
-                animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-              />
-              المندوب في الطريق
-            </p>
           </div>
-        </motion.button>
+        </div>
       </motion.div>
 
       {/* Quick Actions with shimmer and whileTap scale */}
@@ -448,7 +344,7 @@ export default function TrackingScreen({ onNavigate }: TrackingScreenProps) {
         className="flex gap-2.5 px-4 mt-3"
       >
         <ActionButton
-          className="flex-1 flex items-center justify-center gap-2 bg-success text-white rounded-2xl p-3 shadow-sm"
+          className="flex-1 flex items-center justify-center gap-2 bg-navy-800 text-white rounded-2xl p-3 shadow-sm"
           shimmer
         >
           <motion.div

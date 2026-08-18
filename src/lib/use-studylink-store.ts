@@ -32,6 +32,8 @@ export interface SavedOrder {
   total: number
   progress: number
   eta?: string
+  /** ISO — مصدر اشتقاق المرحلة في المعاينة. أُضيف بعد الإصدار الأول فهو اختياري. */
+  createdAt?: string
 }
 
 export interface NotificationItem {
@@ -129,11 +131,34 @@ const SEED_NOTIFICATIONS: NotificationItem[] = [
   },
 ]
 
+/* طلب نشط افتتاحي — وجوده مقصود.
+   شريط «الطلب الجاري» في الرئيسية لا يظهر إلا مع طلب نشط، والسلة تبدأ فارغة،
+   فبلا هذا الطلب لا يرى المعاين الحالة أصلًا ولا يعرف أنها موجودة.
+   `createdAt` يُضبط عند أول إقلاع (لا هنا) كي يبدأ الخط الزمني من لحظة
+   المعاينة — قيمة ثابتة هنا كانت ستجعل الطلب «مسلَّمًا» دائمًا.
+   احذف هذا البذر عند الوصل بباك-إند حقيقي. */
+const SEED_ACTIVE_ORDER: SavedOrder = {
+  id: 'order-seed-demo',
+  orderNumber: '#1092',
+  date: 'اليوم',
+  status: 'تم القبول',
+  statusType: 'active',
+  items: [
+    { title: 'تشريح — أطلس تشريحي ملون', store: 'هارفرد', qty: 1, price: 50 },
+    { title: 'سماعة طبية — ليتمان', store: 'برلين', qty: 1, price: 38 },
+  ],
+  subtotal: 88,
+  serviceFee: 9,
+  delivery: 25,
+  total: 122,
+  progress: 20,
+}
+
 const INITIAL_STATE = {
   user: null as User | null,
   cart: [] as CartItem[],
   cartItems: [] as CartItem[],
-  orders: [] as SavedOrder[],
+  orders: [SEED_ACTIVE_ORDER] as SavedOrder[],
   deliveryOption: 'delivery' as DeliveryOption,
   selectedGrade: null as GradeType | null,
   notifications: SEED_NOTIFICATIONS,
@@ -336,6 +361,20 @@ export const useStudylinkStore = create<StudylinkState>()(
 /** يُستدعى مرة واحدة من مكوّن عميل بعد التركيب. */
 export function hydrateStudylinkStore() {
   void useStudylinkStore.persist.rehydrate()
+
+  /* ختم زمن الطلب الافتتاحي عند أول إقلاع.
+     `Date.now()` ممنوع في القيمة الابتدائية: تُقيَّم على الخادم أثناء البناء،
+     فيبدأ الطلب «مسلَّمًا» عند كل من يفتح الموقع بعد ذلك. الختم هنا يجعل
+     الخط الزمني يبدأ من لحظة معاينة كل شخص. */
+  const st = useStudylinkStore.getState()
+  const seed = st.orders.find(o => o.id === 'order-seed-demo')
+  if (seed && !seed.createdAt) {
+    useStudylinkStore.setState({
+      orders: st.orders.map(o =>
+        o.id === 'order-seed-demo' ? { ...o, createdAt: new Date().toISOString() } : o
+      ),
+    })
+  }
 }
 
 /** إعادة الضبط الكاملة: تمسح المخزّن ثم تعيد الحالة الابتدائية. */

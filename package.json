@@ -15,7 +15,8 @@
     "setup": "npm install --include=dev --legacy-peer-deps && npx playwright install chromium",
     "typecheck": "tsc --noEmit",
     "test:pricing": "node scripts/check-pricing.mjs",
-    "audit:overlap": "node overlap.mjs"
+    "audit:overlap": "node overlap.mjs",
+    "audit:scroll": "node scrolljack.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

@@ -31,6 +31,7 @@ import { products, ALL_GRADES, type StoreType, type Product, type GradeType, isP
 import { useStudylinkStore } from '@/lib/use-studylink-store'
 import { CATEGORY, CATEGORY_ORDER } from '@/lib/category'
 import { activeSeason } from '@/lib/season'
+import ActiveOrderBar from '@/components/studylink/ActiveOrderBar'
 import ProductDetailScreen from '@/components/studylink/screens/ProductDetailScreen'
 import QuantityControl from '@/components/studylink/QuantityControl'
 import LibraryClosedSheet from '@/components/studylink/LibraryClosedSheet'
@@ -94,12 +95,39 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
      البديل: نقيس أي شريحة أقرب لمركز الحاوية — يعمل في الاتجاهين. */
   const bannerItemRefs = useRef<(HTMLDivElement | null)[]>([])
 
+  /* ⚠️ لا تستخدم `scrollIntoView` هنا مهما بدا مختصرًا.
+     `scrollIntoView` يمرّر **كل** الحاويات الأب حتى يُظهر العنصر، لا الحاوية
+     الأفقية وحدها — و`block: 'nearest'` لا يعصمك: ما إن ينزل المستخدم أسفل
+     الصفحة حتى يصير شريط البانرات خارج الشاشة، فيسحبه المؤقّت التلقائي إلى
+     الرؤية ويقفز التمرير الرأسي إلى الأعلى كل ٤ ثوانٍ.
+     كان هذا باجًا حقيقيًا: «كل ما أسكرول داون يطلعني تاني لفوق لوحده».
+
+     البديل: تمرير الحاوية الأفقية نفسها بفارق مركزَي العنصر والحاوية بالبكسل.
+     `scrollBy` لا يلمس أي حاوية أخرى، والفارق محسوب من `getBoundingClientRect`
+     فلا يعتمد على إشارة `scrollLeft` — وهي تختلف بين المتصفحات في RTL. */
   const scrollToBanner = useCallback((i: number) => {
-    bannerItemRefs.current[i]?.scrollIntoView({
-      behavior: 'smooth',
-      inline: 'center',
-      block: 'nearest',
-    })
+    const el = bannerScrollRef.current
+    const item = bannerItemRefs.current[i]
+    if (!el || !item) return
+    const elRect = el.getBoundingClientRect()
+    const itemRect = item.getBoundingClientRect()
+    const delta =
+      itemRect.left + itemRect.width / 2 - (elRect.left + el.clientWidth / 2)
+    el.scrollBy({ left: delta, behavior: 'smooth' })
+  }, [])
+
+  /* الشريط لا يتحرّك وهو خارج الشاشة. ضمانة ثانية ضد نفس الصنف من الأعطال،
+     وسلوك صحيح بذاته: لا معنى لتحريك كاروسيل لا يراه أحد. */
+  const [bannerVisible, setBannerVisible] = useState(true)
+  useEffect(() => {
+    const el = bannerScrollRef.current
+    if (!el || typeof IntersectionObserver === 'undefined') return
+    const io = new IntersectionObserver(
+      ([entry]) => setBannerVisible(entry.isIntersecting),
+      { threshold: 0.25 }
+    )
+    io.observe(el)
+    return () => io.disconnect()
   }, [])
 
   useEffect(() => {
@@ -125,16 +153,16 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
     return () => { cancelAnimationFrame(raf); el.removeEventListener('scroll', handleScroll) }
   }, [])
 
-  // Auto-scroll effect
+  // Auto-scroll effect — يتوقّف حين يخرج الشريط من الشاشة
   useEffect(() => {
-    if (!isAutoScrolling) return
+    if (!isAutoScrolling || !bannerVisible) return
     autoScrollTimerRef.current = setInterval(() => {
       scrollToBanner((bannerSnapIndex + 1) % banners.length)
     }, 4000)
     return () => {
       if (autoScrollTimerRef.current) clearInterval(autoScrollTimerRef.current)
     }
-  }, [isAutoScrolling, bannerSnapIndex, scrollToBanner])
+  }, [isAutoScrolling, bannerVisible, bannerSnapIndex, scrollToBanner])
 
   const pauseAutoScroll = useCallback(() => {
     setIsAutoScrolling(false)
@@ -412,6 +440,10 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
             ))}
           </div>
         </div>
+
+        {/* شريط الطلب الجاري — تحت البانرات، ويلاصق أعلى منطقة التمرير فيثبت
+            أعلى الشاشة بمجرد أن يمرّرها المستخدم. لا يُرسَم أصلًا بلا طلب نشط. */}
+        <ActiveOrderBar onNavigate={onNavigate} />
 
         {/* ===== 2. "محاضراتك في أسرع وقت" — Fast Track Section ===== */}
         <div className="pt-4">
